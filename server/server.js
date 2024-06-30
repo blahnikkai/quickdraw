@@ -21,6 +21,15 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected')
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
+    })
+
+    socket.on('join', (game_id) => {
+        console.log(`joining game ${game_id}`)
+        socket.join(game_id)
+    })
 })
 
 server.listen(3001, () => {

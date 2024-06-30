@@ -1,7 +1,12 @@
+import {useEffect} from 'react'
 import io from 'socket.io-client'
 
 export default function Game() {
-    const socket = io('http://localhost:3001')
-    socket.emit('join', '4001')
+    useEffect(() => {
+        const socket = io('http://localhost:3001')
+        return () => {
+            socket.disconnect()
+        }
+    }, [])
     return <div>Game</div>
 }
