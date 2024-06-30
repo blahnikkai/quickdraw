@@ -1,4 +1,5 @@
 import './App.css'
+import Game from './components/Game.js'
 
 function App() {
     return (
@@ -8,6 +9,7 @@ function App() {
                     Hello what's up
                 </p>
             </header>
+            <Game/>
         </div>
     )
 }
