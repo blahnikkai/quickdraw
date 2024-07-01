@@ -1,16 +1,14 @@
 import './App.css'
 import Game from './components/Game.js'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
     return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>
-                    Hello what's up
-                </p>
-            </header>
-            <Game/>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path='/game/:gid' element={<Game/>}/>
+            </Routes>
+        </BrowserRouter>
     )
 }
 
