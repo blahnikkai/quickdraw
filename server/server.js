@@ -30,6 +30,18 @@ io.on('connection', (socket) => {
         console.log(`joining game ${game_id}`)
         socket.join(game_id)
     })
+
+    socket.on('send message', (msg, game) => {
+        io.to(game).emit('receive message', msg)
+    })
+
+    socket.onAny((eventName, ...args) => {
+        console.log(eventName, args)
+    })
+
+    socket.onAnyOutgoing((eventName, ...args) => {
+        console.log(eventName, args)
+    })
 })
 
 server.listen(3001, () => {
