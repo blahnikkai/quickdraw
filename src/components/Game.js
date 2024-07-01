@@ -6,7 +6,7 @@ export default function Game() {
     const { gid } = useParams()
     console.log('huh')
     useEffect(() => {
-        const socket = io('http://localhost:3001')
+        const socket = io(':3001')
         socket.emit('join', gid)
         return () => {
             socket.disconnect()
