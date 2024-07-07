@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "noImplicitAny": true,
+        "noImplicitReturns": false,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "../../built/local/tsc.js",
+        "esModuleInterop": true,
+        "sourceMap": true,
+    },
+}
