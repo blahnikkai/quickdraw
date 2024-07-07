@@ -3,10 +3,14 @@ const letters = 'abcdefghijklmnopqrstuvwxyz'
 export default class Game {
     gid: string
     phrase: string
+    socketServer: any
+    twoLetCnts: Map<string, number>
 
-    constructor(gid: string) {
+    constructor(gid: string, socketServer: any, twoLetCnts: Map<string, number>) {
         this.gid = gid
         this.phrase = ''
+        this.socketServer = socketServer
+        this.twoLetCnts = twoLetCnts
     }
 
     randomLetter(): string {
@@ -22,11 +26,16 @@ export default class Game {
         return letters.join('')
     }
 
-    generatePhrase(twoLetCnts: Map<string, number>) {
+    startGame() {
+        this.generatePhrase()
+    }
+
+    generatePhrase() {
         let phrase = ''
         do {
             phrase = this.randomPhrase(2)
-        } while(twoLetCnts.get(phrase) < 50)
+        } while(this.twoLetCnts.get(phrase) < 50)
+        this.socketServer.to(this.gid).emit('new phrase', phrase)
         this.phrase = phrase
     }
 }

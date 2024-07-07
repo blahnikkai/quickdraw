@@ -9,7 +9,7 @@ export default class SocketManager {
                 methods: ['GET', 'POST'],
             },
         })
-        this.gameManager = new GameManager()
+        this.gameManager = new GameManager(this.socketServer)
     }
 
     listen() {
@@ -32,6 +32,10 @@ export default class SocketManager {
 
             socket.on('send message', (msg, gid) => {
                 this.socketServer.to(gid).emit('receive message', msg)
+            })
+
+            socket.on('start game', (gid) => {
+                this.gameManager.games.get(gid).startGame()
             })
 
             socket.onAny((eventName, ...args) => {
