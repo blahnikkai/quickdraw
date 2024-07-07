@@ -1,4 +1,5 @@
 import { Server as SocketServer } from 'socket.io'
+import GameManager from './GameManager.js'
 
 export default class SocketManager {
     constructor(httpServer) {
@@ -8,6 +9,7 @@ export default class SocketManager {
                 methods: ['GET', 'POST'],
             },
         })
+        this.gameManager = GameManager
     }
 
     listen() {
