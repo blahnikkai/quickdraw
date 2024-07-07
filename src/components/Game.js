@@ -22,7 +22,7 @@ export default function Game() {
     }, [])
 
     return (
-        <div className='game'>
+        <main>
             <div>Send a message</div>
             <form
                 onSubmit={(event) => {
@@ -39,6 +39,6 @@ export default function Game() {
             <ul>
                 {pastMsgs.map((pastMsg) => <li>{pastMsg}</li>)}
             </ul>
-        </div>
+        </main>
     )
 }

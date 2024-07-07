@@ -1,4 +1,3 @@
-import './App.css'
 import Play from './components/Game.js'
 import Home from './components/Home.js'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
