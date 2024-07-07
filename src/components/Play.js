@@ -20,6 +20,7 @@ export default function Play() {
 
         socketRef.current.on('valid guess', () => {
             setStatus('valid')
+            setGuess('')
         })
 
         socketRef.current.on('invalid guess', () => {
@@ -47,8 +48,9 @@ export default function Play() {
                     }
                 }>
                 <input
-                    onChange={(event) => setGuess(event.target.value)}
                     value={guess}
+                    onChange={(event) => setGuess(event.target.value)}
+                    disabled={status === 'valid'}
                 />
             </form>
             <button onClick={() => socketRef.current.emit('start game', gid)}>Start Game</button>
