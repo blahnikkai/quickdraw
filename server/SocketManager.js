@@ -22,7 +22,6 @@ export default class SocketManager {
 
             socket.on('create game', () => {
                 const gid = this.gameManager.createGame(socket)
-                socket.join(gid)
                 socket.emit('game created', gid)
             })
 

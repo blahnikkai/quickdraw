@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 import io from 'socket.io-client'
 import { useParams } from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
-export default function Game() {
+export default function Play() {
     const { gid } = useParams()
     const socketRef = useRef(null)
 
