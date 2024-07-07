@@ -7,6 +7,9 @@ export default class Game {
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
     used: Set<string>
+    playerCnt: number
+    validCnt: number
+    timeoutId: ReturnType<typeof setTimeout>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -15,6 +18,8 @@ export default class Game {
         this.socketServer = socketServer
         this.twoLetCnts = twoLetCnts
         this.used = new Set()
+        this.playerCnt = 0
+        this.validCnt = 0
     }
 
     randomLetter(): string {
@@ -35,14 +40,17 @@ export default class Game {
     }
 
     startRound() {
+        this.validCnt = 0
+        this.used.clear()
         this.generatePhrase()
-        setTimeout(() => {
+        this.timeoutId = setTimeout(() => {
             this.endRound()
-        }, 5_000)
+        }, 20_000)
     }
 
     endRound() {
         this.socketServer.to(this.gid).emit('end round')
+        clearTimeout(this.timeoutId)
         setTimeout(() => {
             this.startRound()
         }, 1_000)
@@ -62,9 +70,25 @@ export default class Game {
             return 'used'
         }
         if(this.dictionary.has(guess) && guess.includes(this.phrase)) {
+            this.validCnt++
             this.used.add(guess)
             return 'valid'
         }
         return 'invalid'
+    }
+
+    checkGameOver() {
+        // only 1 player left
+        console.log('checking game over')
+        console.log(this.playerCnt)
+        console.log(this.validCnt)
+        if(this.playerCnt - this.validCnt === 1) {
+            console.log('ending round early')
+            this.endRound()
+        }
+    }
+
+    joinGame() {
+        this.playerCnt++
     }
 }

@@ -1,4 +1,4 @@
-import { Server as SocketServer } from 'socket.io'
+import { Server as SocketServer, Socket } from 'socket.io'
 import GameManager from './GameManager.js'
 
 export default class SocketManager {
@@ -16,11 +16,11 @@ export default class SocketManager {
     }
 
     listen() {
-        this.socketServer.on('connection', (socket) => {
+        this.socketServer.on('connection', (socket: Socket) => {
             console.log('a user connected')
 
             socket.on('disconnect', () => {
-                console.log('user disconnected')
+                console.log(`user disconnected`)
             })
 
             socket.on('create game', async () => {
@@ -29,8 +29,15 @@ export default class SocketManager {
             })
 
             socket.on('join', (gid: string) => {
-                console.log(`joining game ${gid}`)
-                socket.join(gid)
+                this.gameManager.joinGame(gid, socket)
+            })
+
+            socket.on('leave', (gid: string) => {
+                if(!this.gameManager.gameExists(gid)) {
+                    return
+                }
+                console.log(`leaving game ${gid}`)
+                this.gameManager.leaveGame(gid, socket)
             })
 
             socket.on('send message', (msg: string, gid: string) => {
@@ -44,6 +51,9 @@ export default class SocketManager {
             socket.on('submit guess', (gid: string, guess: string) => {
                 const result = this.gameManager.checkGuess(gid, guess)
                 socket.emit(`${result} guess`)
+                if(result === 'valid') {
+                    this.gameManager.checkRoundOver(gid)
+                }
             })
 
             socket.onAny((eventName: string, ...args: any[]) => {

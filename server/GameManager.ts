@@ -1,4 +1,4 @@
-import { Server as SocketServer } from 'socket.io'
+import { Server as SocketServer, Socket } from 'socket.io'
 import { promises as fs } from 'fs'
 import Game from './Game.js'
 
@@ -14,7 +14,6 @@ export default class GameManager {
     }
 
     async loadSeqCnts() {
-        
         const twoLetData = await fs.readFile('./dictionary/two_let_cnts.json', { encoding: 'utf-8' })
         this.twoLetCnts = new Map(Object.entries(JSON.parse(twoLetData)))
 
@@ -47,5 +46,33 @@ export default class GameManager {
     checkGuess(gid: string, guess: string): string {
         const result = this.games.get(gid).checkGuess(guess)
         return result
+    }
+
+    checkRoundOver(gid: string) {
+        this.games.get(gid).checkGameOver()
+    }
+
+    gameExists(gid: string): boolean {
+        return this.games.has(gid)
+    }
+
+    joinGame(gid: string, socket: Socket) {
+        if(!this.gameExists(gid)) {
+            socket.emit('room dne')
+            return
+        }
+        console.log(`joining game ${gid}`)
+        socket.join(gid)
+        socket.emit('room joined')
+        this.games.get(gid).joinGame()
+    }
+
+    leaveGame(gid: string, socket: Socket) {
+        if(!this.gameExists(gid)) {
+            return
+        }
+        console.log(`leaving game ${gid}`)
+        socket.leave(gid)
+        this.games.get(gid).playerCnt--
     }
 }
