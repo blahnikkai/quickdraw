@@ -20,8 +20,8 @@ export default class SocketManager {
                 console.log('user disconnected')
             })
 
-            socket.on('create game', () => {
-                const gid = this.gameManager.createGame(socket)
+            socket.on('create game', async () => {
+                const gid = await this.gameManager.createGame(socket)
                 socket.emit('game created', gid)
             })
 
