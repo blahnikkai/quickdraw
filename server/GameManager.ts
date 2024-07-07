@@ -39,4 +39,14 @@ export default class GameManager {
         this.games.set(gid, newGame)
         return gid
     }
+
+    startGame(gid: string) {
+        this.games.get(gid).startGame()
+    }
+
+    validateGuess(gid: string, guess: string): boolean {
+        const valid = this.games.get(gid).validateGuess(guess)
+        console.log(guess, valid)
+        return valid
+    }
 }

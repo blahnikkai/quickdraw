@@ -38,7 +38,16 @@ export default class SocketManager {
             })
 
             socket.on('start game', (gid: string) => {
-                this.gameManager.games.get(gid).startGame()
+                this.gameManager.startGame(gid)
+            })
+
+            socket.on('submit guess', (gid: string, guess: string) => {
+                if(this.gameManager.validateGuess(gid, guess)) {
+                    socket.emit('valid guess')
+                }
+                else {
+                    socket.emit('invalid guess')
+                }
             })
 
             socket.onAny((eventName: string, ...args: any[]) => {
@@ -48,6 +57,7 @@ export default class SocketManager {
             socket.onAnyOutgoing((eventName: string, ...args: any[]) => {
                 console.log(eventName, args)
             })
+
         })
     }
 }

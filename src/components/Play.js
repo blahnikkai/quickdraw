@@ -4,16 +4,28 @@ import {useEffect, useRef, useState} from 'react'
 
 export default function Play() {
     const {gid} = useParams()
-    const [word, setWord] = useState('')
+    const [guess, setGuess] = useState('')
     const [phrase, setPhrase] = useState('')
+    const [status, setStatus] = useState('')
     const socketRef = useRef(null)
 
     useEffect(() => {
         socketRef.current = io(':3001')
+        
         socketRef.current.emit('join', gid)
+        
         socketRef.current.on('new phrase', (newPhrase) => {
             setPhrase(newPhrase)
         })
+
+        socketRef.current.on('valid guess', () => {
+            setStatus('valid')
+        })
+
+        socketRef.current.on('invalid guess', () => {
+            setStatus('invalid')
+        })
+
         return () => {
             socketRef.current.disconnect()
         }
@@ -22,10 +34,17 @@ export default function Play() {
     return (
         <main>
             <div>{phrase}</div>
-            <form onSubmit={(event) => event.preventDefault()}>
+            <div>{status}</div>
+            <form 
+                onSubmit={
+                    (event) => {
+                        event.preventDefault()
+                        socketRef.current.emit('submit guess', gid, guess)
+                    }
+                }>
                 <input
-                    onChange={(event) => setWord(event.target.value)}
-                    value={word}
+                    onChange={(event) => setGuess(event.target.value)}
+                    value={guess}
                 />
             </form>
             <button onClick={() => socketRef.current.emit('start game', gid)}>Start Game</button>

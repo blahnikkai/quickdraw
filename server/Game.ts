@@ -42,6 +42,6 @@ export default class Game {
     }
 
     validateGuess(guess: string): boolean {
-        return this.dictionary.has(guess) && this.phrase.includes(guess)
+        return this.dictionary.has(guess) && guess.includes(this.phrase)
     }
 }
