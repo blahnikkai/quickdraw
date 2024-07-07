@@ -6,6 +6,7 @@ export default class Game {
     socketServer: any
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
+    used: Set<string>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -13,6 +14,7 @@ export default class Game {
         this.dictionary = dictionary
         this.socketServer = socketServer
         this.twoLetCnts = twoLetCnts
+        this.used = new Set()
     }
 
     randomLetter(): string {
@@ -41,7 +43,14 @@ export default class Game {
         this.phrase = phrase
     }
 
-    validateGuess(guess: string): boolean {
-        return this.dictionary.has(guess) && guess.includes(this.phrase)
+    checkGuess(guess: string): string {
+        if(this.used.has(guess)) {
+            return 'used'
+        }
+        if(this.dictionary.has(guess) && guess.includes(this.phrase)) {
+            this.used.add(guess)
+            return 'valid'
+        }
+        return 'invalid'
     }
 }

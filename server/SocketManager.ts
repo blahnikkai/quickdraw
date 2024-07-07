@@ -42,12 +42,8 @@ export default class SocketManager {
             })
 
             socket.on('submit guess', (gid: string, guess: string) => {
-                if(this.gameManager.validateGuess(gid, guess)) {
-                    socket.emit('valid guess')
-                }
-                else {
-                    socket.emit('invalid guess')
-                }
+                const result = this.gameManager.checkGuess(gid, guess)
+                socket.emit(`${result} guess`)
             })
 
             socket.onAny((eventName: string, ...args: any[]) => {

@@ -26,6 +26,10 @@ export default function Play() {
             setStatus('invalid')
         })
 
+        socketRef.current.on('used guess', () => {
+            setStatus('used')
+        })
+
         return () => {
             socketRef.current.disconnect()
         }
