@@ -37,7 +37,7 @@ export default function Game() {
                 ></input>
             </form>
             <ul>
-                {pastMsgs.map((pastMsg) => <li>{pastMsg}</li>)}
+                {pastMsgs.map((pastMsg, i) => <li key={i}>{pastMsg}</li>)}
             </ul>
         </main>
     )
