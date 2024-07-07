@@ -9,7 +9,7 @@ export default class SocketManager {
                 methods: ['GET', 'POST'],
             },
         })
-        this.gameManager = GameManager
+        this.gameManager = new GameManager()
     }
 
     listen() {
@@ -21,8 +21,9 @@ export default class SocketManager {
             })
 
             socket.on('create game', () => {
-                // const gid = this.gameManager.createGame(socket)
-                // socket.join(gid)
+                const gid = this.gameManager.createGame(socket)
+                socket.join(gid)
+                socket.emit('game created', gid)
             })
 
             socket.on('join', (gid) => {
