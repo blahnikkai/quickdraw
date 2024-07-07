@@ -31,7 +31,21 @@ export default class Game {
     }
 
     startGame() {
+        this.startRound()
+    }
+
+    startRound() {
         this.generatePhrase()
+        setTimeout(() => {
+            this.endRound()
+        }, 5_000)
+    }
+
+    endRound() {
+        this.socketServer.to(this.gid).emit('end round')
+        setTimeout(() => {
+            this.startRound()
+        }, 1_000)
     }
 
     generatePhrase() {
