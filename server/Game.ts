@@ -4,11 +4,13 @@ export default class Game {
     gid: string
     phrase: string
     socketServer: any
+    dictionary: Set<string>
     twoLetCnts: Map<string, number>
 
-    constructor(gid: string, socketServer: any, twoLetCnts: Map<string, number>) {
+    constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
         this.phrase = ''
+        this.dictionary = dictionary
         this.socketServer = socketServer
         this.twoLetCnts = twoLetCnts
     }
@@ -18,7 +20,7 @@ export default class Game {
         return letters[ind]
     }
 
-    randomPhrase(length: number) {
+    randomPhrase(length: number): string {
         const letters = []
         for (let i = 0; i < length; i++) {
             letters.push(this.randomLetter())
@@ -37,5 +39,9 @@ export default class Game {
         } while(this.twoLetCnts.get(phrase) < 50)
         this.socketServer.to(this.gid).emit('new phrase', phrase)
         this.phrase = phrase
+    }
+
+    validateGuess(guess: string): boolean {
+        return this.dictionary.has(guess) && this.phrase.includes(guess)
     }
 }

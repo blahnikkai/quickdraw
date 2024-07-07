@@ -2,6 +2,9 @@ import { Server as SocketServer } from 'socket.io'
 import GameManager from './GameManager.js'
 
 export default class SocketManager {
+    socketServer: SocketServer
+    gameManager: GameManager
+
     constructor(httpServer) {
         this.socketServer = new SocketServer(httpServer, {
             cors: {
@@ -21,28 +24,28 @@ export default class SocketManager {
             })
 
             socket.on('create game', async () => {
-                const gid = await this.gameManager.createGame(socket)
+                const gid = await this.gameManager.createGame()
                 socket.emit('game created', gid)
             })
 
-            socket.on('join', (gid) => {
+            socket.on('join', (gid: string) => {
                 console.log(`joining game ${gid}`)
                 socket.join(gid)
             })
 
-            socket.on('send message', (msg, gid) => {
+            socket.on('send message', (msg: string, gid: string) => {
                 this.socketServer.to(gid).emit('receive message', msg)
             })
 
-            socket.on('start game', (gid) => {
+            socket.on('start game', (gid: string) => {
                 this.gameManager.games.get(gid).startGame()
             })
 
-            socket.onAny((eventName, ...args) => {
+            socket.onAny((eventName: string, ...args: any[]) => {
                 console.log(eventName, args)
             })
 
-            socket.onAnyOutgoing((eventName, ...args) => {
+            socket.onAnyOutgoing((eventName: string, ...args: any[]) => {
                 console.log(eventName, args)
             })
         })

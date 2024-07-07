@@ -1,7 +1,7 @@
 import express from 'express'
-import {createServer} from 'node:http'
-import {fileURLToPath} from 'node:url'
-import {dirname, join} from 'node:path'
+import { createServer } from 'node:http'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 import SocketManager from './SocketManager.js'
 
 const app = express()
