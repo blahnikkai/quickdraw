@@ -50,7 +50,7 @@ export default class Game {
         this.players.forEach((player, socket) => {
             player.lastGuess = ''
         })
-        this.emitPlayers()
+        this.emitPlayerInfo()
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, 20_000)
@@ -75,7 +75,7 @@ export default class Game {
 
     checkGuess(guess: string, socket: Socket): string {
         this.players.get(socket).lastGuess = guess
-        this.emitPlayers()
+        this.emitPlayerInfo()
         if (this.used.has(guess)) {
             return 'used'
         }
@@ -104,21 +104,22 @@ export default class Game {
         socket.join(this.gid)
         socket.emit('room joined')
         this.players.set(socket, new Player(socket, name))
-        this.emitPlayers()
+        this.emitPlayerInfo()
     }
 
     leaveGame(socket: Socket) {
         socket.leave(this.gid)
         this.players.delete(socket)
+        this.emitPlayerInfo()
     }
 
-    emitPlayers() {
+    emitPlayerInfo() {
         const playerInfo = Array.from(this.players, ([socket, player]) => [player.name, player.lastGuess]);
         this.socketServer.to(this.gid).emit('update player info', playerInfo)
     }
 
     changeName(newName: string, socket: Socket) {
         this.players.get(socket).name = newName
-        this.emitPlayers()
+        this.emitPlayerInfo()
     }
 }
