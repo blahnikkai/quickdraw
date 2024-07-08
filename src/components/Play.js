@@ -47,18 +47,8 @@ export default function Play() {
             setPlayingRound(true)
         })
 
-        socketRef.current.on('valid guess', () => {
-            setStatus('valid')
-            setGuess('')
-            setPlayingRound(false)
-        })
-
-        socketRef.current.on('invalid guess', () => {
-            setStatus('invalid')
-        })
-
-        socketRef.current.on('used guess', () => {
-            setStatus('used')
+        socketRef.current.on('guess checked', (result) => {
+            setStatus(result)
         })
 
         socketRef.current.on('end round', () => {
