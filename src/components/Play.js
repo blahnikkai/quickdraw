@@ -5,15 +5,18 @@ import {useEffect, useRef, useState} from 'react'
 export default function Play() {
     const {gid} = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
+    const [name, setName] = useState('stupid')
     const [lives, setLives] = useState(10)
     const [guess, setGuess] = useState('')
     const [phrase, setPhrase] = useState('')
     const [status, setStatus] = useState('')
-    const [playing, setPlaying] = useState(false)
+    const [playingRound, setPlayingRound] = useState(false)
+    const [playingGame, setPlayingGame] = useState(false)
+    const [otherPlayers, setOtherPlayers] = useState([])
     const socketRef = useRef(null)
 
     const handleEndRound = () => {
-        setPlaying(false)
+        setPlayingRound(false)
         setStatus((prevStatus) => {
             setLives((prevLives) => {
                 if (prevStatus !== 'valid') {
@@ -28,7 +31,7 @@ export default function Play() {
     useEffect(() => {
         socketRef.current = io(':3001')
 
-        socketRef.current.emit('join', gid)
+        socketRef.current.emit('join', gid, name)
 
         socketRef.current.on('room joined', () => {
             setRoomExists(true)
@@ -41,13 +44,13 @@ export default function Play() {
             setStatus('')
             setGuess('')
             setPhrase(newPhrase)
-            setPlaying(true)
+            setPlayingRound(true)
         })
 
         socketRef.current.on('valid guess', () => {
             setStatus('valid')
             setGuess('')
-            setPlaying(false)
+            setPlayingRound(false)
         })
 
         socketRef.current.on('invalid guess', () => {
@@ -62,6 +65,10 @@ export default function Play() {
             handleEndRound()
         })
 
+        socketRef.current.on('update players', (newPlayers) => {
+            setOtherPlayers(newPlayers)
+        })
+
         return () => {
             socketRef.current.disconnect()
         }
@@ -74,25 +81,54 @@ export default function Play() {
                 Loading
             </div>}
 
-            {roomExists === true && <div>
-                <div>Lives: {lives}</div>
-                <div>{phrase}</div>
-                <div>{status}</div>
-                <form
-                    onSubmit={
-                        (event) => {
-                            event.preventDefault()
-                            socketRef.current.emit('submit guess', gid, guess)
-                        }
-                    }>
+            {roomExists === true &&
+                <div>
+                    <ul>
+                        {otherPlayers.map((player) => {
+                            return <li>
+                                {player}
+                            </li>
+                        })}
+                    </ul>
                     <input
-                        value={guess}
-                        onChange={(event) => setGuess(event.target.value)}
-                        disabled={!playing}
+                        onChange={
+                            (event) => {
+                                const newName = event.target.value
+                                setName(newName)
+                                socketRef.current.emit('change name', gid, newName)
+                            }
+                        }
+                        value={name}
                     />
-                </form>
-                <button onClick={() => socketRef.current.emit('start game', gid)}>Start Game</button>
-            </div>}
+                    <div>Lives: {lives}</div>
+                    <div>{phrase}</div>
+                    <div>{status}</div>
+                    <form
+                        onSubmit={
+                            (event) => {
+                                event.preventDefault()
+                                socketRef.current.emit('submit guess', gid, guess)
+                            }
+                        }>
+                        <input
+                            value={guess}
+                            onChange={(event) => setGuess(event.target.value)}
+                            disabled={!playingRound}
+                        />
+                    </form>
+                    <button
+                        hidden={playingGame}
+                        onClick={
+                            () => {
+                                socketRef.current.emit('start game', gid)
+                                setPlayingGame(true)
+                            }
+                        }
+                    >
+                        Start Game
+                    </button>
+                </div>
+            }
 
             {roomExists === false && <div>
                 Room {gid} does not exist.

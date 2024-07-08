@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io'
+import User from './User.js'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -12,6 +13,7 @@ export default class Game {
     validCnt: number
     timeoutId: ReturnType<typeof setTimeout>
     sockets: Set<Socket>
+    users: Map<Socket, User>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -22,6 +24,7 @@ export default class Game {
         this.used = new Set()
         this.validCnt = 0
         this.sockets = new Set()
+        this.users = new Map()
     }
 
     randomLetter(): string {
@@ -91,15 +94,28 @@ export default class Game {
         return this.sockets.size
     }
 
-    joinGame(socket: Socket) {
+    joinGame(socket: Socket, name: string) {
         console.log(`joining game ${this.gid}`)
         socket.join(this.gid)
         socket.emit('room joined')
         this.sockets.add(socket)
+        this.users.set(socket, new User(name, socket))
+        this.emitPlayers()
     }
 
     leaveGame(socket: Socket) {
         socket.leave(this.gid)
         this.sockets.delete(socket)
+        this.users.delete(socket)
+    }
+
+    emitPlayers() {
+        const playerInfo = Array.from(this.users, ([socket, user]) => user.name);
+        this.socketServer.to(this.gid).emit('update players', playerInfo)
+    }
+
+    changeName(newName: string, socket: Socket) {
+        this.users.get(socket).name = newName
+        this.emitPlayers()
     }
 }

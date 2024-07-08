@@ -8,7 +8,7 @@ export default class GameManager {
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
 
-    constructor(socketServer) {
+    constructor(socketServer: SocketServer) {
         this.socketServer = socketServer
         this.games = new Map()
     }
@@ -56,12 +56,12 @@ export default class GameManager {
         return this.games.has(gid)
     }
 
-    joinGame(gid: string, socket: Socket) {
+    joinGame(gid: string, socket: Socket, name: string) {
         if(!this.gameExists(gid)) {
             socket.emit('room dne')
             return
         }
-        this.games.get(gid).joinGame(socket)
+        this.games.get(gid).joinGame(socket, name)
     }
 
     leaveGame(gid: string, socket: Socket) {
@@ -87,5 +87,9 @@ export default class GameManager {
         this.games.forEach((game, gid) => {
             this.leaveGame(gid, socket)
         })
+    }
+
+    changeName(gid: string, newName: string, socket: Socket) {
+        this.games.get(gid).changeName(newName, socket)
     }
 }

@@ -29,8 +29,8 @@ export default class SocketManager {
                 socket.emit('game created', gid)
             })
 
-            socket.on('join', (gid: string) => {
-                this.gameManager.joinGame(gid, socket)
+            socket.on('join', (gid: string, name: string) => {
+                this.gameManager.joinGame(gid, socket, name)
             })
 
             socket.on('leave', (gid: string) => {
@@ -51,6 +51,10 @@ export default class SocketManager {
                 if(result === 'valid') {
                     this.gameManager.checkRoundOver(gid)
                 }
+            })
+
+            socket.on('change name', (gid: string, newName: string) => {
+                this.gameManager.changeName(gid, newName, socket)
             })
 
             socket.onAny((eventName: string, ...args: any[]) => {
