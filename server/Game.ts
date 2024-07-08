@@ -62,16 +62,16 @@ export default class Game {
         let phrase = ''
         do {
             phrase = this.randomPhrase(2)
-        } while(this.twoLetCnts.get(phrase) < 50)
+        } while (this.twoLetCnts.get(phrase) < 50)
         this.socketServer.to(this.gid).emit('new phrase', phrase)
         this.phrase = phrase
     }
 
     checkGuess(guess: string): string {
-        if(this.used.has(guess)) {
+        if (this.used.has(guess)) {
             return 'used'
         }
-        if(this.dictionary.has(guess) && guess.includes(this.phrase)) {
+        if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
             this.validCnt++
             this.used.add(guess)
             return 'valid'
@@ -81,7 +81,7 @@ export default class Game {
 
     checkGameOver() {
         // only 1 player left
-        if(this.playerCnt - this.validCnt === 1) {
+        if ((this.playerCnt > 1 && this.playerCnt - this.validCnt === 1) || (this.playerCnt === 1 && this.validCnt === 1)) {
             console.log('ending round early')
             this.endRound()
         }
