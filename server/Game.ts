@@ -40,6 +40,7 @@ export default class Game {
 
     startGame() {
         this.startRound()
+        this.socketServer.to(this.gid).emit('game started')
     }
 
     startRound() {
@@ -68,7 +69,7 @@ export default class Game {
         do {
             phrase = this.randomPhrase(2)
         } while (this.twoLetCnts.get(phrase) < 50)
-        this.socketServer.to(this.gid).emit('new phrase', phrase)
+        this.socketServer.to(this.gid).emit('start round', phrase)
         this.phrase = phrase
     }
 

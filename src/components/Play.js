@@ -40,7 +40,11 @@ export default function Play() {
             setRoomExists(false)
         })
 
-        socketRef.current.on('new phrase', (newPhrase) => {
+        socketRef.current.on('game started', () => {
+            setPlayingGame(true)
+        })
+
+        socketRef.current.on('start round', (newPhrase) => {
             setStatus('')
             setGuess('')
             setPhrase(newPhrase)
