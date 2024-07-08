@@ -84,43 +84,48 @@ export default function Play() {
                             </li>
                         })}
                     </ul>
-                    <input
-                        onChange={
-                            (event) => {
-                                const newName = event.target.value
-                                setName(newName)
-                                socketRef.current.emit('change name', gid, newName)
-                            }
-                        }
-                        value={name}
-                    />
-                    <div>Lives: {lives}</div>
-                    <div>{phrase}</div>
-                    <div>{status}</div>
-                    <form
-                        onSubmit={
-                            (event) => {
-                                event.preventDefault()
-                                socketRef.current.emit('submit guess', gid, guess)
-                            }
-                        }>
+
+                    <div hidden={playingGame}>
                         <input
-                            value={guess}
-                            onChange={(event) => setGuess(event.target.value)}
-                            disabled={!playingRound}
-                        />
-                    </form>
-                    <button
-                        hidden={playingGame}
-                        onClick={
-                            () => {
-                                socketRef.current.emit('start game', gid)
-                                setPlayingGame(true)
+                            onChange={
+                                (event) => {
+                                    const newName = event.target.value
+                                    setName(newName)
+                                    socketRef.current.emit('change name', gid, newName)
+                                }
                             }
-                        }
-                    >
-                        Start Game
-                    </button>
+                            value={name}
+                        />
+                        <button
+                            onClick={
+                                () => {
+                                    socketRef.current.emit('start game', gid)
+                                    setPlayingGame(true)
+                                }
+                            }
+                        >
+                            Start Game
+                        </button>
+                    </div>
+
+                    <div hidden={!playingGame}>
+                        <div>Lives: {lives}</div>
+                        <div>{phrase}</div>
+                        <div>{status}</div>
+                        <form
+                            onSubmit={
+                                (event) => {
+                                    event.preventDefault()
+                                    socketRef.current.emit('submit guess', gid, guess)
+                                }
+                            }>
+                            <input
+                                value={guess}
+                                onChange={(event) => setGuess(event.target.value)}
+                                disabled={!playingRound}
+                            />
+                        </form>
+                    </div>
                 </div>
             }
 

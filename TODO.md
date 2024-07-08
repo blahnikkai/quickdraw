@@ -13,5 +13,3 @@
 - Convert frontend to typescript
 - Use some type of object or interface for player info
 - Only allow unique nicknames?
-- Only allow nickname change before game starts?
-- Don't show game UI before game starts
