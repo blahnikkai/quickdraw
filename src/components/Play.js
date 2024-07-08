@@ -12,7 +12,7 @@ export default function Play() {
     const [status, setStatus] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
     const [playingGame, setPlayingGame] = useState(false)
-    const [otherPlayers, setOtherPlayers] = useState([])
+    const [playerInfo, setPlayerInfo] = useState([])
     const socketRef = useRef(null)
 
     const handleEndRound = () => {
@@ -65,8 +65,8 @@ export default function Play() {
             handleEndRound()
         })
 
-        socketRef.current.on('update players', (newPlayers) => {
-            setOtherPlayers(newPlayers)
+        socketRef.current.on('update player info', (newPlayerInfo) => {
+            setPlayerInfo(newPlayerInfo)
         })
 
         return () => {
@@ -84,7 +84,7 @@ export default function Play() {
             {roomExists === true &&
                 <div>
                     <ul>
-                        {otherPlayers.map((player) => {
+                        {playerInfo.map((player) => {
                             return <li>
                                 {player[0]}, {player[1]}
                             </li>

@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
 
-export default class User {
+export default class Player {
     socket: Socket
     name: string
     lastGuess: string

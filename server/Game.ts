@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io'
-import User from './User.js'
+import Player from './Player.js'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -12,8 +12,7 @@ export default class Game {
     used: Set<string>
     validCnt: number
     timeoutId: ReturnType<typeof setTimeout>
-    sockets: Set<Socket>
-    users: Map<Socket, User>
+    players: Map<Socket, Player>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -23,8 +22,7 @@ export default class Game {
         this.twoLetCnts = twoLetCnts
         this.used = new Set()
         this.validCnt = 0
-        this.sockets = new Set()
-        this.users = new Map()
+        this.players = new Map()
     }
 
     randomLetter(): string {
@@ -48,8 +46,8 @@ export default class Game {
         this.validCnt = 0
         this.used.clear()
         this.generatePhrase()
-        this.users.forEach((user, socket) => {
-            user.lastGuess = ''
+        this.players.forEach((player, socket) => {
+            player.lastGuess = ''
         })
         this.emitPlayers()
         this.timeoutId = setTimeout(() => {
@@ -75,7 +73,7 @@ export default class Game {
     }
 
     checkGuess(guess: string, socket: Socket): string {
-        this.users.get(socket).lastGuess = guess
+        this.players.get(socket).lastGuess = guess
         this.emitPlayers()
         if (this.used.has(guess)) {
             return 'used'
@@ -97,31 +95,29 @@ export default class Game {
     }
 
     get playerCnt() {
-        return this.sockets.size
+        return this.players.size
     }
 
     joinGame(socket: Socket, name: string) {
         console.log(`joining game ${this.gid}`)
         socket.join(this.gid)
         socket.emit('room joined')
-        this.sockets.add(socket)
-        this.users.set(socket, new User(socket, name))
+        this.players.set(socket, new Player(socket, name))
         this.emitPlayers()
     }
 
     leaveGame(socket: Socket) {
         socket.leave(this.gid)
-        this.sockets.delete(socket)
-        this.users.delete(socket)
+        this.players.delete(socket)
     }
 
     emitPlayers() {
-        const playerInfo = Array.from(this.users, ([socket, user]) => [user.name, user.lastGuess]);
-        this.socketServer.to(this.gid).emit('update players', playerInfo)
+        const playerInfo = Array.from(this.players, ([socket, player]) => [player.name, player.lastGuess]);
+        this.socketServer.to(this.gid).emit('update player info', playerInfo)
     }
 
     changeName(newName: string, socket: Socket) {
-        this.users.get(socket).name = newName
+        this.players.get(socket).name = newName
         this.emitPlayers()
     }
 }
