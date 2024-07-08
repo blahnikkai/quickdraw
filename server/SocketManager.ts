@@ -21,6 +21,7 @@ export default class SocketManager {
 
             socket.on('disconnect', () => {
                 console.log(`user disconnected`)
+                this.gameManager.disconnect(socket)
             })
 
             socket.on('create game', async () => {
@@ -33,10 +34,6 @@ export default class SocketManager {
             })
 
             socket.on('leave', (gid: string) => {
-                if(!this.gameManager.gameExists(gid)) {
-                    return
-                }
-                console.log(`leaving game ${gid}`)
                 this.gameManager.leaveGame(gid, socket)
             })
 

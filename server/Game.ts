@@ -1,3 +1,5 @@
+import { Socket } from 'socket.io'
+
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
 export default class Game {
@@ -7,9 +9,9 @@ export default class Game {
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
     used: Set<string>
-    playerCnt: number
     validCnt: number
     timeoutId: ReturnType<typeof setTimeout>
+    sockets: Set<Socket>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -18,8 +20,8 @@ export default class Game {
         this.socketServer = socketServer
         this.twoLetCnts = twoLetCnts
         this.used = new Set()
-        this.playerCnt = 0
         this.validCnt = 0
+        this.sockets = new Set()
     }
 
     randomLetter(): string {
@@ -79,16 +81,25 @@ export default class Game {
 
     checkGameOver() {
         // only 1 player left
-        console.log('checking game over')
-        console.log(this.playerCnt)
-        console.log(this.validCnt)
         if(this.playerCnt - this.validCnt === 1) {
             console.log('ending round early')
             this.endRound()
         }
     }
 
-    joinGame() {
-        this.playerCnt++
+    get playerCnt() {
+        return this.sockets.size
+    }
+
+    joinGame(socket: Socket) {
+        console.log(`joining game ${this.gid}`)
+        socket.join(this.gid)
+        socket.emit('room joined')
+        this.sockets.add(socket)
+    }
+
+    leaveGame(socket: Socket) {
+        socket.leave(this.gid)
+        this.sockets.delete(socket)
     }
 }

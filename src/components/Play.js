@@ -25,10 +25,6 @@ export default function Play() {
         })
     }
 
-    const handleBeforeUnload = () => {
-        socketRef.current.emit('leave', gid)
-    }
-
     useEffect(() => {
         socketRef.current = io(':3001')
 
@@ -66,11 +62,8 @@ export default function Play() {
             handleEndRound()
         })
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
         return () => {
-            handleBeforeUnload()
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            socketRef.current.disconnect()
         }
     }, [])
 
