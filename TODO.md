@@ -10,3 +10,5 @@
 - Wrong guess leads to shorter timer?
 - Display timer with text or visual (bar or circle)
 - Get a new, bigger dictionary
+- Convert frontend to typescript
+- Use some type of object or interface for player info
