@@ -86,7 +86,7 @@ export default function Play() {
                     <ul>
                         {otherPlayers.map((player) => {
                             return <li>
-                                {player}
+                                {player[0]}, {player[1]}
                             </li>
                         })}
                     </ul>

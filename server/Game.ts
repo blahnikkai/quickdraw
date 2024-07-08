@@ -48,6 +48,10 @@ export default class Game {
         this.validCnt = 0
         this.used.clear()
         this.generatePhrase()
+        this.users.forEach((user, socket) => {
+            user.lastGuess = ''
+        })
+        this.emitPlayers()
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, 20_000)
@@ -70,7 +74,9 @@ export default class Game {
         this.phrase = phrase
     }
 
-    checkGuess(guess: string): string {
+    checkGuess(guess: string, socket: Socket): string {
+        this.users.get(socket).lastGuess = guess
+        this.emitPlayers()
         if (this.used.has(guess)) {
             return 'used'
         }
@@ -99,7 +105,7 @@ export default class Game {
         socket.join(this.gid)
         socket.emit('room joined')
         this.sockets.add(socket)
-        this.users.set(socket, new User(name, socket))
+        this.users.set(socket, new User(socket, name))
         this.emitPlayers()
     }
 
@@ -110,7 +116,7 @@ export default class Game {
     }
 
     emitPlayers() {
-        const playerInfo = Array.from(this.users, ([socket, user]) => user.name);
+        const playerInfo = Array.from(this.users, ([socket, user]) => [user.name, user.lastGuess]);
         this.socketServer.to(this.gid).emit('update players', playerInfo)
     }
 

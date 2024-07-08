@@ -43,8 +43,8 @@ export default class GameManager {
         this.games.get(gid).startGame()
     }
 
-    checkGuess(gid: string, guess: string): string {
-        const result = this.games.get(gid).checkGuess(guess)
+    checkGuess(gid: string, guess: string, socket: Socket): string {
+        const result = this.games.get(gid).checkGuess(guess, socket)
         return result
     }
 

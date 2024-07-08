@@ -1,11 +1,13 @@
 import { Socket } from 'socket.io'
 
 export default class User {
-    name: string
     socket: Socket
+    name: string
+    lastGuess: string
 
-    constructor(name: string, socket: Socket) {
+    constructor(socket: Socket, name: string) {
         this.name = name
         this.socket = socket
+        this.lastGuess = ''
     }
 }

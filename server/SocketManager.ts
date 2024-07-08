@@ -46,7 +46,7 @@ export default class SocketManager {
             })
 
             socket.on('submit guess', (gid: string, guess: string) => {
-                const result = this.gameManager.checkGuess(gid, guess)
+                const result = this.gameManager.checkGuess(gid, guess, socket)
                 socket.emit(`${result} guess`)
                 if(result === 'valid') {
                     this.gameManager.checkRoundOver(gid)
