@@ -75,7 +75,7 @@ export default function Play() {
                 <div className=''>
                     <div className='players'>
                         {playerInfo.map((player) => {
-                            return <div className={`player-info${player.dying ? ' dying' : ''}${player.dead ? ' dead' : ''}`}>
+                            return <div className={`player ${player.dying ? ' dying' : ''}${player.dead ? ' dead' : ''}`}>
                                 <div>{player.name}</div>
                                 {playingGame && <div>{player.lives}</div>}
                                 <div className={player.status}>{player.lastGuess}</div>
