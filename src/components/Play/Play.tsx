@@ -1,13 +1,14 @@
 import { io, Socket } from 'socket.io-client'
-import {useParams} from 'react-router-dom'
-import {useEffect, useRef, useState} from 'react'
+import { useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
 import './Play.css'
 import PlayerInfo from '../PlayerInfo/PlayerInfo'
 import Pregame from '../Pregame/Pregame'
+import Ingame from '../Ingame/Ingame'
 import Player from '../../../server/Player'
 
 export default function Play() {
-    const {gid} = useParams()
+    const { gid } = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
@@ -54,7 +55,7 @@ export default function Play() {
             setPlayerInfo(newPlayerInfo)
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
-            if(newSelf.dead) {
+            if (newSelf.dead) {
                 setPlayingRound(false)
             }
         })
@@ -67,9 +68,17 @@ export default function Play() {
     return (
         <main>
 
-            {roomExists === undefined && <div>
-                Loading
-            </div>}
+            {roomExists === undefined && 
+                <div>
+                    Loading
+                </div>
+            }
+
+            {roomExists === false && 
+                <div>
+                    Room {gid} does not exist.
+                </div>
+            }
 
             {roomExists === true &&
                 <div>
@@ -78,7 +87,7 @@ export default function Play() {
                         playingGame={playingGame}
                     />
 
-                    {!playingGame && 
+                    {!playingGame &&
                         <Pregame
                             socket={socketRef.current}
                             name={selfPlayerInfo?.name}
@@ -87,30 +96,19 @@ export default function Play() {
                     }
 
                     {playingGame &&
-                        <div className='game-ui'>
-                            <div>{phrase}</div>
-                            <div>Lives: {selfPlayerInfo?.lives}</div>
-                            <div>{selfPlayerInfo?.status}</div>
-                            <form
-                                onSubmit={
-                                    (event) => {
-                                        event.preventDefault()
-                                        socketRef.current.emit('submit guess', gid, guess)
-                                    }
-                                }>
-                                <input
-                                    value={guess}
-                                    onChange={(event) => setGuess(event.target.value)}
-                                    disabled={!playingRound}
-                                />
-                            </form>
-                        </div>}
+                        <Ingame
+                            guess={guess}
+                            setGuess={setGuess}
+                            gid={gid}
+                            socket={socketRef.current}
+                            phrase={phrase}
+                            lives={selfPlayerInfo?.lives}
+                            status={selfPlayerInfo?.status}
+                            playingRound={playingRound}
+                        />
+                    }
                 </div>
             }
-
-            {roomExists === false && <div>
-                Room {gid} does not exist.
-            </div>}
         </main>
     )
 }
