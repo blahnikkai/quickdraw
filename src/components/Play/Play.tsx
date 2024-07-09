@@ -1,8 +1,10 @@
-import io from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import {useParams} from 'react-router-dom'
 import {useEffect, useRef, useState} from 'react'
 import './Play.css'
 import PlayerInfo from '../PlayerInfo/PlayerInfo'
+import Pregame from '../Pregame/Pregame'
+import Player from '../../../server/Player'
 
 export default function Play() {
     const {gid} = useParams()
@@ -11,15 +13,12 @@ export default function Play() {
     const [playingRound, setPlayingRound] = useState(false)
     const [playingGame, setPlayingGame] = useState(false)
 
-    // const [name, setName] = useState('Player')
-    // const [lives, setLives] = useState(undefined)
     const [guess, setGuess] = useState('')
-    // const [status, setStatus] = useState('')
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
 
-    const socketRef = useRef(null)
+    const socketRef = useRef<Socket>(undefined)
 
     const handleEndRound = () => {
         setPlayingRound(false)
@@ -51,9 +50,9 @@ export default function Play() {
             handleEndRound()
         })
 
-        socketRef.current.on('update player info', (newPlayerInfo) => {
+        socketRef.current.on('update player info', (newPlayerInfo: Player[]) => {
             setPlayerInfo(newPlayerInfo)
-            const newSelf = newPlayerInfo.find((player) => player.socketId === socketRef.current.id)
+            const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
             if(newSelf.dead) {
                 setPlayingRound(false)
@@ -79,27 +78,13 @@ export default function Play() {
                         playingGame={playingGame}
                     />
 
-                    {!playingGame &&
-                        <div className='game-ui'>
-                            <input
-                                onChange={
-                                    (event) => {
-                                        const newName = event.target.value
-                                        socketRef.current.emit('change name', gid, newName)
-                                    }
-                                }
-                                value={selfPlayerInfo?.name}
-                            />
-                            <button
-                                onClick={
-                                    () => {
-                                        socketRef.current.emit('start game', gid)
-                                    }
-                                }
-                            >
-                                Start Game
-                            </button>
-                        </div>}
+                    {!playingGame && 
+                        <Pregame
+                            socket={socketRef.current}
+                            name={selfPlayerInfo?.name}
+                            gid={gid}
+                        />
+                    }
 
                     {playingGame &&
                         <div className='game-ui'>
