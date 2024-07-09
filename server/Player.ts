@@ -1,5 +1,3 @@
-import { Socket } from 'socket.io'
-
 export default class Player {
     socketId: string
     name: string

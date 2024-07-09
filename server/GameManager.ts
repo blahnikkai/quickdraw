@@ -43,13 +43,8 @@ export default class GameManager {
         this.games.get(gid).startGame()
     }
 
-    checkGuess(gid: string, guess: string, socket: Socket): string {
-        const result = this.games.get(gid).checkGuess(guess, socket)
-        return result
-    }
-
-    checkRoundOver(gid: string) {
-        this.games.get(gid).checkGameOver()
+    checkGuess(gid: string, guess: string, socket: Socket) {
+        this.games.get(gid).checkGuess(guess, socket)
     }
 
     gameExists(gid: string): boolean {

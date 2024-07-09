@@ -12,7 +12,7 @@ export default class Game {
     used: Set<string>
     validCnt: number
     timeoutId: ReturnType<typeof setTimeout>
-    players: Map<Socket, Player>
+    players: Map<string, Player>
 
     constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
         this.gid = gid
@@ -47,7 +47,7 @@ export default class Game {
         this.validCnt = 0
         this.used.clear()
         this.generatePhrase()
-        this.players.forEach((player, socket) => {
+        this.players.forEach((player, socketId) => {
             player.lastGuess = ''
         })
         this.emitPlayerInfo()
@@ -73,21 +73,28 @@ export default class Game {
         this.phrase = phrase
     }
 
-    checkGuess(guess: string, socket: Socket): string {
-        this.players.get(socket).lastGuess = guess
-        this.emitPlayerInfo()
+    checkGuess(guess: string, socket: Socket) {
+        let status = ''
         if (this.used.has(guess)) {
-            return 'used'
+            status = 'used'
         }
-        if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
+        else if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
             this.validCnt++
             this.used.add(guess)
-            return 'valid'
+            status = 'valid'
         }
-        return 'invalid'
+        else {
+            status = 'invalid'
+        }
+        this.players.get(socket.id).lastGuess = guess
+        this.players.get(socket.id).status = status
+        this.emitPlayerInfo()
+        if(status === 'valid') {
+            this.checkRoundOver()
+        }
     }
 
-    checkGameOver() {
+    checkRoundOver() {
         // only 1 player left
         if ((this.playerCnt > 1 && this.playerCnt - this.validCnt === 1) || (this.playerCnt === 1 && this.validCnt === 1)) {
             console.log('ending round early')
@@ -103,13 +110,13 @@ export default class Game {
         console.log(`joining game ${this.gid}`)
         socket.join(this.gid)
         socket.emit('room joined')
-        this.players.set(socket, new Player(socket.id))
+        this.players.set(socket.id, new Player(socket.id))
         this.emitPlayerInfo()
     }
 
     leaveGame(socket: Socket) {
         socket.leave(this.gid)
-        this.players.delete(socket)
+        this.players.delete(socket.id)
         this.emitPlayerInfo()
     }
 
@@ -119,7 +126,7 @@ export default class Game {
     }
 
     changeName(newName: string, socket: Socket) {
-        this.players.get(socket).name = newName
+        this.players.get(socket.id).name = newName
         this.emitPlayerInfo()
     }
 }

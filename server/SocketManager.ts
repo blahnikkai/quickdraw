@@ -47,11 +47,7 @@ export default class SocketManager {
             })
 
             socket.on('submit guess', (gid: string, guess: string) => {
-                const result = this.gameManager.checkGuess(gid, guess, socket)
-                socket.emit(`guess checked`, result)
-                if(result === 'valid') {
-                    this.gameManager.checkRoundOver(gid)
-                }
+                this.gameManager.checkGuess(gid, guess, socket)
             })
 
             socket.on('change name', (gid: string, newName: string) => {
