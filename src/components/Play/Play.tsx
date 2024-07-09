@@ -2,6 +2,7 @@ import io from 'socket.io-client'
 import {useParams} from 'react-router-dom'
 import {useEffect, useRef, useState} from 'react'
 import './Play.css'
+import PlayerInfo from '../PlayerInfo/PlayerInfo'
 
 export default function Play() {
     const {gid} = useParams()
@@ -72,16 +73,11 @@ export default function Play() {
             </div>}
 
             {roomExists === true &&
-                <div className=''>
-                    <div className='players'>
-                        {playerInfo.map((player) => {
-                            return <div className={`player ${player.dying ? ' dying' : ''}${player.dead ? ' dead' : ''}`}>
-                                <div>{player.name}</div>
-                                {playingGame && <div>{player.lives}</div>}
-                                <div className={player.status}>{player.lastGuess}</div>
-                            </div>
-                        })}
-                    </div>
+                <div>
+                    <PlayerInfo
+                        playerInfo={playerInfo}
+                        playingGame={playingGame}
+                    />
 
                     {!playingGame &&
                         <div className='game-ui'>
