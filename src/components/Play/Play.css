@@ -25,6 +25,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+
+    padding: .5rem;
+
+    transition: .2s;
 }
 
 .valid {
@@ -37,4 +41,8 @@
 
 .used {
     color: yellow;
+}
+
+.dying {
+    background-color: red;
 }

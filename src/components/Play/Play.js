@@ -71,7 +71,7 @@ export default function Play() {
                 <div className=''>
                     <div className='players'>
                         {playerInfo.map((player) => {
-                            return <div className='player'>
+                            return <div className={'player ' + (player.dying ? 'dying' : '')}>
                                 <div>{player.name}</div>
                                 <div>{player.lives}</div>
                                 <div className={player.status}>{player.lastGuess}</div>

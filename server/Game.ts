@@ -48,7 +48,12 @@ export default class Game {
         this.used.clear()
         this.generatePhrase()
         this.players.forEach((player, socketId) => {
+            if(player.status !== 'valid') {
+                player.lives--
+            }
             player.lastGuess = ''
+            player.status = ''
+            player.dying = false
         })
         this.emitPlayerInfo()
         this.timeoutId = setTimeout(() => {
@@ -59,6 +64,12 @@ export default class Game {
     endRound() {
         this.socketServer.to(this.gid).emit('end round')
         clearTimeout(this.timeoutId)
+        this.players.forEach((player, socketId) => {
+            if(player.status !== 'valid') {
+                player.dying = true
+            }
+        })
+        this.emitPlayerInfo()
         setTimeout(() => {
             this.startRound()
         }, 1_000)
