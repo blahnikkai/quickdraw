@@ -38,8 +38,8 @@ export default class SocketManager {
                 this.gameManager.leaveGame(gid, socket)
             })
 
-            socket.on('send message', (msg: string, gid: string) => {
-                this.socketServer.to(gid).emit('receive message', msg)
+            socket.on('play again', (gid: string) => {
+                this.gameManager.newGame(gid)
             })
 
             socket.on('start game', (gid: string) => {

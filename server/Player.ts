@@ -16,4 +16,9 @@ export default class Player {
         this.dying = false
         this.dead = false
     }
+
+    reset() {
+        this.lives = 2
+        this.dead = false
+    }
 }

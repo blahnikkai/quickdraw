@@ -47,6 +47,10 @@ export default class GameManager {
         this.games.get(gid).checkGuess(guess, socket)
     }
 
+    newGame(gid: string) {
+        this.games.get(gid).newGame()
+    }
+
     gameExists(gid: string): boolean {
         return this.games.has(gid)
     }

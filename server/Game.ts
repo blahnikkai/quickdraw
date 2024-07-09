@@ -38,17 +38,30 @@ export default class Game {
         return letters.join('')
     }
 
+    newGame() {
+        this.players.forEach((player: Player) => {
+            player.reset()
+        })
+        this.emitPlayerInfo()
+        this.socketServer.in(this.gid).emit('new game')
+    }
+
     startGame() {
         this.startRound(true)
         this.socketServer.to(this.gid).emit('game started')
     }
 
+    endGame() {
+        const winner = Array.from(this.players.values()).find((player) => !player.dead)
+        this.socketServer.to(this.gid).emit('game ended', winner)
+    }
+
     startRound(firstRound: boolean = false) {
         this.validCnt = 0
         this.used.clear()
-        this.generatePhrase()
+        let aliveCnt = 0
         if (!firstRound) {
-            this.players.forEach((player, socketId) => {
+            this.players.forEach((player) => {
                 if(player.dead) {
                     return
                 }
@@ -61,9 +74,17 @@ export default class Game {
                 player.lastGuess = ''
                 player.status = ''
                 player.dying = false
+                if(!player.dead) {
+                    aliveCnt++
+                }
             })
             this.emitPlayerInfo()
         }
+        if(aliveCnt === 1) {
+            this.endGame()
+            return
+        }
+        this.generatePhrase()
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, 20_000)
@@ -72,7 +93,7 @@ export default class Game {
     endRound() {
         this.socketServer.to(this.gid).emit('end round')
         clearTimeout(this.timeoutId)
-        this.players.forEach((player, socketId) => {
+        this.players.forEach((player) => {
             if (!player.dead && player.status !== 'valid') {
                 player.dying = true
             }
@@ -115,14 +136,18 @@ export default class Game {
 
     checkRoundOver() {
         // only 1 player left
-        if ((this.playerCnt > 1 && this.playerCnt - this.validCnt === 1) || (this.playerCnt === 1 && this.validCnt === 1)) {
+        if ((this.playerCnt > 1 && this.aliveCnt - this.validCnt === 1) || (this.playerCnt === 1 && this.validCnt === 1)) {
             console.log('ending round early')
             this.endRound()
         }
     }
 
-    get playerCnt() {
+    get playerCnt(): number {
         return this.players.size
+    }
+
+    get aliveCnt(): number {
+        return Array.from(this.players.values()).reduce((cnt, player) => cnt += !player.dead ? 1 : 0, 0)
     }
 
     joinGame(socket: Socket) {

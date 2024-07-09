@@ -9,7 +9,7 @@ export default function Pregame({ socket, name, gid }: { socket: Socket, name: s
                 <input
                     className='nickname'
                     onChange={(event) => socket.emit('change name', gid, event.target.value)}
-                    value={name}
+                    defaultValue={name}
                 />
             </label>
             <button

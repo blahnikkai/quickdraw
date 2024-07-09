@@ -12,12 +12,13 @@ export default function Play() {
     const [roomExists, setRoomExists] = useState(undefined)
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
-    const [playingGame, setPlayingGame] = useState(false)
+    const [gameStatus, setGameStatus] = useState('waiting')
 
     const [guess, setGuess] = useState('')
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
+    const [winner, setWinner] = useState(undefined)
 
     const socketRef = useRef<Socket>(undefined)
 
@@ -38,10 +39,15 @@ export default function Play() {
         })
 
         socketRef.current.on('game started', () => {
-            setPlayingGame(true)
+            setGameStatus('playing')
         })
 
-        socketRef.current.on('start round', (newPhrase) => {
+        socketRef.current.on('game ended', (winner: Player) => {
+            setGameStatus('ended')
+            setWinner(winner)
+        })
+
+        socketRef.current.on('start round', (newPhrase: string) => {
             setGuess('')
             setPhrase(newPhrase)
             setPlayingRound(true)
@@ -51,12 +57,20 @@ export default function Play() {
             handleEndRound()
         })
 
+        socketRef.current.on('new game', () => {
+            setGameStatus('waiting')
+        })
+
         socketRef.current.on('update player info', (newPlayerInfo: Player[]) => {
             setPlayerInfo(newPlayerInfo)
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
             if (newSelf.dead) {
                 setPlayingRound(false)
+            }
+            if (newSelf.status === 'valid') {
+                setPlayingRound(false)
+                setGuess('')
             }
         })
 
@@ -68,13 +82,13 @@ export default function Play() {
     return (
         <main>
 
-            {roomExists === undefined && 
+            {roomExists === undefined &&
                 <div>
                     Loading
                 </div>
             }
 
-            {roomExists === false && 
+            {roomExists === false &&
                 <div>
                     Room {gid} does not exist.
                 </div>
@@ -82,12 +96,14 @@ export default function Play() {
 
             {roomExists === true &&
                 <div>
-                    <PlayerInfo
-                        playerInfo={playerInfo}
-                        playingGame={playingGame}
-                    />
+                    {gameStatus !== 'ended' &&
+                        <PlayerInfo
+                            playerInfo={playerInfo}
+                            gameStatus={gameStatus}
+                        />
+                    }
 
-                    {!playingGame &&
+                    {gameStatus === 'waiting' &&
                         <Pregame
                             socket={socketRef.current}
                             name={selfPlayerInfo?.name}
@@ -95,7 +111,7 @@ export default function Play() {
                         />
                     }
 
-                    {playingGame &&
+                    {gameStatus === 'playing' &&
                         <Ingame
                             guess={guess}
                             setGuess={setGuess}
@@ -106,6 +122,17 @@ export default function Play() {
                             status={selfPlayerInfo?.status}
                             playingRound={playingRound}
                         />
+                    }
+
+                    {gameStatus === 'ended' &&
+                        <div>
+                            {winner.name} won the game!
+                            <button
+                                onClick={() => socketRef.current.emit('play again', gid)}
+                            >
+                                Play again
+                            </button>
+                        </div>
                     }
                 </div>
             }
