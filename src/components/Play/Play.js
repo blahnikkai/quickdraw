@@ -6,8 +6,8 @@ import './Play.css'
 export default function Play() {
     const {gid} = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
-    const [name, setName] = useState('stupid')
-    const [lives, setLives] = useState(10)
+    const [name, setName] = useState('Player')
+    const [lives, setLives] = useState(undefined)
     const [guess, setGuess] = useState('')
     const [phrase, setPhrase] = useState('')
     const [status, setStatus] = useState('')
@@ -32,7 +32,7 @@ export default function Play() {
     useEffect(() => {
         socketRef.current = io(':3001')
 
-        socketRef.current.emit('join', gid, name)
+        socketRef.current.emit('join', gid)
 
         socketRef.current.on('room joined', () => {
             setRoomExists(true)
@@ -81,7 +81,7 @@ export default function Play() {
                     <ul className='game-ui player-info'>
                         {playerInfo.map((player) => {
                             return <li>
-                                {player[0]} {player[1]}
+                                {player.name} {player.lastGuess} {player.lives}
                             </li>
                         })}
                     </ul>
@@ -102,7 +102,6 @@ export default function Play() {
                             onClick={
                                 () => {
                                     socketRef.current.emit('start game', gid)
-                                    setPlayingGame(true)
                                 }
                             }
                         >

@@ -1,11 +1,12 @@
 import { Server as SocketServer, Socket } from 'socket.io'
+import { Server } from 'node:http'
 import GameManager from './GameManager.js'
 
 export default class SocketManager {
     socketServer: SocketServer
     gameManager: GameManager
 
-    constructor(httpServer) {
+    constructor(httpServer: Server) {
         this.socketServer = new SocketServer(httpServer, {
             cors: {
                 origin: '*',
@@ -29,8 +30,8 @@ export default class SocketManager {
                 socket.emit('game created', gid)
             })
 
-            socket.on('join', (gid: string, name: string) => {
-                this.gameManager.joinGame(gid, socket, name)
+            socket.on('join', (gid: string) => {
+                this.gameManager.joinGame(gid, socket)
             })
 
             socket.on('leave', (gid: string) => {

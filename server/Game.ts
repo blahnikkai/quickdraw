@@ -99,11 +99,11 @@ export default class Game {
         return this.players.size
     }
 
-    joinGame(socket: Socket, name: string) {
+    joinGame(socket: Socket) {
         console.log(`joining game ${this.gid}`)
         socket.join(this.gid)
         socket.emit('room joined')
-        this.players.set(socket, new Player(socket, name))
+        this.players.set(socket, new Player(socket.id))
         this.emitPlayerInfo()
     }
 
@@ -114,7 +114,7 @@ export default class Game {
     }
 
     emitPlayerInfo() {
-        const playerInfo = Array.from(this.players, ([socket, player]) => [player.name, player.lastGuess]);
+        const playerInfo = Array.from(this.players.values());
         this.socketServer.to(this.gid).emit('update player info', playerInfo)
     }
 

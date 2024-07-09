@@ -56,12 +56,12 @@ export default class GameManager {
         return this.games.has(gid)
     }
 
-    joinGame(gid: string, socket: Socket, name: string) {
+    joinGame(gid: string, socket: Socket) {
         if(!this.gameExists(gid)) {
             socket.emit('room dne')
             return
         }
-        this.games.get(gid).joinGame(socket, name)
+        this.games.get(gid).joinGame(socket)
     }
 
     leaveGame(gid: string, socket: Socket) {
