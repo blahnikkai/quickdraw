@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import {useParams} from 'react-router-dom'
 import {useEffect, useRef, useState} from 'react'
+import './Play.css'
 
 export default function Play() {
     const {gid} = useParams()
@@ -77,15 +78,16 @@ export default function Play() {
 
             {roomExists === true &&
                 <div>
-                    <ul>
+                    <ul className='game-ui player-info'>
                         {playerInfo.map((player) => {
                             return <li>
-                                {player[0]}, {player[1]}
+                                {player[0]} {player[1]}
                             </li>
                         })}
                     </ul>
-
-                    <div hidden={playingGame}>
+                    
+                    {!playingGame &&
+                    <div className='game-ui'>
                         <input
                             onChange={
                                 (event) => {
@@ -106,9 +108,9 @@ export default function Play() {
                         >
                             Start Game
                         </button>
-                    </div>
-
-                    <div hidden={!playingGame}>
+                    </div>}
+                    {playingGame &&
+                    <div className='game-ui'>
                         <div>Lives: {lives}</div>
                         <div>{phrase}</div>
                         <div>{status}</div>
@@ -125,7 +127,7 @@ export default function Play() {
                                 disabled={!playingRound}
                             />
                         </form>
-                    </div>
+                    </div>}
                 </div>
             }
 

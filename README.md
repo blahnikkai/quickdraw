@@ -2,6 +2,6 @@
 
 ## To run
 1. Run backend with  
-`node server/server.js`
+`npx tsx server/server`
 2. Run frontend with  
 `npm start`

@@ -1,0 +1,17 @@
+.game-ui {
+    display: flex;
+    flex-direction: column;
+    
+    margin: 1rem;
+    padding: 1rem;
+
+    border: 1px solid black;
+}
+
+.game-ui > * {
+    margin: .5rem 0 0 0;
+}
+
+.player-info {
+    list-style-type: none;
+}
