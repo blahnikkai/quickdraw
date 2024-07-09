@@ -31,6 +31,14 @@
     transition: .2s;
 }
 
+.dying {
+    background-color: red;
+}
+
+.dead {
+    color: gray;
+}
+
 .valid {
     color: lime;
 }
@@ -41,8 +49,4 @@
 
 .used {
     color: yellow;
-}
-
-.dying {
-    background-color: red;
 }

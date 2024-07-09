@@ -52,7 +52,11 @@ export default function Play() {
 
         socketRef.current.on('update player info', (newPlayerInfo) => {
             setPlayerInfo(newPlayerInfo)
-            setSelfPlayerInfo(newPlayerInfo.find((player) => player.socketId === socketRef.current.id))
+            const newSelf = newPlayerInfo.find((player) => player.socketId === socketRef.current.id)
+            setSelfPlayerInfo(newSelf)
+            if(newSelf.dead) {
+                setPlayingRound(false)
+            }
         })
 
         return () => {
@@ -71,9 +75,9 @@ export default function Play() {
                 <div className=''>
                     <div className='players'>
                         {playerInfo.map((player) => {
-                            return <div className={'player ' + (player.dying ? 'dying' : '')}>
+                            return <div className={`player-info${player.dying ? ' dying' : ''}${player.dead ? ' dead' : ''}`}>
                                 <div>{player.name}</div>
-                                <div>{player.lives}</div>
+                                {playingGame && <div>{player.lives}</div>}
                                 <div className={player.status}>{player.lastGuess}</div>
                             </div>
                         })}

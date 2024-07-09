@@ -1,7 +1,6 @@
 - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
 - UX prettification
 - Don't display user info to self
-- Display lives in user info
 - End game when only one player has >0 lives
 - Display guess status icons to player and to other players in player info. 
     - Only for short time, use timeout
@@ -11,5 +10,4 @@
 - Display timer with text or visual (bar or circle)
 - Get a new, bigger dictionary
 - Convert frontend to typescript
-- Use some type of object or interface for player info
 - Only allow unique nicknames?

@@ -39,23 +39,31 @@ export default class Game {
     }
 
     startGame() {
-        this.startRound()
+        this.startRound(true)
         this.socketServer.to(this.gid).emit('game started')
     }
 
-    startRound() {
+    startRound(firstRound: boolean = false) {
         this.validCnt = 0
         this.used.clear()
         this.generatePhrase()
-        this.players.forEach((player, socketId) => {
-            if(player.status !== 'valid') {
-                player.lives--
-            }
-            player.lastGuess = ''
-            player.status = ''
-            player.dying = false
-        })
-        this.emitPlayerInfo()
+        if (!firstRound) {
+            this.players.forEach((player, socketId) => {
+                if(player.dead) {
+                    return
+                }
+                if (player.status !== 'valid') {
+                    player.lives--
+                    if (player.lives === 0) {
+                        player.dead = true
+                    }
+                }
+                player.lastGuess = ''
+                player.status = ''
+                player.dying = false
+            })
+            this.emitPlayerInfo()
+        }
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, 20_000)
@@ -65,7 +73,7 @@ export default class Game {
         this.socketServer.to(this.gid).emit('end round')
         clearTimeout(this.timeoutId)
         this.players.forEach((player, socketId) => {
-            if(player.status !== 'valid') {
+            if (!player.dead && player.status !== 'valid') {
                 player.dying = true
             }
         })
@@ -100,7 +108,7 @@ export default class Game {
         this.players.get(socket.id).lastGuess = guess
         this.players.get(socket.id).status = status
         this.emitPlayerInfo()
-        if(status === 'valid') {
+        if (status === 'valid') {
             this.checkRoundOver()
         }
     }

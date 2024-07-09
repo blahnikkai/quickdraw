@@ -5,13 +5,15 @@ export default class Player {
     status: string
     lives: number
     dying: boolean
+    dead: boolean
 
     constructor(socketId: string) {
         this.socketId = socketId
         this.name = 'Player'
         this.lastGuess = ''
         this.status = ''
-        this.lives = 10
+        this.lives = 2
         this.dying = false
+        this.dead = false
     }
 }
