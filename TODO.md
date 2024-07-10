@@ -11,3 +11,4 @@
 - Only allow unique nicknames?
 - Make types for guess status and game status
 - Make player info not shift up on status
+- Make everyone rejoin after game ends

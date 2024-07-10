@@ -5,6 +5,7 @@ import './Play.css'
 import PlayerInfo from '../PlayerInfo/PlayerInfo'
 import Pregame from '../Pregame/Pregame'
 import Ingame from '../Ingame/Ingame'
+import Postgame from '../Postgame/Postgame'
 import Player from '../../../server/Player'
 
 export default function Play() {
@@ -125,14 +126,11 @@ export default function Play() {
                     }
 
                     {gameStatus === 'ended' &&
-                        <div>
-                            {winner ? winner.name + " won the game!" : "Nobody won!"}
-                            <button
-                                onClick={() => socketRef.current.emit('play again', gid)}
-                            >
-                                Play again
-                            </button>
-                        </div>
+                        <Postgame
+                            gid={gid}
+                            winnerName={winner?.name}
+                            socket={socketRef.current}
+                        />
                     }
                 </div>
             }
