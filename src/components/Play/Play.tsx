@@ -126,7 +126,7 @@ export default function Play() {
 
                     {gameStatus === 'ended' &&
                         <div>
-                            {winner.name} won the game!
+                            {winner ? winner.name + " won the game!" : "Nobody won!"}
                             <button
                                 onClick={() => socketRef.current.emit('play again', gid)}
                             >

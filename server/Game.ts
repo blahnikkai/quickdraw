@@ -51,9 +51,21 @@ export default class Game {
         this.socketServer.to(this.gid).emit('game started')
     }
 
-    endGame() {
-        const winner = Array.from(this.players.values()).find((player) => !player.dead)
+    endGame(winner: Player = undefined) {
         this.socketServer.to(this.gid).emit('game ended', winner)
+    }
+
+    checkGameOver(aliveCnt: number) {
+        if(aliveCnt === 0) {
+            this.endGame()
+            return true
+        }
+        else if(aliveCnt === 1) {
+            const winner = Array.from(this.players.values()).find((player) => !player.dead)
+            this.endGame(winner)
+            return true
+        }
+        return false
     }
 
     startRound(firstRound: boolean = false) {
@@ -79,15 +91,14 @@ export default class Game {
                 }
             })
             this.emitPlayerInfo()
-        }
-        if(aliveCnt === 1) {
-            this.endGame()
-            return
+            if(this.checkGameOver(aliveCnt)) {
+                return
+            }
         }
         this.generatePhrase()
         this.timeoutId = setTimeout(() => {
             this.endRound()
-        }, 20_000)
+        }, 5_000)
     }
 
     endRound() {
