@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io'
 import Player from './Player.js'
 import GuessStatus from '../src/GuessStatus.js'
+import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from './constants.js'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -102,7 +103,7 @@ export default class Game {
         this.socketServer.to(this.gid).emit('start round', this.phrase)
         this.timeoutId = setTimeout(() => {
             this.endRound()
-        }, 20_000)
+        }, ROUND_TIME * 1_000)
     }
 
     endRound() {
@@ -116,11 +117,11 @@ export default class Game {
         this.emitPlayerInfo()
         setTimeout(() => {
             this.startRound()
-        }, 1_000)
+        }, POST_ROUND_TIME * 1_000)
     }
 
     generatePhrase(): string {
-        const phraseLen = Math.random() < .2 ? 3 : 2
+        const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2
         const letCnts = phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts 
         let phrase = ''
         do {
