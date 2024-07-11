@@ -12,13 +12,13 @@ export default class Player {
         this.name = 'Player'
         this.lastGuess = ''
         this.status = ''
-        this.lives = 10
+        this.lives = 2
         this.dying = false
         this.dead = false
     }
 
     reset() {
-        this.lives = 10
+        this.lives = 2
         this.dead = false
     }
 }

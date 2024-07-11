@@ -17,7 +17,7 @@ export default class GameManager {
         const twoLetData = await fs.readFile('./dictionary/two_let_cnts.json', { encoding: 'utf-8' })
         this.twoLetCnts = new Map(Object.entries(JSON.parse(twoLetData)))
 
-        const dictionaryData = await fs.readFile('./dictionary/popular.txt', { encoding: 'utf-8' })
+        const dictionaryData = await fs.readFile('./dictionary/ospd.txt', { encoding: 'utf-8' })
         const wordLst = dictionaryData.split('\n')
         this.dictionary = new Set(wordLst)
     }

@@ -7,7 +7,6 @@
     - If it does, it's possible to be invalid and used, display invalid first
 - Wrong guess leads to shorter timer?
 - Display timer with text or visual (bar or circle)
-- Get a new, bigger dictionary
 - Only allow unique nicknames?
 - Make types for guess status and game status
 - Make player info not shift up on status

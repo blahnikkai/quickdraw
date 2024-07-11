@@ -7,13 +7,14 @@ import Pregame from '../Pregame/Pregame'
 import Ingame from '../Ingame/Ingame'
 import Postgame from '../Postgame/Postgame'
 import Player from '../../../server/Player'
+import GameStatus from '../../GameStatus'
 
 export default function Play() {
     const { gid } = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
-    const [gameStatus, setGameStatus] = useState('waiting')
+    const [gameStatus, setGameStatus] = useState(GameStatus.WAITING)
 
     const [guess, setGuess] = useState('')
 
@@ -40,11 +41,11 @@ export default function Play() {
         })
 
         socketRef.current.on('game started', () => {
-            setGameStatus('playing')
+            setGameStatus(GameStatus.PLAYING)
         })
 
         socketRef.current.on('game ended', (winner: Player) => {
-            setGameStatus('ended')
+            setGameStatus(GameStatus.DONE)
             setWinner(winner)
         })
 
@@ -59,7 +60,7 @@ export default function Play() {
         })
 
         socketRef.current.on('new game', () => {
-            setGameStatus('waiting')
+            setGameStatus(GameStatus.WAITING)
         })
 
         socketRef.current.on('update player info', (newPlayerInfo: Player[]) => {
@@ -97,14 +98,14 @@ export default function Play() {
 
             {roomExists === true &&
                 <div>
-                    {gameStatus !== 'ended' &&
+                    {gameStatus !== GameStatus.DONE &&
                         <PlayerInfo
                             playerInfo={playerInfo}
                             gameStatus={gameStatus}
                         />
                     }
 
-                    {gameStatus === 'waiting' &&
+                    {gameStatus === GameStatus.WAITING &&
                         <Pregame
                             socket={socketRef.current}
                             name={selfPlayerInfo?.name}
@@ -112,7 +113,7 @@ export default function Play() {
                         />
                     }
 
-                    {gameStatus === 'playing' &&
+                    {gameStatus === GameStatus.PLAYING &&
                         <Ingame
                             guess={guess}
                             setGuess={setGuess}
@@ -126,7 +127,7 @@ export default function Play() {
                         />
                     }
 
-                    {gameStatus === 'ended' &&
+                    {gameStatus === GameStatus.DONE &&
                         <Postgame
                             gid={gid}
                             winnerName={winner?.name}
