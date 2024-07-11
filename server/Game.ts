@@ -10,17 +10,19 @@ export default class Game {
     socketServer: any
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
+    threeLetCnts: Map<string, number>
     used: Set<string>
     validCnt: number
     timeoutId: ReturnType<typeof setTimeout>
     players: Map<string, Player>
 
-    constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>) {
+    constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>, threeLetCnts: Map<string, number>) {
         this.gid = gid
         this.phrase = ''
         this.dictionary = dictionary
         this.socketServer = socketServer
         this.twoLetCnts = twoLetCnts
+        this.threeLetCnts = threeLetCnts
         this.used = new Set()
         this.validCnt = 0
         this.players = new Map()
@@ -118,10 +120,12 @@ export default class Game {
     }
 
     generatePhrase(): string {
+        const phraseLen = Math.random() < .2 ? 3 : 2
+        const letCnts = phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts 
         let phrase = ''
         do {
-            phrase = this.randomPhrase(2)
-        } while (this.twoLetCnts.get(phrase) < 1000)
+            phrase = this.randomPhrase(phraseLen)
+        } while (letCnts.get(phrase) < 1500)
         return phrase
     }
 

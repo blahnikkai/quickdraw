@@ -7,6 +7,7 @@ export default class GameManager {
     games: Map<string, Game>
     dictionary: Set<string>
     twoLetCnts: Map<string, number>
+    threeLetCnts: Map<string, number>
 
     constructor(socketServer: SocketServer) {
         this.socketServer = socketServer
@@ -17,7 +18,10 @@ export default class GameManager {
         const twoLetData = await fs.readFile('./dictionary/two_let_cnts.json', { encoding: 'utf-8' })
         this.twoLetCnts = new Map(Object.entries(JSON.parse(twoLetData)))
 
-        const dictionaryData = await fs.readFile('./dictionary/ospd.txt', { encoding: 'utf-8' })
+        const threeLetData = await fs.readFile('./dictionary/three_let_cnts.json', { encoding: 'utf-8' })
+        this.threeLetCnts = new Map(Object.entries(JSON.parse(threeLetData)))
+
+        const dictionaryData = await fs.readFile('./dictionary/enable1.txt', { encoding: 'utf-8' })
         const wordLst = dictionaryData.split('\n')
         this.dictionary = new Set(wordLst)
     }
@@ -34,7 +38,7 @@ export default class GameManager {
         if (this.twoLetCnts === undefined) {
             await this.loadSeqCnts()
         }
-        const newGame = new Game(gid, this.socketServer, this.dictionary, this.twoLetCnts)
+        const newGame = new Game(gid, this.socketServer, this.dictionary, this.twoLetCnts, this.threeLetCnts)
         this.games.set(gid, newGame)
         return gid
     }

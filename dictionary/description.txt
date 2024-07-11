@@ -1,4 +1,4 @@
-unix-words  235886  too big, has names and capital
-enable1     172823  words with friends
-ospd        79399   scrabble
-popular     25322   too small, doesn't have mammal
+unix-words  235886  bad, too big, has names and capital
+enable1     172823  good i hope, words with friends
+ospd        79399   bad, max 8 letters, doesn't have 'different'. scrabble
+popular     25322   bad, too small, doesn't have 'mammal'
