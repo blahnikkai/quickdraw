@@ -1,0 +1,4 @@
+unix-words  235886  too big, has names and capital
+enable1     172823  words with friends
+ospd        79399   scrabble
+popular     25322   too small, doesn't have mammal

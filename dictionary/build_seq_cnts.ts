@@ -50,9 +50,9 @@ function buildSeqCnts(wordLst: string[], n: number): Map<string, number> {
 }
 
 async function main() {
-    const wordLst = await readDictionary('./dictionary/popular.txt')
-    const seqCnts = buildSeqCnts(wordLst, 2)
-    await writeSeqCnts('./dictionary/two_let_cnts.json', seqCnts)
+    const wordLst = await readDictionary('./dictionary/ospd.txt')
+    const seqCnts = buildSeqCnts(wordLst, 3)
+    await writeSeqCnts('./dictionary/three_let_cnts.json', seqCnts)
 }
 
 main()
