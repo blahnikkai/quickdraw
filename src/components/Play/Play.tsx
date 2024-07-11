@@ -122,6 +122,7 @@ export default function Play() {
                             lives={selfPlayerInfo?.lives}
                             status={selfPlayerInfo?.status}
                             playingRound={playingRound}
+                            lastGuess={selfPlayerInfo?.lastGuess}
                         />
                     }
 

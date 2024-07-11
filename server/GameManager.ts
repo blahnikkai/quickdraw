@@ -78,7 +78,7 @@ export default class GameManager {
                     console.log(`deleting game ${gid}`)
                     this.games.delete(gid)
                 }
-            }, 1_000)
+            }, 10_000)
         }
     }
 

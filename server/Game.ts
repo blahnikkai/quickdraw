@@ -98,7 +98,7 @@ export default class Game {
         this.generatePhrase()
         this.timeoutId = setTimeout(() => {
             this.endRound()
-        }, 5_000)
+        }, 20_000)
     }
 
     endRound() {

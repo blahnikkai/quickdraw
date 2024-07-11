@@ -1,0 +1,9 @@
+.ingame {
+    /* height: 6rem; */
+    justify-content: flex-end;
+}
+
+.status {
+    /* 1.2 * 16px +   */
+    min-height: 24px;
+}
