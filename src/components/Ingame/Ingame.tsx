@@ -1,15 +1,17 @@
 import { Socket } from 'socket.io-client'
 import './Ingame.css'
+import Player from '../../../server/Player'
+import GuessStatus from '../../GuessStatus'
 
 export default function Ingame(
-    { guess, setGuess, gid, socket, phrase, lives, status, playingRound, lastGuess }:
-        { guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, lives: number, status: string, playingRound: boolean, lastGuess: string }
+    { selfPlayerInfo, guess, setGuess, gid, socket, phrase, playingRound }:
+        { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, playingRound: boolean }
 ) {
     return (
         <div className='game-ui ingame'>
             <div>{phrase}</div>
-            <div>Lives: {lives}</div>
-            <div className={'status ' + status}>{lastGuess}</div>
+            <div>Lives: {selfPlayerInfo?.lives}</div>
+            <div className={'last-guess ' + selfPlayerInfo?.lastGuessStatus}>{selfPlayerInfo?.lastGuess}</div>
             <form
                 onSubmit={
                     (event) => {

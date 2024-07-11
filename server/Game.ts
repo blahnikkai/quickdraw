@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io'
 import Player from './Player.js'
+import GuessStatus from '../src/GuessStatus.js'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -55,7 +56,7 @@ export default class Game {
         this.socketServer.to(this.gid).emit('game ended', winner)
     }
 
-    checkGameOver(aliveCnt: number) {
+    checkGameOver(aliveCnt: number): boolean {
         if(aliveCnt === 0) {
             this.endGame()
             return true
@@ -77,14 +78,14 @@ export default class Game {
                 if(player.dead) {
                     return
                 }
-                if (player.status !== 'valid') {
+                if (player.lastGuessStatus !== GuessStatus.VALID) {
                     player.lives--
                     if (player.lives === 0) {
                         player.dead = true
                     }
                 }
                 player.lastGuess = ''
-                player.status = ''
+                player.lastGuessStatus = undefined
                 player.dying = false
                 if(!player.dead) {
                     aliveCnt++
@@ -95,7 +96,8 @@ export default class Game {
                 return
             }
         }
-        this.generatePhrase()
+        this.phrase = this.generatePhrase()
+        this.socketServer.to(this.gid).emit('start round', this.phrase)
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, 20_000)
@@ -105,7 +107,7 @@ export default class Game {
         this.socketServer.to(this.gid).emit('end round')
         clearTimeout(this.timeoutId)
         this.players.forEach((player) => {
-            if (!player.dead && player.status !== 'valid') {
+            if (!player.dead && player.lastGuessStatus !== GuessStatus.VALID) {
                 player.dying = true
             }
         })
@@ -115,32 +117,31 @@ export default class Game {
         }, 1_000)
     }
 
-    generatePhrase() {
+    generatePhrase(): string {
         let phrase = ''
         do {
             phrase = this.randomPhrase(2)
-        } while (this.twoLetCnts.get(phrase) < 50)
-        this.socketServer.to(this.gid).emit('start round', phrase)
-        this.phrase = phrase
+        } while (this.twoLetCnts.get(phrase) < 1000)
+        return phrase
     }
 
     checkGuess(guess: string, socket: Socket) {
-        let status = ''
+        let guessStatus: GuessStatus = undefined
         if (this.used.has(guess)) {
-            status = 'used'
+            guessStatus = GuessStatus.USED
         }
         else if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
             this.validCnt++
             this.used.add(guess)
-            status = 'valid'
+            guessStatus = GuessStatus.VALID
         }
         else {
-            status = 'invalid'
+            guessStatus = GuessStatus.INVALID
         }
         this.players.get(socket.id).lastGuess = guess
-        this.players.get(socket.id).status = status
+        this.players.get(socket.id).lastGuessStatus = guessStatus
         this.emitPlayerInfo()
-        if (status === 'valid') {
+        if (guessStatus === GuessStatus.VALID) {
             this.checkRoundOver()
         }
     }

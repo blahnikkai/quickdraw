@@ -1,9 +1,11 @@
+import GuessStatus from '../src/GuessStatus'
+
 export default class Player {
     socketId: string
     name: string
-    lastGuess: string
-    status: string
     lives: number
+    lastGuess: string
+    lastGuessStatus: GuessStatus
     dying: boolean
     dead: boolean
 
@@ -11,7 +13,7 @@ export default class Player {
         this.socketId = socketId
         this.name = 'Player'
         this.lastGuess = ''
-        this.status = ''
+        this.lastGuessStatus = undefined
         this.lives = 2
         this.dying = false
         this.dead = false

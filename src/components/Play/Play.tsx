@@ -8,6 +8,7 @@ import Ingame from '../Ingame/Ingame'
 import Postgame from '../Postgame/Postgame'
 import Player from '../../../server/Player'
 import GameStatus from '../../GameStatus'
+import GuessStatus from '../../GuessStatus'
 
 export default function Play() {
     const { gid } = useParams()
@@ -18,7 +19,7 @@ export default function Play() {
 
     const [guess, setGuess] = useState('')
 
-    const [selfPlayerInfo, setSelfPlayerInfo] = useState(undefined)
+    const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
     const [winner, setWinner] = useState(undefined)
 
@@ -52,7 +53,7 @@ export default function Play() {
         socketRef.current.on('start round', (newPhrase: string) => {
             setGuess('')
             setPhrase(newPhrase)
-            setPlayingRound(true)
+            setPlayingRound(!selfPlayerInfo?.dead)
         })
 
         socketRef.current.on('end round', () => {
@@ -67,10 +68,7 @@ export default function Play() {
             setPlayerInfo(newPlayerInfo)
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
-            if (newSelf.dead) {
-                setPlayingRound(false)
-            }
-            if (newSelf.status === 'valid') {
+            if (newSelf.lastGuessStatus === GuessStatus.VALID) {
                 setPlayingRound(false)
                 setGuess('')
             }
@@ -115,15 +113,13 @@ export default function Play() {
 
                     {gameStatus === GameStatus.PLAYING &&
                         <Ingame
+                            selfPlayerInfo={selfPlayerInfo}
                             guess={guess}
                             setGuess={setGuess}
                             gid={gid}
                             socket={socketRef.current}
                             phrase={phrase}
-                            lives={selfPlayerInfo?.lives}
-                            status={selfPlayerInfo?.status}
-                            playingRound={playingRound}
-                            lastGuess={selfPlayerInfo?.lastGuess}
+                            playingRound={playingRound && !selfPlayerInfo?.dead}
                         />
                     }
 
