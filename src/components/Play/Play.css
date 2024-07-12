@@ -5,7 +5,8 @@
     margin: 1rem;
     padding: 1rem;
 
-    border: 1px solid black;
+    border: 3px solid var(--clr-1);
+    border-radius: 1rem;
 }
 
 .game-ui > * {

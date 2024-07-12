@@ -19,6 +19,10 @@
     transition: .2s;
 }
 
+.player > * {
+    margin: .1rem 0;
+}
+
 .dying {
     background-color: red;
 }

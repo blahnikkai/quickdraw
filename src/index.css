@@ -1,5 +1,15 @@
+:root {
+    --clr-1: #b45d3f;
+    --clr-2: #dd8d4c;
+    --clr-3: #e5d09d;
+    --clr-4: #d2dddb;
+    --clr-5: #b0cde3;
+    --clr-6: #2e1710;
+}
+
 * {
     box-sizing: border-box;
+    color: var(--clr-6)
 }
 
 body {
@@ -12,9 +22,38 @@ body {
 }
 
 main {
+    background-image: linear-gradient(var(--clr-5), var(--clr-5), var(--clr-4));
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     height: 100vh;
+}
+
+button {
+    background-color: var(--clr-3);
+    border-radius: .5rem;
+    padding: .5rem;
+    border: 1px solid var(--clr-2);
+}
+
+button:hover {
+    background-color: var(--clr-2);
+}
+
+button:active {
+    background-color: var(--clr-1);
+}
+
+input {
+    border: 1px solid var(--clr-1);
+    background-color: var(--clr-3);
+    border-radius: .5rem;
+    padding: .25rem .5rem;
+}
+
+input:disabled {
+    background-color: var(--clr-2)
 }
