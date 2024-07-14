@@ -27,7 +27,7 @@
     background-color: red;
 }
 
-.dead {
+.dead * {
     color: gray;
 }
 

@@ -17,11 +17,12 @@ export default function Play() {
     const [playingRound, setPlayingRound] = useState(false)
     const [gameStatus, setGameStatus] = useState(GameStatus.WAITING)
 
-    const startTimeRef = useRef<number>(12)
-    const endTimeRef = useRef<number>(14)
+    const startTimeRef = useRef<number>(undefined)
+    const endTimeRef = useRef<number>(undefined)
     const [timeProgress, setTimeProgress] = useState(0)
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined)
+    const selfPlayerInfoRef = useRef(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
     const [winner, setWinner] = useState(undefined)
 
@@ -61,13 +62,13 @@ export default function Play() {
         socketRef.current.on('start round', (newPhrase: string, start: number, end: number) => {
             setGuess('')
             setPhrase(newPhrase)
-            setPlayingRound(!selfPlayerInfo?.dead)
-            startTimeRef.current = start
-            endTimeRef.current = end
-            console.log(`start time to ${start}`)
-            console.log(`end time to ${end}`)
-
-            intervalRef.current = setInterval(updateTimeProgress, 300)
+            setPlayingRound(!selfPlayerInfoRef.current.dead)
+            setTimeProgress(0)
+            if(!selfPlayerInfoRef.current.dead) {
+                startTimeRef.current = start
+                endTimeRef.current = end
+                intervalRef.current = setInterval(updateTimeProgress, 300)
+            }
         })
 
         socketRef.current.on('end round', () => {
@@ -83,6 +84,7 @@ export default function Play() {
             setPlayerInfo(newPlayerInfo)
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
+            selfPlayerInfoRef.current = newSelf
             if (newSelf.lastGuessStatus === GuessStatus.VALID) {
                 clearInterval(intervalRef.current)
                 setPlayingRound(false)
