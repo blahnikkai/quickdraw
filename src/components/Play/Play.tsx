@@ -16,20 +16,25 @@ export default function Play() {
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
     const [gameStatus, setGameStatus] = useState(GameStatus.WAITING)
-    const [startTime, setStartTime] = useState<number>(undefined)
-    const [endTime, setEndTime] = useState<number>(undefined)
-    const [currentTime, setCurrentTime] = useState<number>(undefined)
 
-    const [guess, setGuess] = useState('')
+    const startTimeRef = useRef<number>(12)
+    const endTimeRef = useRef<number>(14)
+    const [timeProgress, setTimeProgress] = useState(0)
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
     const [winner, setWinner] = useState(undefined)
 
+    const [guess, setGuess] = useState('')
+
     const socketRef = useRef<Socket>(undefined)
 
-    const handleEndRound = () => {
-        setPlayingRound(false)
+    const intervalRef = useRef(undefined)
+
+    const updateTimeProgress = () => {
+        const curTime = Date.now()
+        const timeProgress = (curTime - startTimeRef.current) / (endTimeRef.current - startTimeRef.current)
+        setTimeProgress(timeProgress)
     }
 
     useEffect(() => {
@@ -53,16 +58,21 @@ export default function Play() {
             setWinner(winner)
         })
 
-        socketRef.current.on('start round', (newPhrase: string, startTime: number, endTime: number) => {
+        socketRef.current.on('start round', (newPhrase: string, start: number, end: number) => {
             setGuess('')
             setPhrase(newPhrase)
             setPlayingRound(!selfPlayerInfo?.dead)
-            setStartTime(startTime)
-            setEndTime(endTime)
+            startTimeRef.current = start
+            endTimeRef.current = end
+            console.log(`start time to ${start}`)
+            console.log(`end time to ${end}`)
+
+            intervalRef.current = setInterval(updateTimeProgress, 300)
         })
 
         socketRef.current.on('end round', () => {
-            handleEndRound()
+            setPlayingRound(false)
+            clearInterval(intervalRef.current)
         })
 
         socketRef.current.on('new game', () => {
@@ -74,16 +84,13 @@ export default function Play() {
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
             if (newSelf.lastGuessStatus === GuessStatus.VALID) {
+                clearInterval(intervalRef.current)
                 setPlayingRound(false)
                 setGuess('')
             }
         })
-
-        setCurrentTime(Date.now())
-
-        const intervalId = setInterval(() => {
-            setCurrentTime(Date.now())
-        }, 100)
+        
+        const intervalId = intervalRef.current
 
         return () => {
             socketRef.current.disconnect()
@@ -131,17 +138,9 @@ export default function Play() {
                             gid={gid}
                             socket={socketRef.current}
                             phrase={phrase}
-                            playingRound={playingRound && !selfPlayerInfo?.dead}
+                            playingRound={playingRound}
+                            timeProgress={timeProgress}
                         />
-                    }
-
-                    {playingRound &&
-                        <div style={
-                            {
-                                backgroundColor: 'red',
-                                width: `${100 - 100 * (currentTime - startTime) / (endTime - startTime)}px`,
-                            }
-                        }>W</div>
                     }
 
                     {gameStatus === GameStatus.DONE &&

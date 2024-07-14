@@ -1,11 +1,10 @@
 import { Socket } from 'socket.io-client'
 import './Ingame.css'
 import Player from '../../../server/Player'
-import GuessStatus from '../../GuessStatus'
 
 export default function Ingame(
-    { selfPlayerInfo, guess, setGuess, gid, socket, phrase, playingRound }:
-        { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, playingRound: boolean }
+    { selfPlayerInfo, guess, setGuess, gid, socket, phrase, playingRound, timeProgress }:
+        { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, playingRound: boolean, timeProgress: number }
 ) {
     return (
         <div className='game-ui ingame'>
@@ -25,6 +24,7 @@ export default function Ingame(
                     disabled={!playingRound}
                 />
             </form>
+            <div className='timer-bar' style={{width: `${100 * (1 - timeProgress)}%`}}></div>
         </div>
     )
 }

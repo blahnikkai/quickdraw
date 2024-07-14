@@ -10,3 +10,9 @@
     background-color: var(--clr-1);
     padding: .5rem;
 }
+
+.timer-bar {
+    background-color: var(--clr-1);
+    height: 1rem;
+    width: 100%;
+}
