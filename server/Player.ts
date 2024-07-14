@@ -23,4 +23,24 @@ export default class Player {
         this.lives = 2
         this.dead = false
     }
+
+    startRound(): boolean {
+        if(this.dead) {
+            return
+        }
+        if (this.lastGuessStatus !== GuessStatus.VALID) {
+            this.lives--
+            if (this.lives === 0) {
+                this.dead = true
+            }
+        }
+        this.lastGuess = ''
+        this.lastGuessStatus = undefined
+        this.dying = false
+        return !this.dead
+    }
+
+    checkDying() {
+        this.dying = !this.dead && this.lastGuessStatus !== GuessStatus.VALID
+    }
 }

@@ -78,19 +78,7 @@ export default class Game {
         let aliveCnt = 0
         if (!firstRound) {
             this.players.forEach((player) => {
-                if(player.dead) {
-                    return
-                }
-                if (player.lastGuessStatus !== GuessStatus.VALID) {
-                    player.lives--
-                    if (player.lives === 0) {
-                        player.dead = true
-                    }
-                }
-                player.lastGuess = ''
-                player.lastGuessStatus = undefined
-                player.dying = false
-                if(!player.dead) {
+                if(player.startRound()) {
                     aliveCnt++
                 }
             })
@@ -110,9 +98,7 @@ export default class Game {
         this.socketServer.to(this.gid).emit('end round')
         clearTimeout(this.timeoutId)
         this.players.forEach((player) => {
-            if (!player.dead && player.lastGuessStatus !== GuessStatus.VALID) {
-                player.dying = true
-            }
+            player.checkDying()
         })
         this.emitPlayerInfo()
         setTimeout(() => {
