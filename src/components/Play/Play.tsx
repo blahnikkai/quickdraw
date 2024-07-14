@@ -16,6 +16,9 @@ export default function Play() {
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
     const [gameStatus, setGameStatus] = useState(GameStatus.WAITING)
+    const [startTime, setStartTime] = useState<number>(undefined)
+    const [endTime, setEndTime] = useState<number>(undefined)
+    const [currentTime, setCurrentTime] = useState<number>(undefined)
 
     const [guess, setGuess] = useState('')
 
@@ -50,10 +53,12 @@ export default function Play() {
             setWinner(winner)
         })
 
-        socketRef.current.on('start round', (newPhrase: string) => {
+        socketRef.current.on('start round', (newPhrase: string, startTime: number, endTime: number) => {
             setGuess('')
             setPhrase(newPhrase)
             setPlayingRound(!selfPlayerInfo?.dead)
+            setStartTime(startTime)
+            setEndTime(endTime)
         })
 
         socketRef.current.on('end round', () => {
@@ -74,8 +79,15 @@ export default function Play() {
             }
         })
 
+        setCurrentTime(Date.now())
+
+        const intervalId = setInterval(() => {
+            setCurrentTime(Date.now())
+        }, 100)
+
         return () => {
             socketRef.current.disconnect()
+            clearInterval(intervalId)
         }
     }, [])
 
@@ -121,6 +133,15 @@ export default function Play() {
                             phrase={phrase}
                             playingRound={playingRound && !selfPlayerInfo?.dead}
                         />
+                    }
+
+                    {playingRound &&
+                        <div style={
+                            {
+                                backgroundColor: 'red',
+                                width: `${100 - 100 * (currentTime - startTime) / (endTime - startTime)}px`,
+                            }
+                        }>W</div>
                     }
 
                     {gameStatus === GameStatus.DONE &&

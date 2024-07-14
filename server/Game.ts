@@ -100,7 +100,7 @@ export default class Game {
             }
         }
         this.phrase = this.generatePhrase()
-        this.socketServer.to(this.gid).emit('start round', this.phrase)
+        this.socketServer.to(this.gid).emit('start round', this.phrase, Date.now(), Date.now() + ROUND_TIME * 1_000)
         this.timeoutId = setTimeout(() => {
             this.endRound()
         }, ROUND_TIME * 1_000)
