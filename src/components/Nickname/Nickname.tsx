@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './Nickname.css'
 
 export default function Nickname({ submitName }: { submitName: (name: string) => void }) {
     const [name, setName] = useState('')

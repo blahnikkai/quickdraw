@@ -1,4 +1,3 @@
-import './Waiting.css'
 import Player from '../../../server/Player'
 
 export default function Waiting({ winner, readyUp }: { winner: Player, readyUp: () => void }) {
