@@ -24,7 +24,7 @@ export default function Playing(
                     disabled={!playingRound}
                 />
             </form>
-            <div className='timer-bar' style={{width: `${100 * (1 - timeProgress)}%`}}></div>
+            <div className='timer-bar' style={{ width: `${100 * (1 - timeProgress)}%` }}></div>
         </div>
     )
 }

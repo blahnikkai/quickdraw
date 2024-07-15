@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { Socket } from 'socket.io-client'
 
-export default function Nickname({ socket, gid }) {
+export default function Nickname({ socket, gid }: { socket: Socket, gid: string }) {
     const [name, setName] = useState('')
     return (
-        <div>
+        <div className='game-ui'>
             <form onSubmit={(event) => {
                 event.preventDefault()
                 socket.emit('submit name', gid, name)

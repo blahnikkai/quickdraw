@@ -10,3 +10,8 @@
 - Only allow unique nicknames?
 - Make player info not shift up on status
 - Make everyone rejoin after game ends
+- Rename Play component to Game
+- Add animations/transition to names on join
+- Make player info a grid?
+- Pass functions to components instead of socket and gid
+- Add typing to more useState and useRef
