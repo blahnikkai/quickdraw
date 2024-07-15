@@ -1,17 +1,16 @@
 - UX prettification
+- Increasing difficulty
 - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
-- Wrong guess leads to shorter timer?
-- Only allow unique nicknames?
 - Make player info not shift up on status
 - Add animations/transition to names on join
 - Make player info a grid?
 - Pass functions to components instead of socket and gid
-- Add typing to more useState and useRef
 - Change colors
-- Increasing difficulty
 
 - Should used set persist between rounds?
     - If it does, it's possible to be invalid and used, display invalid first
 - Don't display user info to self
 - Display guess status icons to player and to other players in player info. 
     - Only for short time, use timeout
+- Only allow unique nicknames?
+- Wrong guess leads to shorter timer?

@@ -13,7 +13,7 @@ import Ready from '../Ready/Ready'
 
 export default function Game() {
     const { gid } = useParams()
-    const [roomExists, setRoomExists] = useState(undefined)
+    const [roomExists, setRoomExists] = useState<boolean>(undefined)
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME)
@@ -23,15 +23,15 @@ export default function Game() {
     const [timeProgress, setTimeProgress] = useState(0)
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined)
-    const selfPlayerInfoRef = useRef(undefined)
+    const selfPlayerInfoRef = useRef<Player>(undefined)
     const [playerInfo, setPlayerInfo] = useState([])
-    const [winner, setWinner] = useState(undefined)
+    const [winner, setWinner] = useState<Player>(undefined)
 
     const [guess, setGuess] = useState('')
 
     const socketRef = useRef<Socket>(undefined)
 
-    const intervalRef = useRef(undefined)
+    const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined)
 
     const updateTimeProgress = () => {
         const curTime = Date.now()
