@@ -1,10 +1,8 @@
-import { Socket } from 'socket.io-client';
-
-export default function Ready({ socket, gid }: { socket: Socket, gid: string }) {
+export default function Ready({ startGame }: { startGame: () => void }) {
     return (
         <div className='game-ui'>
             <button
-                onClick={() => socket.emit('start game', gid)}
+                onClick={() => startGame()}
             >
                 Start Game
             </button>

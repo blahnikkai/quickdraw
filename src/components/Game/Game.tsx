@@ -39,6 +39,11 @@ export default function Game() {
         setTimeProgress(timeProgress)
     }
 
+    const submitName = (name: string) => socketRef.current.emit('submit name', gid, name)
+    const readyUp = () => socketRef.current.emit('change game status', gid, GameStatus.READY)
+    const startGame = () => socketRef.current.emit('start game', gid)
+    const submitGuess = () => socketRef.current.emit('submit guess', gid, guess)
+
     useEffect(() => {
         socketRef.current = io(':3001')
 
@@ -119,23 +124,20 @@ export default function Game() {
 
                     {gameStatus === GameStatus.NICKNAME &&
                         <Nickname
-                            socket={socketRef.current}
-                            gid={gid}
+                            submitName={submitName}
                         />
                     }
 
                     {gameStatus === GameStatus.WAITING &&
                         <Waiting
-                            socket={socketRef.current}
-                            gid={gid}
                             winner={winner}
+                            readyUp={readyUp}
                         />
                     }
 
                     {gameStatus === GameStatus.READY &&
                         <Ready
-                            socket={socketRef.current}
-                            gid={gid}
+                            startGame={startGame}
                         />
                     }
 
@@ -144,11 +146,10 @@ export default function Game() {
                             selfPlayerInfo={selfPlayerInfo}
                             guess={guess}
                             setGuess={setGuess}
-                            gid={gid}
-                            socket={socketRef.current}
                             phrase={phrase}
                             playingRound={playingRound}
                             timeProgress={timeProgress}
+                            submitGuess={submitGuess}
                         />
                     }
                 </div>

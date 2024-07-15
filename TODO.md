@@ -6,6 +6,8 @@
 - Make player info a grid?
 - Pass functions to components instead of socket and gid
 - Change colors
+- Move .nickname style to Nickname folder
+- Change passing Socket to socketId in backend
 
 - Should used set persist between rounds?
     - If it does, it's possible to be invalid and used, display invalid first

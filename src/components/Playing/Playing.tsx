@@ -3,8 +3,8 @@ import './Playing.css'
 import Player from '../../../server/Player'
 
 export default function Playing(
-    { selfPlayerInfo, guess, setGuess, gid, socket, phrase, playingRound, timeProgress }:
-        { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, playingRound: boolean, timeProgress: number }
+    { selfPlayerInfo, guess, setGuess, phrase, playingRound, timeProgress, submitGuess }:
+        { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, phrase: string, playingRound: boolean, timeProgress: number, submitGuess: () => void }
 ) {
     return (
         <div className='game-ui ingame'>
@@ -15,7 +15,7 @@ export default function Playing(
                 onSubmit={
                     (event) => {
                         event.preventDefault()
-                        socket.emit('submit guess', gid, guess)
+                        submitGuess()
                     }
                 }>
                 <input
