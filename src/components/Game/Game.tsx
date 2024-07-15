@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
-import './Play.css'
+import './Game.css'
 import PlayerInfo from '../PlayerInfo/PlayerInfo'
 import Waiting from '../Waiting/Waiting'
 import Playing from '../Playing/Playing'
@@ -11,7 +11,7 @@ import GameStatus from '../../GameStatus'
 import GuessStatus from '../../GuessStatus'
 import Ready from '../Ready/Ready'
 
-export default function Play() {
+export default function Game() {
     const { gid } = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
     const [phrase, setPhrase] = useState('')

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Play from './components/Play/Play'
+import Game from './components/Game/Game'
 import Home from './components/Home/Home'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/play/:gid' element={<Play />} />
+                <Route path='/game/:gid' element={<Game />} />
             </Routes>
         </BrowserRouter>
     )

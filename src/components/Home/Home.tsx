@@ -9,7 +9,7 @@ export default function Home() {
     useEffect(() => {
         socketRef.current = io(':3001')
         socketRef.current.on('game created', (gid) => {
-            navigate(`/play/${gid}`)
+            navigate(`/game/${gid}`)
         })
         return () => {
             socketRef.current.disconnect()
