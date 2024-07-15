@@ -1,6 +1,7 @@
 import { Server as SocketServer, Socket } from 'socket.io'
 import { Server } from 'node:http'
 import GameManager from './GameManager.js'
+import GameStatus from '../src/GameStatus.js'
 
 export default class SocketManager {
     socketServer: SocketServer
@@ -38,10 +39,6 @@ export default class SocketManager {
                 this.gameManager.leaveGame(gid, socket)
             })
 
-            socket.on('play again', (gid: string) => {
-                this.gameManager.newGame(gid)
-            })
-
             socket.on('start game', (gid: string) => {
                 this.gameManager.startGame(gid)
             })
@@ -50,8 +47,12 @@ export default class SocketManager {
                 this.gameManager.checkGuess(gid, guess, socket)
             })
 
-            socket.on('change name', (gid: string, newName: string) => {
+            socket.on('submit name', (gid: string, newName: string) => {
                 this.gameManager.changeName(gid, newName, socket)
+            })
+
+            socket.on('change game status', (gid: string, newStatus: GameStatus) => {
+                this.gameManager.changeGameStatus(gid, newStatus, socket)
             })
 
             socket.onAny((eventName: string, ...args: any[]) => {

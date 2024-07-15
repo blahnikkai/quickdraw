@@ -1,3 +1,4 @@
+import GameStatus from '../src/GameStatus'
 import GuessStatus from '../src/GuessStatus'
 
 export default class Player {
@@ -8,6 +9,7 @@ export default class Player {
     lastGuessStatus: GuessStatus
     dying: boolean
     dead: boolean
+    playerStatus: GameStatus
 
     constructor(socketId: string) {
         this.socketId = socketId
@@ -17,11 +19,13 @@ export default class Player {
         this.lives = 2
         this.dying = false
         this.dead = false
+        this.playerStatus = GameStatus.NICKNAME
     }
 
     reset() {
         this.lives = 2
         this.dead = false
+        this.playerStatus = GameStatus.WAITING
     }
 
     startRound(): boolean {
@@ -42,5 +46,10 @@ export default class Player {
 
     checkDying() {
         this.dying = !this.dead && this.lastGuessStatus !== GuessStatus.VALID
+    }
+
+    enterName(newName: string) {
+        this.name = newName
+        this.playerStatus = GameStatus.WAITING
     }
 }

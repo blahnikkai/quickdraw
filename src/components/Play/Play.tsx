@@ -3,19 +3,20 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import './Play.css'
 import PlayerInfo from '../PlayerInfo/PlayerInfo'
-import Pregame from '../Pregame/Pregame'
-import Ingame from '../Ingame/Ingame'
-import Postgame from '../Postgame/Postgame'
+import Waiting from '../Waiting/Waiting'
+import Playing from '../Playing/Playing'
+import Nickname from '../Nickname/Nickname'
 import Player from '../../../server/Player'
 import GameStatus from '../../GameStatus'
 import GuessStatus from '../../GuessStatus'
+import Ready from '../Ready/Ready'
 
 export default function Play() {
     const { gid } = useParams()
     const [roomExists, setRoomExists] = useState(undefined)
     const [phrase, setPhrase] = useState('')
     const [playingRound, setPlayingRound] = useState(false)
-    const [gameStatus, setGameStatus] = useState(GameStatus.WAITING)
+    const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME)
 
     const startTimeRef = useRef<number>(undefined)
     const endTimeRef = useRef<number>(undefined)
@@ -50,12 +51,7 @@ export default function Play() {
             setRoomExists(false)
         })
 
-        socketRef.current.on('game started', () => {
-            setGameStatus(GameStatus.PLAYING)
-        })
-
         socketRef.current.on('game ended', (winner: Player) => {
-            setGameStatus(GameStatus.DONE)
             setWinner(winner)
         })
 
@@ -64,7 +60,7 @@ export default function Play() {
             setPhrase(newPhrase)
             setPlayingRound(!selfPlayerInfoRef.current.dead)
             setTimeProgress(0)
-            if(!selfPlayerInfoRef.current.dead) {
+            if (!selfPlayerInfoRef.current.dead) {
                 startTimeRef.current = start
                 endTimeRef.current = end
                 intervalRef.current = setInterval(updateTimeProgress, 300)
@@ -76,14 +72,11 @@ export default function Play() {
             clearInterval(intervalRef.current)
         })
 
-        socketRef.current.on('new game', () => {
-            setGameStatus(GameStatus.WAITING)
-        })
-
         socketRef.current.on('update player info', (newPlayerInfo: Player[]) => {
             setPlayerInfo(newPlayerInfo)
             const newSelf = newPlayerInfo.find((player: Player) => player.socketId === socketRef.current.id)
             setSelfPlayerInfo(newSelf)
+            setGameStatus(newSelf.playerStatus)
             selfPlayerInfoRef.current = newSelf
             if (newSelf.lastGuessStatus === GuessStatus.VALID) {
                 clearInterval(intervalRef.current)
@@ -91,7 +84,7 @@ export default function Play() {
                 setGuess('')
             }
         })
-        
+
         const intervalId = intervalRef.current
 
         return () => {
@@ -117,23 +110,37 @@ export default function Play() {
 
             {roomExists === true &&
                 <div>
-                    {gameStatus !== GameStatus.DONE &&
+                    {gameStatus !== GameStatus.NICKNAME &&
                         <PlayerInfo
                             playerInfo={playerInfo}
                             gameStatus={gameStatus}
                         />
                     }
 
-                    {gameStatus === GameStatus.WAITING &&
-                        <Pregame
+                    {gameStatus === GameStatus.NICKNAME &&
+                        <Nickname
                             socket={socketRef.current}
-                            name={selfPlayerInfo?.name}
+                            gid={gid}
+                        />
+                    }
+
+                    {gameStatus === GameStatus.WAITING &&
+                        <Waiting
+                            socket={socketRef.current}
+                            gid={gid}
+                            winner={winner}
+                        />
+                    }
+
+                    {gameStatus === GameStatus.READY &&
+                        <Ready
+                            socket={socketRef.current}
                             gid={gid}
                         />
                     }
 
                     {gameStatus === GameStatus.PLAYING &&
-                        <Ingame
+                        <Playing
                             selfPlayerInfo={selfPlayerInfo}
                             guess={guess}
                             setGuess={setGuess}
@@ -142,14 +149,6 @@ export default function Play() {
                             phrase={phrase}
                             playingRound={playingRound}
                             timeProgress={timeProgress}
-                        />
-                    }
-
-                    {gameStatus === GameStatus.DONE &&
-                        <Postgame
-                            gid={gid}
-                            winnerName={winner?.name}
-                            socket={socketRef.current}
                         />
                     }
                 </div>

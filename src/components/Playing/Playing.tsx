@@ -1,8 +1,8 @@
 import { Socket } from 'socket.io-client'
-import './Ingame.css'
+import './Playing.css'
 import Player from '../../../server/Player'
 
-export default function Ingame(
+export default function Playing(
     { selfPlayerInfo, guess, setGuess, gid, socket, phrase, playingRound, timeProgress }:
         { selfPlayerInfo: Player, guess: string, setGuess: CallableFunction, gid: string, socket: Socket, phrase: string, playingRound: boolean, timeProgress: number }
 ) {

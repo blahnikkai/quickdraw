@@ -1,6 +1,7 @@
 import { Server as SocketServer, Socket } from 'socket.io'
 import { promises as fs } from 'fs'
 import Game from './Game.js'
+import GameStatus from '../src/GameStatus.js'
 
 export default class GameManager {
     socketServer: SocketServer
@@ -51,10 +52,6 @@ export default class GameManager {
         this.games.get(gid).checkGuess(guess, socket)
     }
 
-    newGame(gid: string) {
-        this.games.get(gid).newGame()
-    }
-
     gameExists(gid: string): boolean {
         return this.games.has(gid)
     }
@@ -93,6 +90,10 @@ export default class GameManager {
     }
 
     changeName(gid: string, newName: string, socket: Socket) {
-        this.games.get(gid).changeName(newName, socket)
+        this.games.get(gid)?.changeName(newName, socket)
+    }
+
+    changeGameStatus(gid: string, newStatus: GameStatus, socket: Socket<import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, import("socket.io/dist/typed-events").DefaultEventsMap, any>) {
+        this.games.get(gid)?.changeGameStatus(gid, newStatus, socket)
     }
 }

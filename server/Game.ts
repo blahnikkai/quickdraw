@@ -2,6 +2,7 @@ import { Socket } from 'socket.io'
 import Player from './Player.js'
 import GuessStatus from '../src/GuessStatus.js'
 import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from './constants.js'
+import GameStatus from '../src/GameStatus.js'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -42,20 +43,19 @@ export default class Game {
         return letters.join('')
     }
 
-    newGame() {
+    startGame() {
+        this.startRound(true)
+        this.players.forEach((player) => {
+            player.playerStatus = GameStatus.PLAYING
+        })
+        this.emitPlayerInfo()
+    }
+
+    endGame(winner: Player = undefined) {
         this.players.forEach((player: Player) => {
             player.reset()
         })
         this.emitPlayerInfo()
-        this.socketServer.in(this.gid).emit('new game')
-    }
-
-    startGame() {
-        this.startRound(true)
-        this.socketServer.to(this.gid).emit('game started')
-    }
-
-    endGame(winner: Player = undefined) {
         this.socketServer.to(this.gid).emit('game ended', winner)
     }
 
@@ -173,7 +173,12 @@ export default class Game {
     }
 
     changeName(newName: string, socket: Socket) {
-        this.players.get(socket.id).name = newName
+        this.players.get(socket.id).enterName(newName)
+        this.emitPlayerInfo()
+    }
+
+    changeGameStatus(gid: string, newStatus: GameStatus, socket: Socket) {
+        this.players.get(socket.id).playerStatus = newStatus
         this.emitPlayerInfo()
     }
 }
