@@ -41,6 +41,7 @@ button {
 
 button:hover {
     background-color: var(--clr-2);
+    cursor: pointer;
 }
 
 button:active {

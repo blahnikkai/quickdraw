@@ -1,0 +1,32 @@
+.home {
+    display: flex;
+    flex-direction: row;
+}
+
+.home-section {
+    padding: 1em;
+    margin: 1em;
+
+    border: 3px solid var(--clr-1);
+    border-radius: .5em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.home-section * {
+    margin: .2em 0 0;
+}
+
+.join-game-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.join-game-form button {
+    width: 50%;
+    margin: .5em 0 0;
+}
