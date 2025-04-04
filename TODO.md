@@ -2,9 +2,8 @@ High
 - Make player info not shift up on status
 - Make player info a grid?
 - BUGFIX: players can enter no nickname
-- BUGFIX: spectating players can submit
 - Separate phrase from playing
-- Don't let one person start
+- Only let the host start
 
 Medium
 - New font

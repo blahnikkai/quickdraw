@@ -117,7 +117,6 @@ export default function Game() {
                 <div>
                     {gameStatus !== GameStatus.NICKNAME && (
                         <div>
-                            <div>Spectating: </div>
                             <PlayerInfo
                                 playerInfo={playerInfo}
                                 allowableGameStatuses={[
@@ -125,7 +124,6 @@ export default function Game() {
                                     GameStatus.SPECTATING,
                                 ]}
                             />
-                            <div>Ready: </div>
                             <PlayerInfo
                                 playerInfo={playerInfo}
                                 allowableGameStatuses={[
@@ -148,13 +146,15 @@ export default function Game() {
                         <Ready startGame={startGame} />
                     )}
 
-                    {(gameStatus === GameStatus.PLAYING ||
-                        gameStatus == GameStatus.SPECTATING) && (
+                    {(gameStatus == GameStatus.PLAYING || gameStatus == GameStatus.SPECTATING) && (
+                        <div className="phrase">{phrase}</div>
+                    )}
+
+                    {gameStatus === GameStatus.PLAYING && (
                         <Playing
                             selfPlayerInfo={selfPlayerInfo}
                             guess={guess}
                             setGuess={setGuess}
-                            phrase={phrase}
                             timeProgress={timeProgress}
                             submitGuess={submitGuess}
                         />

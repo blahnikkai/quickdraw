@@ -12,3 +12,7 @@
 .game-ui > * {
     margin: .5rem 0 0 0;
 }
+
+.phrase {
+    font-size: 25px;
+}

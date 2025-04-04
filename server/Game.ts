@@ -42,7 +42,6 @@ export default class Game {
     }
 
     randomPhrase(length: number): string {
-        return "ca";
         const letters = [];
         for (let i = 0; i < length; i++) {
             letters.push(this.randomLetter());

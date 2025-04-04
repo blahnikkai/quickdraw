@@ -7,20 +7,17 @@ export default function Playing({
     selfPlayerInfo,
     guess,
     setGuess,
-    phrase,
     timeProgress,
     submitGuess,
 }: {
     selfPlayerInfo: Player;
     guess: string;
     setGuess: CallableFunction;
-    phrase: string;
     timeProgress: number;
     submitGuess: () => void;
 }) {
     return (
         <div className="game-ui ingame">
-            <div>{phrase}</div>
             <div>Lives: {selfPlayerInfo?.lives}</div>
             <div className={"last-guess " + selfPlayerInfo?.lastGuessStatus}>
                 {selfPlayerInfo?.lastGuess}
