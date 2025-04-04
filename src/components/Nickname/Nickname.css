@@ -1,3 +1,7 @@
 .nickname {
     display: block;
 }
+
+.invalid-name {
+    background-color: var(--clr-invalid-1);
+}
