@@ -5,6 +5,9 @@
     --clr-4: #d2dddb;
     --clr-5: #b0cde3;
     --clr-6: #2e1710;
+    --clr-valid: #06e642;
+    --clr-invalid-1: #ff7b6a;
+    --clr-invalid-2: #f81717;
 }
 
 * {

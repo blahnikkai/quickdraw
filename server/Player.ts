@@ -16,14 +16,14 @@ export default class Player {
         this.name = 'Player'
         this.lastGuess = ''
         this.lastGuessStatus = undefined
-        this.lives = 2
+        this.lives = 100
         this.dying = false
         this.dead = false
         this.playerStatus = GameStatus.NICKNAME
     }
 
     reset() {
-        this.lives = 2
+        this.lives = 100
         this.dead = false
         this.playerStatus = GameStatus.WAITING
     }

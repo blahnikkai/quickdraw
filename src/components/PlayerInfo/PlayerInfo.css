@@ -15,8 +15,6 @@
     justify-content: space-around;
 
     padding: .5rem;
-
-    transition: .2s;
 }
 
 .player > * {
@@ -24,7 +22,7 @@
 }
 
 .dying {
-    background-color: red;
+    border: 10px solid var(--clr-invalid-2);
 }
 
 .dead * {
@@ -32,11 +30,12 @@
 }
 
 .valid {
-    color: lime;
+    color: var(--clr-valid);
 }
 
 .invalid {
-    color: red;
+    color: var(--clr-invalid-1);
+    /* -webkit-text-stroke: .5px #fff; */
 }
 
 .used {
