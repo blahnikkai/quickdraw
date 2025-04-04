@@ -15,7 +15,6 @@ export default function Game() {
     const { gid } = useParams();
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
-    const [playingRound, setPlayingRound] = useState(false);
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
 
     const startTimeRef = useRef<number>(undefined);
@@ -70,7 +69,6 @@ export default function Game() {
             (newPhrase: string, start: number, end: number) => {
                 setGuess("");
                 setPhrase(newPhrase);
-                setPlayingRound(!selfPlayerInfoRef.current.dead);
                 setTimeProgress(0);
                 if (!selfPlayerInfoRef.current.dead) {
                     startTimeRef.current = start;
@@ -81,7 +79,6 @@ export default function Game() {
         );
 
         socketRef.current.on("end round", () => {
-            setPlayingRound(false);
             clearInterval(intervalRef.current);
         });
 
@@ -97,7 +94,6 @@ export default function Game() {
                 selfPlayerInfoRef.current = newSelf;
                 if (newSelf.lastGuessStatus === GuessStatus.VALID) {
                     clearInterval(intervalRef.current);
-                    setPlayingRound(false);
                     setGuess("");
                 }
             }
@@ -144,7 +140,6 @@ export default function Game() {
                             guess={guess}
                             setGuess={setGuess}
                             phrase={phrase}
-                            playingRound={playingRound}
                             timeProgress={timeProgress}
                             submitGuess={submitGuess}
                         />

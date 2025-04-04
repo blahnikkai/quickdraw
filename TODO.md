@@ -1,9 +1,10 @@
 High
 - Change colors
-- Show names even when not ready
+- Show names even when not ready, separated or colored differently
 - Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably
 - New font
-- Don't disable input, then you lose focus each time
+- BUGFIX: players that aren't readied up still play if someone else starts the game, and players without a nickname will be "Player"
+- BUGFIX: players can enter no nickname
 
 Medium
 - UX prettification

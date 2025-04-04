@@ -1,4 +1,3 @@
-import { Socket } from "socket.io-client";
 import "./Playing.css";
 import Player from "../../../server/Player";
 
@@ -7,7 +6,6 @@ export default function Playing({
     guess,
     setGuess,
     phrase,
-    playingRound,
     timeProgress,
     submitGuess,
 }: {
@@ -15,7 +13,6 @@ export default function Playing({
     guess: string;
     setGuess: CallableFunction;
     phrase: string;
-    playingRound: boolean;
     timeProgress: number;
     submitGuess: () => void;
 }) {
@@ -29,13 +26,15 @@ export default function Playing({
             <form
                 onSubmit={(event) => {
                     event.preventDefault();
-                    submitGuess();
+                    if(selfPlayerInfo?.lastGuessStatus != "valid") {
+                        submitGuess();
+                    }
                 }}
             >
                 <input
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
-                    disabled={!playingRound}
+                    disabled={selfPlayerInfo.dead}
                 />
             </form>
             <div
