@@ -5,17 +5,18 @@ import GameStatus from "../../GameStatus";
 export default function PlayerInfo({
     playerInfo,
     gameStatus,
+    allowableGameStatuses,
 }: {
     playerInfo: Player[];
     gameStatus: GameStatus;
+    allowableGameStatuses: GameStatus[];
 }) {
     return (
         <div className="players">
             {playerInfo
                 .filter(
                     (player) =>
-                        player.playerStatus === GameStatus.PLAYING ||
-                        player.playerStatus === GameStatus.READY
+                        allowableGameStatuses.includes(player.gameStatus)
                 )
                 .map((player) => {
                     return (

@@ -1,184 +1,214 @@
-import { Socket } from 'socket.io'
-import Player from './Player.js'
-import GuessStatus from '../src/GuessStatus.js'
-import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from './constants.js'
-import GameStatus from '../src/GameStatus.js'
+import { Socket } from "socket.io";
+import Player from "./Player.js";
+import GuessStatus from "../src/GuessStatus.js";
+import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from "./constants.js";
+import GameStatus from "../src/GameStatus.js";
 
-const letters = 'abcdefghijklmnopqrstuvwxyz'
+const letters = "abcdefghijklmnopqrstuvwxyz";
 
 export default class Game {
-    gid: string
-    phrase: string
-    socketServer: any
-    dictionary: Set<string>
-    twoLetCnts: Map<string, number>
-    threeLetCnts: Map<string, number>
-    used: Set<string>
-    validCnt: number
-    timeoutId: ReturnType<typeof setTimeout>
-    players: Map<string, Player>
+    gid: string;
+    phrase: string;
+    socketServer: any;
+    dictionary: Set<string>;
+    twoLetCnts: Map<string, number>;
+    threeLetCnts: Map<string, number>;
+    used: Set<string>;
+    validCnt: number;
+    timeoutId: ReturnType<typeof setTimeout>;
+    players: Map<string, Player>;
 
-    constructor(gid: string, socketServer: any, dictionary: Set<string>, twoLetCnts: Map<string, number>, threeLetCnts: Map<string, number>) {
-        this.gid = gid
-        this.phrase = ''
-        this.dictionary = dictionary
-        this.socketServer = socketServer
-        this.twoLetCnts = twoLetCnts
-        this.threeLetCnts = threeLetCnts
-        this.used = new Set()
-        this.validCnt = 0
-        this.players = new Map()
+    constructor(
+        gid: string,
+        socketServer: any,
+        dictionary: Set<string>,
+        twoLetCnts: Map<string, number>,
+        threeLetCnts: Map<string, number>
+    ) {
+        this.gid = gid;
+        this.phrase = "";
+        this.dictionary = dictionary;
+        this.socketServer = socketServer;
+        this.twoLetCnts = twoLetCnts;
+        this.threeLetCnts = threeLetCnts;
+        this.used = new Set();
+        this.validCnt = 0;
+        this.players = new Map();
     }
 
     randomLetter(): string {
-        const ind = Math.floor(Math.random() * 26)
-        return letters[ind]
+        const ind = Math.floor(Math.random() * 26);
+        return letters[ind];
     }
 
     randomPhrase(length: number): string {
-        const letters = []
+        const letters = [];
         for (let i = 0; i < length; i++) {
-            letters.push(this.randomLetter())
+            letters.push(this.randomLetter());
         }
-        return letters.join('')
+        return letters.join("");
     }
 
     startGame() {
-        this.startRound(true)
+        this.startRound(true);
         this.players.forEach((player) => {
-            player.playerStatus = GameStatus.PLAYING
-        })
-        this.emitPlayerInfo()
+            if (player.gameStatus == GameStatus.READY) {
+                player.setGameStatus(GameStatus.PLAYING);
+            }
+        });
+        this.emitPlayerInfo();
     }
 
     endGame(winner: Player = undefined) {
         this.players.forEach((player: Player) => {
-            player.reset()
-        })
-        this.emitPlayerInfo()
-        this.socketServer.to(this.gid).emit('game ended', winner)
+            player.reset();
+        });
+        this.emitPlayerInfo();
+        this.socketServer.to(this.gid).emit("game ended", winner);
     }
 
     checkGameOver(aliveCnt: number): boolean {
-        if(aliveCnt === 0) {
-            this.endGame()
-            return true
+        if (aliveCnt === 0) {
+            this.endGame();
+            return true;
+        } else if (aliveCnt === 1) {
+            const winner = Array.from(this.players.values()).find(
+                (player) => !player.dead
+            );
+            this.endGame(winner);
+            return true;
         }
-        else if(aliveCnt === 1) {
-            const winner = Array.from(this.players.values()).find((player) => !player.dead)
-            this.endGame(winner)
-            return true
-        }
-        return false
+        return false;
     }
 
     startRound(firstRound: boolean = false) {
-        this.validCnt = 0
-        this.used.clear()
-        let aliveCnt = 0
+        this.validCnt = 0;
+        this.used.clear();
+        let aliveCnt = 0;
         if (!firstRound) {
             this.players.forEach((player) => {
-                if(player.startRound()) {
-                    aliveCnt++
+                if (player.startRound()) {
+                    aliveCnt++;
                 }
-            })
-            this.emitPlayerInfo()
-            if(this.checkGameOver(aliveCnt)) {
-                return
+            });
+            this.emitPlayerInfo();
+            if (this.checkGameOver(aliveCnt)) {
+                return;
             }
         }
-        this.phrase = this.generatePhrase()
-        this.socketServer.to(this.gid).emit('start round', this.phrase, Date.now(), Date.now() + ROUND_TIME * 1_000)
+        this.phrase = this.generatePhrase();
+        this.socketServer
+            .to(this.gid)
+            .emit(
+                "start round",
+                this.phrase,
+                Date.now(),
+                Date.now() + ROUND_TIME * 1_000
+            );
         this.timeoutId = setTimeout(() => {
-            this.endRound()
-        }, ROUND_TIME * 1_000)
+            this.endRound();
+        }, ROUND_TIME * 1_000);
     }
 
     endRound() {
-        this.socketServer.to(this.gid).emit('end round')
-        clearTimeout(this.timeoutId)
+        this.socketServer.to(this.gid).emit("end round");
+        clearTimeout(this.timeoutId);
         this.players.forEach((player) => {
-            player.checkDying()
-        })
-        this.emitPlayerInfo()
+            player.checkDying();
+        });
+        this.emitPlayerInfo();
         setTimeout(() => {
-            this.startRound()
-        }, POST_ROUND_TIME * 1_000)
+            this.startRound();
+        }, POST_ROUND_TIME * 1_000);
     }
 
     generatePhrase(): string {
-        const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2
-        const letCnts = phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts 
-        let phrase = ''
+        const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2;
+        const letCnts = phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts;
+        let phrase = "";
         do {
-            phrase = this.randomPhrase(phraseLen)
-        } while (letCnts.get(phrase) < 1500)
-        return phrase
+            phrase = this.randomPhrase(phraseLen);
+        } while (letCnts.get(phrase) < 1500);
+        return phrase;
     }
 
     checkGuess(guess: string, socket: Socket) {
-        let guessStatus: GuessStatus = undefined
+        let guessStatus: GuessStatus = undefined;
         if (this.used.has(guess)) {
-            guessStatus = GuessStatus.USED
+            guessStatus = GuessStatus.USED;
+        } else if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
+            this.validCnt++;
+            this.used.add(guess);
+            guessStatus = GuessStatus.VALID;
+        } else {
+            guessStatus = GuessStatus.INVALID;
         }
-        else if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
-            this.validCnt++
-            this.used.add(guess)
-            guessStatus = GuessStatus.VALID
-        }
-        else {
-            guessStatus = GuessStatus.INVALID
-        }
-        this.players.get(socket.id).lastGuess = guess
-        this.players.get(socket.id).lastGuessStatus = guessStatus
-        this.emitPlayerInfo()
+        this.players.get(socket.id).lastGuess = guess;
+        this.players.get(socket.id).lastGuessStatus = guessStatus;
+        this.emitPlayerInfo();
         if (guessStatus === GuessStatus.VALID) {
-            this.checkRoundOver()
+            this.checkRoundOver();
         }
     }
 
     checkRoundOver() {
         // only 1 player left
-        if ((this.playerCnt > 1 && this.aliveCnt - this.validCnt === 1) || (this.playerCnt === 1 && this.validCnt === 1)) {
-            console.log('ending round early')
-            this.endRound()
+        if (
+            (this.playerCnt > 1 && this.aliveCnt - this.validCnt === 1) ||
+            (this.playerCnt === 1 && this.validCnt === 1)
+        ) {
+            console.log("ending round early");
+            this.endRound();
         }
     }
 
     get playerCnt(): number {
-        return this.players.size
+        return this.players.size;
     }
 
     get aliveCnt(): number {
-        return Array.from(this.players.values()).reduce((cnt, player) => cnt += !player.dead ? 1 : 0, 0)
+        let cnt = 0;
+        // only count playing, alive players
+        for (const player of this.players.values()) {
+            if (player.gameStatus == GameStatus.PLAYING && !player.dead) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     joinGame(socket: Socket) {
-        console.log(`joining game ${this.gid}`)
-        socket.join(this.gid)
-        socket.emit('room joined')
-        this.players.set(socket.id, new Player(socket.id))
-        this.emitPlayerInfo()
+        console.log(`joining game ${this.gid}`);
+        socket.join(this.gid);
+        socket.emit("room joined");
+        this.players.set(socket.id, new Player(socket.id));
+        this.emitPlayerInfo();
     }
 
     leaveGame(socket: Socket) {
-        socket.leave(this.gid)
-        this.players.delete(socket.id)
-        this.emitPlayerInfo()
+        socket.leave(this.gid);
+        this.players.delete(socket.id);
+        this.emitPlayerInfo();
     }
 
     emitPlayerInfo() {
         const playerInfo = Array.from(this.players.values());
-        this.socketServer.to(this.gid).emit('update player info', playerInfo)
+        this.socketServer.to(this.gid).emit("update player info", playerInfo);
     }
 
     changeName(newName: string, socket: Socket) {
-        this.players.get(socket.id).enterName(newName)
-        this.emitPlayerInfo()
+        this.players.get(socket.id).enterName(newName);
+        this.changeGameStatus(GameStatus.WAITING, socket);
+        this.emitPlayerInfo();
     }
 
-    changeGameStatus(gid: string, newStatus: GameStatus, socket: Socket) {
-        this.players.get(socket.id).playerStatus = newStatus
-        this.emitPlayerInfo()
+    changeGameStatus(newStatus: GameStatus, socket: Socket) {
+        this.players.get(socket.id).setGameStatus(newStatus);
+        // move player to end of list so that players show in the order they ready up
+        const player: Player = this.players.get(socket.id);
+        this.players.delete(socket.id);
+        const playerArr = Array.from(this.players);
+        playerArr.splice(this.players.size + 1, 0, [socket.id, player]);
+        this.players = new Map(playerArr);
     }
 }

@@ -90,7 +90,7 @@ export default function Game() {
                     (player: Player) => player.socketId === socketRef.current.id
                 );
                 setSelfPlayerInfo(newSelf);
-                setGameStatus(newSelf.playerStatus);
+                setGameStatus(newSelf.gameStatus);
                 selfPlayerInfoRef.current = newSelf;
                 if (newSelf.lastGuessStatus === GuessStatus.VALID) {
                     clearInterval(intervalRef.current);
@@ -116,10 +116,23 @@ export default function Game() {
             {roomExists === true && (
                 <div>
                     {gameStatus !== GameStatus.NICKNAME && (
-                        <PlayerInfo
-                            playerInfo={playerInfo}
-                            gameStatus={gameStatus}
-                        />
+                        <div>
+                            <div>Spectating: </div>
+                            <PlayerInfo
+                                playerInfo={playerInfo}
+                                gameStatus={gameStatus}
+                                allowableGameStatuses={[GameStatus.WAITING]}
+                            />
+                            <div>Ready: </div>
+                            <PlayerInfo
+                                playerInfo={playerInfo}
+                                gameStatus={gameStatus}
+                                allowableGameStatuses={[
+                                    GameStatus.READY,
+                                    GameStatus.PLAYING,
+                                ]}
+                            />
+                        </div>
                     )}
 
                     {gameStatus === GameStatus.NICKNAME && (

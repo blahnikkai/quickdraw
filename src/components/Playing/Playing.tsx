@@ -1,5 +1,6 @@
 import "./Playing.css";
 import Player from "../../../server/Player";
+import GuessStatus from "../../GuessStatus";
 
 export default function Playing({
     selfPlayerInfo,
@@ -26,7 +27,7 @@ export default function Playing({
             <form
                 onSubmit={(event) => {
                     event.preventDefault();
-                    if(selfPlayerInfo?.lastGuessStatus != "valid") {
+                    if(selfPlayerInfo?.lastGuessStatus != GuessStatus.VALID) {
                         submitGuess();
                     }
                 }}
