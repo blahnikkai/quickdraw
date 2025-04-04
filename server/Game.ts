@@ -42,6 +42,7 @@ export default class Game {
     }
 
     randomPhrase(length: number): string {
+        return "ca"
         const letters = [];
         for (let i = 0; i < length; i++) {
             letters.push(this.randomLetter());
@@ -50,6 +51,7 @@ export default class Game {
     }
 
     startGame() {
+        this.used.clear()
         this.startRound(true);
         this.players.forEach((player) => {
             if (player.gameStatus == GameStatus.READY) {
@@ -86,7 +88,6 @@ export default class Game {
 
     startRound(firstRound: boolean = false) {
         this.validCnt = 0;
-        this.used.clear();
         if (!firstRound) {
             this.players.forEach((player) => {
                 player.startRound();
@@ -134,14 +135,15 @@ export default class Game {
 
     checkGuess(guess: string, socket: Socket) {
         let guessStatus: GuessStatus = undefined;
-        if (this.used.has(guess)) {
+        if(!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
+            guessStatus = GuessStatus.INVALID;
+        }
+        else if (this.used.has(guess)) {
             guessStatus = GuessStatus.USED;
-        } else if (this.dictionary.has(guess) && guess.includes(this.phrase)) {
+        } else {
             this.validCnt++;
             this.used.add(guess);
             guessStatus = GuessStatus.VALID;
-        } else {
-            guessStatus = GuessStatus.INVALID;
         }
         this.players.get(socket.id).lastGuess = guess;
         this.players.get(socket.id).lastGuessStatus = guessStatus;
