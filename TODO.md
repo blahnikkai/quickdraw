@@ -1,14 +1,15 @@
 High
-- Show names even when not ready, separated or colored differently
-- New font
-- BUGFIX: players that aren't readied up still play if someone else starts the game, and players without a nickname will be "Player"
-- BUGFIX: players can enter no nickname
 - Make player info not shift up on status
 - Make player info a grid?
+- BUGFIX: players can enter no nickname
 - BUGFIX: spectating players can submit
+- Separate phrase from playing
+- Don't let one person start
 
 Medium
+- New font
 - UX prettification
+- Add a copy link button
 - Increasing difficulty
 - Wrong guess leads to shorter timer?
 - Display guess status icons to player and to other players in player info. 

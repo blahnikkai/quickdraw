@@ -1,6 +1,7 @@
 import "./Playing.css";
 import Player from "../../../server/Player";
 import GuessStatus from "../../GuessStatus";
+import GameStatus from "../../GameStatus";
 
 export default function Playing({
     selfPlayerInfo,
@@ -35,7 +36,7 @@ export default function Playing({
                 <input
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
-                    disabled={selfPlayerInfo.dead}
+                    disabled={selfPlayerInfo.gameStatus != GameStatus.PLAYING}
                 />
             </form>
             <div

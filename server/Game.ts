@@ -42,7 +42,7 @@ export default class Game {
     }
 
     randomPhrase(length: number): string {
-        return "ca"
+        return "ca";
         const letters = [];
         for (let i = 0; i < length; i++) {
             letters.push(this.randomLetter());
@@ -51,7 +51,7 @@ export default class Game {
     }
 
     startGame() {
-        this.used.clear()
+        this.used.clear();
         this.startRound(true);
         this.players.forEach((player) => {
             if (player.gameStatus == GameStatus.READY) {
@@ -76,7 +76,7 @@ export default class Game {
         if (this.aliveCnt === 0) {
             this.endGame();
             return true;
-        } else if (this.aliveCnt === 1) {
+        } else if (this.aliveCnt === 1 && this.activePlayerCnt > 1) {
             const winner = Array.from(this.players.values()).find(
                 (player) => player.aliveAndPlaying
             );
@@ -135,10 +135,9 @@ export default class Game {
 
     checkGuess(guess: string, socket: Socket) {
         let guessStatus: GuessStatus = undefined;
-        if(!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
+        if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
             guessStatus = GuessStatus.INVALID;
-        }
-        else if (this.used.has(guess)) {
+        } else if (this.used.has(guess)) {
             guessStatus = GuessStatus.USED;
         } else {
             this.validCnt++;
@@ -156,8 +155,8 @@ export default class Game {
     checkRoundOver() {
         // only 1 player left
         if (
-            (this.playerCnt > 1 && this.aliveCnt - this.validCnt === 1) ||
-            (this.playerCnt === 1 && this.validCnt === 1)
+            (this.aliveCnt > 1 && this.aliveCnt - this.validCnt === 1) ||
+            (this.aliveCnt === 1 && this.validCnt === 1)
         ) {
             console.log("ending round early");
             this.endRound();
@@ -166,6 +165,17 @@ export default class Game {
 
     get playerCnt(): number {
         return this.players.size;
+    }
+
+    // only count playing players
+    get activePlayerCnt(): number {
+        let cnt = 0;
+        for (const player of this.players.values()) {
+            if (player.gameStatus == GameStatus.PLAYING) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     get aliveCnt(): number {
