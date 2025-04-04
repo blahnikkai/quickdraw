@@ -55,6 +55,9 @@ export default class Game {
             if (player.gameStatus == GameStatus.READY) {
                 player.setGameStatus(GameStatus.PLAYING);
             }
+            if (player.gameStatus == GameStatus.WAITING) {
+                player.setGameStatus(GameStatus.SPECTATING);
+            }
         });
         this.emitPlayerInfo();
     }
@@ -67,13 +70,13 @@ export default class Game {
         this.socketServer.to(this.gid).emit("game ended", winner);
     }
 
-    checkGameOver(aliveCnt: number): boolean {
-        if (aliveCnt === 0) {
+    checkGameOver(): boolean {
+        if (this.aliveCnt === 0) {
             this.endGame();
             return true;
-        } else if (aliveCnt === 1) {
+        } else if (this.aliveCnt === 1) {
             const winner = Array.from(this.players.values()).find(
-                (player) => !player.dead
+                (player) => player.aliveAndPlaying
             );
             this.endGame(winner);
             return true;
@@ -84,15 +87,12 @@ export default class Game {
     startRound(firstRound: boolean = false) {
         this.validCnt = 0;
         this.used.clear();
-        let aliveCnt = 0;
         if (!firstRound) {
             this.players.forEach((player) => {
-                if (player.startRound()) {
-                    aliveCnt++;
-                }
+                player.startRound();
             });
             this.emitPlayerInfo();
-            if (this.checkGameOver(aliveCnt)) {
+            if (this.checkGameOver()) {
                 return;
             }
         }
@@ -170,7 +170,7 @@ export default class Game {
         let cnt = 0;
         // only count playing, alive players
         for (const player of this.players.values()) {
-            if (player.gameStatus == GameStatus.PLAYING && !player.dead) {
+            if (player.aliveAndPlaying) {
                 cnt++;
             }
         }
@@ -197,7 +197,7 @@ export default class Game {
     }
 
     changeName(newName: string, socket: Socket) {
-        this.players.get(socket.id).enterName(newName);
+        this.players.get(socket.id).setName(newName);
         this.changeGameStatus(GameStatus.WAITING, socket);
         this.emitPlayerInfo();
     }

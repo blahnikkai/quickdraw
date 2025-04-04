@@ -4,6 +4,7 @@ High
 - New font
 - BUGFIX: players that aren't readied up still play if someone else starts the game, and players without a nickname will be "Player"
 - BUGFIX: players can enter no nickname
+- 
 
 Medium
 - UX prettification

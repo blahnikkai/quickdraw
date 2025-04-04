@@ -120,13 +120,14 @@ export default function Game() {
                             <div>Spectating: </div>
                             <PlayerInfo
                                 playerInfo={playerInfo}
-                                gameStatus={gameStatus}
-                                allowableGameStatuses={[GameStatus.WAITING]}
+                                allowableGameStatuses={[
+                                    GameStatus.WAITING,
+                                    GameStatus.SPECTATING,
+                                ]}
                             />
                             <div>Ready: </div>
                             <PlayerInfo
                                 playerInfo={playerInfo}
-                                gameStatus={gameStatus}
                                 allowableGameStatuses={[
                                     GameStatus.READY,
                                     GameStatus.PLAYING,
@@ -147,7 +148,8 @@ export default function Game() {
                         <Ready startGame={startGame} />
                     )}
 
-                    {gameStatus === GameStatus.PLAYING && (
+                    {(gameStatus === GameStatus.PLAYING ||
+                        gameStatus == GameStatus.SPECTATING) && (
                         <Playing
                             selfPlayerInfo={selfPlayerInfo}
                             guess={guess}

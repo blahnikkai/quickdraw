@@ -4,11 +4,9 @@ import GameStatus from "../../GameStatus";
 
 export default function PlayerInfo({
     playerInfo,
-    gameStatus,
     allowableGameStatuses,
 }: {
     playerInfo: Player[];
-    gameStatus: GameStatus;
     allowableGameStatuses: GameStatus[];
 }) {
     return (
@@ -26,7 +24,7 @@ export default function PlayerInfo({
                             }`}
                         >
                             <div>{player.name}</div>
-                            {gameStatus === GameStatus.PLAYING && (
+                            {player.gameStatus == GameStatus.PLAYING && (
                                 <div>{player.lives}</div>
                             )}
                             <div

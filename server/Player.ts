@@ -22,6 +22,10 @@ export default class Player {
         this.gameStatus = GameStatus.NICKNAME;
     }
 
+    get aliveAndPlaying() {
+        return !this.dead && this.gameStatus == GameStatus.PLAYING;
+    }
+
     reset() {
         this.lives = 2;
         this.dead = false;
@@ -33,7 +37,7 @@ export default class Player {
     }
 
     startRound(): boolean {
-        if (this.dead) {
+        if (!this.aliveAndPlaying) {
             return;
         }
         if (this.lastGuessStatus !== GuessStatus.VALID) {
@@ -49,10 +53,10 @@ export default class Player {
     }
 
     checkDying() {
-        this.dying = !this.dead && this.lastGuessStatus !== GuessStatus.VALID;
+        this.dying = this.aliveAndPlaying && this.lastGuessStatus !== GuessStatus.VALID;
     }
 
-    enterName(newName: string) {
+    setName(newName: string) {
         this.name = newName;
     }
 }
