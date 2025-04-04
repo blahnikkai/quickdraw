@@ -1,6 +1,4 @@
 High
-- Change colors
-
 - Show names even when not ready, separated or colored differently
 - Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably
 - New font

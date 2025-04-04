@@ -27,7 +27,7 @@ export default function Home() {
                         socketRef.current.emit("create game");
                     }}
                 >
-                    Create a new game
+                    Play
                 </button>
             </div>
             - or -
