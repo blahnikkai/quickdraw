@@ -12,9 +12,8 @@ export default function PlayerInfo({
     return (
         <div className="players">
             {playerInfo
-                .filter(
-                    (player) =>
-                        allowableGameStatuses.includes(player.gameStatus)
+                .filter((player) =>
+                    allowableGameStatuses.includes(player.gameStatus)
                 )
                 .map((player) => {
                     return (
@@ -24,9 +23,10 @@ export default function PlayerInfo({
                             }`}
                         >
                             <div>{player.name}</div>
-                            {player.gameStatus == GameStatus.PLAYING && (
-                                <div>{player.lives}</div>
-                            )}
+                            <div>
+                                {player.gameStatus == GameStatus.PLAYING &&
+                                    player.lives}
+                            </div>
                             <div
                                 className={
                                     player.lastGuessStatus &&

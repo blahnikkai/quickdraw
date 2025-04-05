@@ -1,13 +1,11 @@
 High
+- BUGFIX: if someone joins after game starts, they can start it again, make them spectate
+- UX make elements not shift too much
 - Make player info not shift up on status
-- Make player info a grid?
-- BUGFIX: players can enter no nickname
-- Separate phrase from playing
 - Only let the host start
 
 Medium
 - New font
-- UX prettification
 - Add a copy link button
 - Increasing difficulty
 - Wrong guess leads to shorter timer?

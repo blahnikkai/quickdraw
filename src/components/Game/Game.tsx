@@ -114,7 +114,7 @@ export default function Game() {
             {roomExists === false && <div>Room {gid} does not exist.</div>}
 
             {roomExists === true && (
-                <div>
+                <div className="room-exists">
                     {gameStatus !== GameStatus.NICKNAME && (
                         <div>
                             <PlayerInfo
@@ -146,9 +146,11 @@ export default function Game() {
                         <Ready startGame={startGame} />
                     )}
 
-                    {(gameStatus == GameStatus.PLAYING || gameStatus == GameStatus.SPECTATING) && (
-                        <div className="phrase">{phrase}</div>
-                    )}
+                    <div className="phrase">
+                        {(gameStatus == GameStatus.PLAYING ||
+                            gameStatus == GameStatus.SPECTATING) &&
+                            phrase}
+                    </div>
 
                     {gameStatus === GameStatus.PLAYING && (
                         <Playing

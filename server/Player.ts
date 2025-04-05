@@ -16,7 +16,7 @@ export default class Player {
         this.name = "Player";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
-        this.lives = 2;
+        this.lives = 200;
         this.dying = false;
         this.dead = false;
         this.gameStatus = GameStatus.NICKNAME;
@@ -27,7 +27,7 @@ export default class Player {
     }
 
     reset() {
-        this.lives = 2;
+        this.lives = 200;
         this.dead = false;
         this.gameStatus = GameStatus.WAITING;
     }

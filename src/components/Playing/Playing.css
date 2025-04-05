@@ -6,7 +6,7 @@
 .last-guess {
     /* 1.2 * 16px +   */
     /* min-height: 24px; */
-    min-height: 40px;
+    height: 40px;
     background-color: var(--clr-1);
     padding: .5rem;
 }
@@ -14,5 +14,26 @@
 .timer-bar {
     background-color: var(--clr-1);
     height: 1rem;
+    width: 100%;
+}
+
+.game-ui {
+    display: flex;
+    flex-direction: column;
+
+    margin: 1rem;
+    padding: 1rem;
+
+    border: 5px solid var(--clr-1);
+    border-radius: 1rem;
+
+    width: 200px;
+}
+
+.game-ui > * {
+    margin: .5rem 0 0 0;
+}
+
+.guess-input {
     width: 100%;
 }

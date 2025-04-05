@@ -5,7 +5,6 @@
     align-items: flex-start;
     justify-content: space-evenly;
 
-    height: 5rem;
 }
 
 .player {
@@ -14,15 +13,22 @@
     align-items: center;
     justify-content: space-around;
 
+    height: 150px;
+
     padding: .5rem;
 }
 
 .player > * {
-    margin: .1rem 0;
+    height: 40px;
+    width: 100px;
+    text-align: center;
 }
 
 .dying {
-    border: 10px solid var(--clr-invalid-2);
+    box-sizing: border-box;
+    -webkit-box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
+    -moz-box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
+    box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
 }
 
 .dead * {
@@ -35,7 +41,6 @@
 
 .invalid {
     color: var(--clr-invalid-1);
-    /* -webkit-text-stroke: .5px #fff; */
 }
 
 .used {

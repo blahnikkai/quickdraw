@@ -31,6 +31,7 @@ export default function Playing({
                 }}
             >
                 <input
+                    className="guess-input"
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
                     disabled={selfPlayerInfo.gameStatus != GameStatus.PLAYING}
