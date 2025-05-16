@@ -2,8 +2,16 @@
     font-size: 25px;
 }
 
-.room-exists {
+.room {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.room-dne > * {
+    margin: 10px;
+}
+
+.go-home-btn {
+    text-decoration: underline;
 }

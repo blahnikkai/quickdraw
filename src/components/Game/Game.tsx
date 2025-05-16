@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Game.css";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 import Waiting from "../Waiting/Waiting";
@@ -12,6 +13,7 @@ import GuessStatus from "../../GuessStatus";
 import Ready from "../Ready/Ready";
 
 export default function Game() {
+    const navigate = useNavigate();
     const { gid } = useParams();
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
@@ -111,10 +113,15 @@ export default function Game() {
         <main>
             {roomExists === undefined && <div>Loading</div>}
 
-            {roomExists === false && <div>Room {gid} does not exist.</div>}
+            {roomExists === false && (
+                <div className="room room-dne">
+                    <div>Room {gid} does not exist.</div>
+                    <button className="go-home-btn" onClick={() => {navigate("/");}}>Go to Homepage</button>
+                </div>
+            )}
 
             {roomExists === true && (
-                <div className="room-exists">
+                <div className="room">
                     {gameStatus !== GameStatus.NICKNAME && (
                         <div>
                             <PlayerInfo
