@@ -242,11 +242,5 @@ export default class Game {
 
     changeGameStatus(newStatus: GameStatus, socket: Socket) {
         this.players.get(socket.id).setGameStatus(newStatus);
-        // move player to end of list so that players show in the order they ready up
-        const player: Player = this.players.get(socket.id);
-        this.players.delete(socket.id);
-        const playerArr = Array.from(this.players);
-        playerArr.splice(this.players.size + 1, 0, [socket.id, player]);
-        this.players = new Map(playerArr);
     }
 }

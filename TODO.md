@@ -2,18 +2,21 @@ High
 - BUGFIX: if someone joins after game starts, they can start it again, make them spectate
 - Only let the host start
 - Add regex clues
-- Show ready vs not ready with colors instead of position
 - Add number of lives select
+- Add a link to homepage on the Room DNE page
+- Add host privileges to the host
 
 Medium
-- New font
 - Add a copy link button
 - Increasing difficulty
 - Wrong guess leads to shorter timer?
 - Display guess status icons to player and to other players in player info. 
     - Only for short time, use timeout
+- Add speeding up each round
+- In general, add simple settings and advanced settings. In advanced settings, players have more control
 
 Low
+- New font
 - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
 - Only allow unique nicknames?
 - Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably

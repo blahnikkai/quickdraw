@@ -46,3 +46,17 @@
 .used {
     color: yellow;
 }
+
+.player-game-status {
+    font-size: 14px;
+    height: 0;
+    background-color: red;
+}
+
+.ready {
+    color: green;
+}
+
+.waiting {
+    color: yellow;
+}

@@ -1,14 +1,14 @@
 enum GameStatus {
     // entering nickname
-    NICKNAME,
+    NICKNAME = "Nickname",
     // button to join a game, if game starts, they'll be spectating
-    WAITING,
+    WAITING = "Waiting",
     // spectating
-    SPECTATING,
+    SPECTATING = "Spectating",
     // ready to start game
-    READY,
+    READY = "Ready",
     // playing the game
-    PLAYING,
+    PLAYING = "Playing",
 }
 
 export default GameStatus

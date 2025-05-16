@@ -16,6 +16,13 @@ export default function PlayerInfo({
                     allowableGameStatuses.includes(player.gameStatus)
                 )
                 .map((player) => {
+                    
+                    const playerIsInWaitingRoom: boolean = [
+                        GameStatus.READY,
+                        GameStatus.WAITING,
+                    ].includes(player.gameStatus);
+                    const gameStatusStr: string = playerIsInWaitingRoom ? player.gameStatus : "";
+
                     return (
                         <div
                             className={`player ${player.dying ? " dying" : ""}${
@@ -23,6 +30,9 @@ export default function PlayerInfo({
                             }`}
                         >
                             <div>{player.name}</div>
+                            <div className={`player-game-status ${gameStatusStr.toLowerCase()}`}>
+                                {gameStatusStr}
+                            </div>
                             <div>
                                 {player.gameStatus == GameStatus.PLAYING &&
                                     player.lives}

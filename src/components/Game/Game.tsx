@@ -119,16 +119,14 @@ export default function Game() {
                         <div>
                             <PlayerInfo
                                 playerInfo={playerInfo}
-                                allowableGameStatuses={[
-                                    GameStatus.WAITING,
-                                    GameStatus.SPECTATING,
-                                ]}
+                                allowableGameStatuses={[GameStatus.SPECTATING]}
                             />
                             <PlayerInfo
                                 playerInfo={playerInfo}
                                 allowableGameStatuses={[
-                                    GameStatus.READY,
                                     GameStatus.PLAYING,
+                                    GameStatus.READY,
+                                    GameStatus.WAITING,
                                 ]}
                             />
                         </div>
@@ -147,8 +145,8 @@ export default function Game() {
                     )}
 
                     <div className="phrase">
-                        {(gameStatus == GameStatus.PLAYING ||
-                            gameStatus == GameStatus.SPECTATING) &&
+                        {(gameStatus === GameStatus.PLAYING ||
+                            gameStatus === GameStatus.SPECTATING) &&
                             phrase}
                     </div>
 
