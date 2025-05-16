@@ -6,17 +6,26 @@ import GameStatus from "../src/GameStatus.js";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
+enum Difficulty {
+    Easy,
+    Medium,
+    Hard,
+    Dynamic,
+}
+
 export default class Game {
     gid: string;
     phrase: string;
     socketServer: any;
     dictionary: Set<string>;
+    // TODO: could be static?
     twoLetCnts: Map<string, number>;
     threeLetCnts: Map<string, number>;
     used: Set<string>;
     validCnt: number;
     timeoutId: ReturnType<typeof setTimeout>;
     players: Map<string, Player>;
+    curRound: number;
 
     constructor(
         gid: string,
@@ -34,6 +43,7 @@ export default class Game {
         this.used = new Set();
         this.validCnt = 0;
         this.players = new Map();
+        this.curRound = 0;
     }
 
     randomLetter(): string {
@@ -50,6 +60,7 @@ export default class Game {
     }
 
     startGame() {
+        this.curRound = 1;
         this.used.clear();
         this.startRound(true);
         this.players.forEach((player) => {
@@ -64,6 +75,7 @@ export default class Game {
     }
 
     endGame(winner: Player = undefined) {
+        this.curRound = 0;
         this.players.forEach((player: Player) => {
             player.reset();
         });
@@ -86,6 +98,7 @@ export default class Game {
     }
 
     startRound(firstRound: boolean = false) {
+        this.curRound++;
         this.validCnt = 0;
         if (!firstRound) {
             this.players.forEach((player) => {
@@ -122,13 +135,27 @@ export default class Game {
         }, POST_ROUND_TIME * 1_000);
     }
 
+    calcMinPhraseCnt(difficulty: Difficulty): number {
+        if (difficulty === Difficulty.Easy) {
+            return 3000;
+        } else if (difficulty === Difficulty.Medium) {
+            return 1500;
+        } else if (difficulty === Difficulty.Hard) {
+            return 1000;
+        } else if (difficulty === Difficulty.Dynamic) {
+            return 2000 * Math.pow(2, -this.curRound / 12);
+        }
+        throw Error("Shouldn't be here");
+    }
+
     generatePhrase(): string {
         const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2;
-        const letCnts = phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts;
+        const phraseCnts =
+            phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts;
         let phrase = "";
         do {
             phrase = this.randomPhrase(phraseLen);
-        } while (letCnts.get(phrase) < 1500);
+        } while (phraseCnts.get(phrase) < 1500);
         return phrase;
     }
 

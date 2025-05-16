@@ -1,8 +1,9 @@
 High
 - BUGFIX: if someone joins after game starts, they can start it again, make them spectate
-- UX make elements not shift too much
-- Make player info not shift up on status
 - Only let the host start
+- Add regex clues
+- Show ready vs not ready with colors instead of position
+- Add number of lives select
 
 Medium
 - New font
