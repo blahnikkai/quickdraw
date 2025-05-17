@@ -12,6 +12,8 @@ import GameStatus from "../../GameStatus";
 import GuessStatus from "../../GuessStatus";
 import Ready from "../Ready/Ready";
 import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
+import Settings from "../Settings/Settings";
+import Difficulty from "../../Difficulty";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -37,6 +39,12 @@ export default function Game() {
     const socketRef = useRef<Socket>(undefined);
 
     const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
+
+    const [difficulty, setDifficulty] = useState<Difficulty>(
+        Difficulty.DYNAMIC
+    );
+    const [roundtime, setRoundTime] = useState(10);
+    const [startingLives, setStartingLives] = useState(6);
 
     const updateTimeProgress = () => {
         const curTime = Date.now();
@@ -141,6 +149,19 @@ export default function Game() {
 
             {roomExists === true && (
                 <div className="room">
+                    {[GameStatus.WAITING, GameStatus.READY].includes(
+                        gameStatus
+                    ) && (
+                        <Settings
+                            difficulty={difficulty}
+                            setDifficulty={setDifficulty}
+                            roundTime={roundtime}
+                            setRoundTime={setRoundTime}
+                            startingLives={startingLives}
+                            setStartingLives={setStartingLives}
+                        />
+                    )}
+
                     {gameStatus !== GameStatus.NICKNAME && (
                         <div>
                             <PlayerInfo
@@ -171,9 +192,9 @@ export default function Game() {
                     )}
 
                     {[
-                        GameStatus.READY,
-                        GameStatus.WAITING,
                         GameStatus.NICKNAME,
+                        GameStatus.WAITING,
+                        GameStatus.READY,
                     ].includes(gameStatus) && <CopyLinkButton />}
 
                     {(gameStatus === GameStatus.PLAYING ||
