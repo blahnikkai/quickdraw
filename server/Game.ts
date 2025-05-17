@@ -234,10 +234,19 @@ export default class Game {
         this.socketServer.to(this.gid).emit("update player info", playerInfo);
     }
 
+    emitPhrase(socketId: string) {
+        this.socketServer.to(socketId).emit("update phrase", this.phrase);
+    }
+
     changeName(newName: string, socket: Socket) {
         this.players.get(socket.id).setName(newName);
-        this.changeGameStatus(GameStatus.WAITING, socket);
+        const newStatus =
+            this.curRound === 0 ? GameStatus.WAITING : GameStatus.SPECTATING;
+        this.changeGameStatus(newStatus, socket);
         this.emitPlayerInfo();
+        if (newStatus === GameStatus.SPECTATING) {
+            this.emitPhrase(socket.id);
+        }
     }
 
     changeGameStatus(newStatus: GameStatus, socket: Socket) {

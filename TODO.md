@@ -1,19 +1,19 @@
 High
-- BUGFIX: if someone joins after game starts, they can start it again, make them spectate
-- Add host privileges to the host
-- Only let the host start
-
-Medium
-- Add header/nav
-- Increasing difficulty
-- Wrong guess leads to shorter timer?
-- Add speeding up each round
-- Display guess status icons to player and to other players in player info. 
-    - Only for short time, use timeout
 - In general, add simple settings and advanced settings. In advanced settings, players have more control
     - Number of lives select
     - Difficulty select
     - Round time select (static or increasing)
+- Add actual difficulty levels, with both a max and a min. Include debug info to see the number of appearances of a phrase
+- Move out that one enum to its own file
+
+Medium
+- Add host privileges, only let the host start
+- Investigate why the enter key works to submit nickname but not ready up
+- Add header/nav
+- Wrong guess leads to shorter timer
+- Add speeding up each round
+- Display guess status icons to player and to other players in player info. 
+    - Only for short time, use timeout
 
 Low
 - Add regex clues

@@ -102,6 +102,13 @@ export default function Game() {
             }
         );
 
+        socketRef.current.on(
+            "update phrase",
+            (newPhrase: string) => {
+                setPhrase(newPhrase);
+            }
+        )
+
         const intervalId = intervalRef.current;
 
         return () => {
