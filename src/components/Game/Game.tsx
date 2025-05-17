@@ -43,7 +43,7 @@ export default function Game() {
     const [difficulty, setDifficulty] = useState<Difficulty>(
         Difficulty.DYNAMIC
     );
-    const [roundtime, setRoundTime] = useState(10);
+    const [roundTime, setRoundTime] = useState(10);
     const [startingLives, setStartingLives] = useState(6);
 
     const updateTimeProgress = () => {
@@ -61,6 +61,9 @@ export default function Game() {
     const startGame = () => socketRef.current.emit("start game", gid);
     const submitGuess = () =>
         socketRef.current.emit("submit guess", gid, guess);
+    const updateSettings = (difficulty: Difficulty, roundTime: number, startingLives: number) => {
+        socketRef.current.emit("update settings", gid, difficulty, roundTime, startingLives)
+    }
 
     useEffect(() => {
         socketRef.current = io(":3001");
@@ -121,6 +124,12 @@ export default function Game() {
             setDebugInfo(newDebugInfo);
         });
 
+        socketRef.current.on("broadcast settings change", (difficulty: Difficulty, roundTime: number, startingLives: number) => {
+            setDifficulty(difficulty);
+            setRoundTime(roundTime);
+            setStartingLives(startingLives);
+        })
+
         const intervalId = intervalRef.current;
 
         return () => {
@@ -155,10 +164,11 @@ export default function Game() {
                         <Settings
                             difficulty={difficulty}
                             setDifficulty={setDifficulty}
-                            roundTime={roundtime}
+                            roundTime={roundTime}
                             setRoundTime={setRoundTime}
                             startingLives={startingLives}
                             setStartingLives={setStartingLives}
+                            updateSettings={updateSettings}
                         />
                     )}
 

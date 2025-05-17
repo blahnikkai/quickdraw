@@ -21,6 +21,8 @@ export default class Game {
     players: Map<string, Player>;
     curRound: number;
     difficulty: Difficulty;
+    roundTime: number;
+    startingLives: number;
 
     constructor(
         gid: string,
@@ -258,7 +260,6 @@ export default class Game {
         const newStatus =
             this.curRound === 0 ? GameStatus.WAITING : GameStatus.SPECTATING;
         this.changeGameStatus(newStatus, socket);
-        this.emitPlayerInfo();
         if (newStatus === GameStatus.SPECTATING) {
             this.emitPhrase(socket.id);
         }
@@ -266,5 +267,22 @@ export default class Game {
 
     changeGameStatus(newStatus: GameStatus, socket: Socket) {
         this.players.get(socket.id).setGameStatus(newStatus);
+        this.emitPlayerInfo();
+    }
+
+    updateSettings(
+        difficulty: Difficulty,
+        roundTime: number,
+        startingLives: number
+    ) {
+        this.difficulty = difficulty;
+        this.roundTime = roundTime;
+        this.startingLives = startingLives;
+        this.socketServer.to(this.gid).emit(
+            "broadcast settings change",
+            difficulty,
+            roundTime,
+            startingLives,
+        )
     }
 }

@@ -1,4 +1,5 @@
 import Difficulty, { strToDifficulty } from "../../Difficulty";
+import { useState } from "react";
 
 export default function Settings({
     roundTime,
@@ -7,6 +8,7 @@ export default function Settings({
     setDifficulty,
     startingLives,
     setStartingLives,
+    updateSettings,
 }: {
     roundTime: number;
     setRoundTime: (newRoundTime: number) => void;
@@ -14,19 +16,26 @@ export default function Settings({
     setDifficulty: (newDifficulty: Difficulty) => void;
     startingLives: number;
     setStartingLives: (newStartingLives: number) => void;
+    updateSettings: (
+        difficulty: Difficulty,
+        roundTime: number,
+        startingLives: number
+    ) => void;
 }) {
+
     return (
         <form className="game-ui">
             <select
                 name="difficulty"
+                value={difficulty}
                 onChange={(event) => {
-                    const convertedDifficulty = strToDifficulty(
+                    const newDifficulty = strToDifficulty(
                         event.target.value
                     );
-                    console.log(convertedDifficulty);
-                    setDifficulty(convertedDifficulty);
+                    console.log(newDifficulty);
+                    setDifficulty(newDifficulty);
+                    updateSettings(newDifficulty, roundTime, startingLives);
                 }}
-                value={Difficulty[difficulty]}
             >
                 <option value="dynamic">Dynamic</option>
                 <option value="easy">Easy</option>
@@ -36,12 +45,21 @@ export default function Settings({
             <input
                 type="number"
                 value={roundTime}
-                onChange={(event) => setRoundTime(parseInt(event.target.value))}
+                onChange={(event) => {
+                    const newRoundTime = parseInt(event.target.value);
+                    setRoundTime(newRoundTime);
+                    console.log(Difficulty[difficulty])
+                    updateSettings(difficulty, newRoundTime, startingLives);
+                }}
             ></input>
             <input
                 type="number"
                 value={startingLives}
-                onChange={(event) => setStartingLives(parseInt(event.target.value))}
+                onChange={(event) => {
+                    const newStartingLives = parseInt(event.target.value);
+                    setStartingLives(newStartingLives);
+                    updateSettings(difficulty, roundTime, newStartingLives);
+                }}
             ></input>
         </form>
     );
