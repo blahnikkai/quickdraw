@@ -8,10 +8,16 @@ export default function Waiting({
     readyUp: () => void;
 }) {
     return (
-        <div className="game-ui">
+        <form
+            className="game-ui"
+            onSubmit={(event) => {
+                event.preventDefault();
+                readyUp();
+            }}
+        >
             {winner &&
                 (winner.name ? winner.name + " won the game!" : "Nobody won!")}
-            <button onClick={() => readyUp()}>Ready Up</button>
-        </div>
+            <button>Ready Up</button>
+        </form>
     );
 }

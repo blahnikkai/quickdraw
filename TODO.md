@@ -3,8 +3,6 @@ High
     - Number of lives select
     - Difficulty select
     - Round time select (static or increasing)
-- Add actual difficulty levels, with both a max and a min. Include debug info to see the number of appearances of a phrase
-- Move out that one enum to its own file
 
 Medium
 - Add host privileges, only let the host start
