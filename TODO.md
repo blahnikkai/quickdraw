@@ -23,6 +23,7 @@ Low
 - Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably
 - Add animations/transition to names on join
 - Change passing Socket to socketId in backend
+- Give a bonus to the person with the rarest word
 
 Unsorted
 - Pass functions to components instead of socket and gid. what this mean?

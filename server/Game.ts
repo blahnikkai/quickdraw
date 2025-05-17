@@ -3,15 +3,9 @@ import Player from "./Player.js";
 import GuessStatus from "../src/GuessStatus.js";
 import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from "./constants.js";
 import GameStatus from "../src/GameStatus.js";
+import Difficulty from "../src/Difficulty.js"
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
-
-enum Difficulty {
-    Easy,
-    Medium,
-    Hard,
-    Dynamic,
-}
 
 export default class Game {
     gid: string;
@@ -26,6 +20,7 @@ export default class Game {
     timeoutId: ReturnType<typeof setTimeout>;
     players: Map<string, Player>;
     curRound: number;
+    difficulty: Difficulty;
 
     constructor(
         gid: string,
@@ -44,6 +39,7 @@ export default class Game {
         this.validCnt = 0;
         this.players = new Map();
         this.curRound = 0;
+        this.difficulty = Difficulty.DYNAMIC;
     }
 
     randomLetter(): string {
@@ -118,6 +114,7 @@ export default class Game {
                 Date.now(),
                 Date.now() + ROUND_TIME * 1_000
             );
+        this.socketServer.to(this.gid).emit("update phrase count", this.calcPhraseCnt(this.phrase))
         this.timeoutId = setTimeout(() => {
             this.endRound();
         }, ROUND_TIME * 1_000);
@@ -135,27 +132,30 @@ export default class Game {
         }, POST_ROUND_TIME * 1_000);
     }
 
-    calcMinPhraseCnt(difficulty: Difficulty): number {
-        if (difficulty === Difficulty.Easy) {
+    calcMinPhraseCnt(): number {
+        if (this.difficulty === Difficulty.EASY) {
             return 3000;
-        } else if (difficulty === Difficulty.Medium) {
+        } else if (this.difficulty === Difficulty.MEDIUM) {
             return 1500;
-        } else if (difficulty === Difficulty.Hard) {
+        } else if (this.difficulty === Difficulty.HARD) {
             return 1000;
-        } else if (difficulty === Difficulty.Dynamic) {
+        } else if (this.difficulty === Difficulty.DYNAMIC) {
             return 2000 * Math.pow(2, -this.curRound / 12);
         }
         throw Error("Shouldn't be here");
     }
 
+    calcPhraseCnt(phrase: string) {
+        const phraseCnts = phrase.length === 3 ? this.threeLetCnts : this.twoLetCnts;
+        return phraseCnts.get(phrase);
+    }
+
     generatePhrase(): string {
         const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2;
-        const phraseCnts =
-            phraseLen === 3 ? this.threeLetCnts : this.twoLetCnts;
         let phrase = "";
         do {
             phrase = this.randomPhrase(phraseLen);
-        } while (phraseCnts.get(phrase) < 1500);
+        } while (this.calcPhraseCnt(phrase) < 1500);
         return phrase;
     }
 

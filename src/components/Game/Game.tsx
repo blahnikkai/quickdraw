@@ -18,6 +18,9 @@ export default function Game() {
     const { gid } = useParams();
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
+
+    const [phraseCnt, setPhraseCnt] = useState(0);
+
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
 
     const startTimeRef = useRef<number>(undefined);
@@ -102,12 +105,13 @@ export default function Game() {
             }
         );
 
-        socketRef.current.on(
-            "update phrase",
-            (newPhrase: string) => {
-                setPhrase(newPhrase);
-            }
-        )
+        socketRef.current.on("update phrase", (newPhrase: string) => {
+            setPhrase(newPhrase);
+        });
+
+        socketRef.current.on("update phrase count", (newPhraseCnt: number) => {
+            setPhraseCnt(newPhraseCnt);
+        });
 
         const intervalId = intervalRef.current;
 
@@ -172,11 +176,13 @@ export default function Game() {
                         GameStatus.NICKNAME,
                     ].includes(gameStatus) && <CopyLinkButton />}
 
-                    <div className="phrase">
-                        {(gameStatus === GameStatus.PLAYING ||
-                            gameStatus === GameStatus.SPECTATING) &&
-                            phrase}
-                    </div>
+                    {(gameStatus === GameStatus.PLAYING ||
+                        gameStatus === GameStatus.SPECTATING) && (
+                        <div>
+                            <div className="phrase">{phrase}</div>
+                            <div>{phraseCnt}</div>
+                        </div>
+                    )}
 
                     {gameStatus === GameStatus.PLAYING && (
                         <Playing
