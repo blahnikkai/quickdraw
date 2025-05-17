@@ -25,6 +25,7 @@ export default function PlayerInfo({
 
                     return (
                         <div
+                            key={player.socketId}
                             className={`player ${player.dying ? " dying" : ""}${
                                 player.dead ? " dead" : ""
                             }`}
