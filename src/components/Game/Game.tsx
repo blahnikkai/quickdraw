@@ -19,7 +19,7 @@ export default function Game() {
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
 
-    const [phraseCnt, setPhraseCnt] = useState(0);
+    const [debugInfo, setDebugInfo] = useState("");
 
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
 
@@ -109,8 +109,8 @@ export default function Game() {
             setPhrase(newPhrase);
         });
 
-        socketRef.current.on("update phrase count", (newPhraseCnt: number) => {
-            setPhraseCnt(newPhraseCnt);
+        socketRef.current.on("update debug info", (newDebugInfo: string) => {
+            setDebugInfo(newDebugInfo);
         });
 
         const intervalId = intervalRef.current;
@@ -180,7 +180,7 @@ export default function Game() {
                         gameStatus === GameStatus.SPECTATING) && (
                         <div>
                             <div className="phrase">{phrase}</div>
-                            <div>{phraseCnt}</div>
+                            <div>{debugInfo}</div>
                         </div>
                     )}
 

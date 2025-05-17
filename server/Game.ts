@@ -3,7 +3,7 @@ import Player from "./Player.js";
 import GuessStatus from "../src/GuessStatus.js";
 import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from "./constants.js";
 import GameStatus from "../src/GameStatus.js";
-import Difficulty from "../src/Difficulty.js"
+import Difficulty from "../src/Difficulty.js";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
@@ -114,10 +114,18 @@ export default class Game {
                 Date.now(),
                 Date.now() + ROUND_TIME * 1_000
             );
-        this.socketServer.to(this.gid).emit("update phrase count", this.calcPhraseCnt(this.phrase))
+        this.emitDebugInfo();
         this.timeoutId = setTimeout(() => {
             this.endRound();
         }, ROUND_TIME * 1_000);
+    }
+
+    emitDebugInfo() {
+        const [mnPhraseCnt, mxPhraseCnt] = this.calcMinAndMaxPhraseCnt();
+        const debugInfo = `${this.calcPhraseCnt(
+            this.phrase
+        )}, ${mnPhraseCnt.toFixed(2)}-${mxPhraseCnt.toFixed(2)}`;
+        this.socketServer.to(this.gid).emit("update debug info", debugInfo);
     }
 
     endRound() {
@@ -132,30 +140,37 @@ export default class Game {
         }, POST_ROUND_TIME * 1_000);
     }
 
-    calcMinPhraseCnt(): number {
+    calcMinAndMaxPhraseCnt(): number[] {
         if (this.difficulty === Difficulty.EASY) {
-            return 3000;
+            return [3_000, 20_000];
         } else if (this.difficulty === Difficulty.MEDIUM) {
-            return 1500;
+            return [1_500, 5_0000];
         } else if (this.difficulty === Difficulty.HARD) {
-            return 1000;
+            return [500, 1_500];
         } else if (this.difficulty === Difficulty.DYNAMIC) {
-            return 2000 * Math.pow(2, -this.curRound / 12);
+            const decay = Math.pow(2, -this.curRound / 12);
+            const mn = Math.max(2000 * decay, 500);
+            const mx = Math.min(6000 * decay, 1_500);
+            return [mn, mx];
         }
         throw Error("Shouldn't be here");
     }
 
     calcPhraseCnt(phrase: string) {
-        const phraseCnts = phrase.length === 3 ? this.threeLetCnts : this.twoLetCnts;
+        const phraseCnts =
+            phrase.length === 3 ? this.threeLetCnts : this.twoLetCnts;
         return phraseCnts.get(phrase);
     }
 
     generatePhrase(): string {
         const phraseLen = Math.random() < THREE_LET_PROB ? 3 : 2;
         let phrase = "";
+        const [mnPhraseCnt, mxPhraseCnt] = this.calcMinAndMaxPhraseCnt();
+        let curPhraseCnt = -1;
         do {
             phrase = this.randomPhrase(phraseLen);
-        } while (this.calcPhraseCnt(phrase) < 1500);
+            curPhraseCnt = this.calcPhraseCnt(phrase);
+        } while (mnPhraseCnt > curPhraseCnt || curPhraseCnt > mxPhraseCnt);
         return phrase;
     }
 
