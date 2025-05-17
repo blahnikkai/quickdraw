@@ -1,19 +1,21 @@
 High
-- In general, add simple settings and advanced settings. In advanced settings, players have more control
-    - Number of lives select
-    - Difficulty select
-    - Round time select (static or increasing)
+- Number of lives select
+- Difficulty select
+- Round time select (static or increasing)
+- Add host privileges, only let the host start
+- Add header/nav
+- FIX: Each child in a list should have a unique "key" prop. PlayerInfo.tsx:11
 
 Medium
-- Add host privileges, only let the host start
-- Investigate why the enter key works to submit nickname but not ready up
-- Add header/nav
-- Wrong guess leads to shorter timer
-- Add speeding up each round
 - Display guess status icons to player and to other players in player info. 
     - Only for short time, use timeout
+- In general, add simple settings and advanced settings. In advanced settings, players have more control
 
 Low
+- Add little cowboy drawings
+- Add cowboy sound effects
+- Wrong guess leads to shorter timer
+- Add speeding up each round
 - Add regex clues
 - New font
 - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
