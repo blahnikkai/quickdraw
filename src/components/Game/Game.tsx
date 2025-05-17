@@ -11,6 +11,7 @@ import Player from "../../../server/Player";
 import GameStatus from "../../GameStatus";
 import GuessStatus from "../../GuessStatus";
 import Ready from "../Ready/Ready";
+import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -116,7 +117,14 @@ export default function Game() {
             {roomExists === false && (
                 <div className="room room-dne">
                     <div>Room {gid} does not exist.</div>
-                    <button className="go-home-btn" onClick={() => {navigate("/");}}>Go to Homepage</button>
+                    <button
+                        className="go-home-btn"
+                        onClick={() => {
+                            navigate("/");
+                        }}
+                    >
+                        Go to Homepage
+                    </button>
                 </div>
             )}
 
@@ -150,6 +158,12 @@ export default function Game() {
                     {gameStatus === GameStatus.READY && (
                         <Ready startGame={startGame} />
                     )}
+
+                    {[
+                        GameStatus.READY,
+                        GameStatus.WAITING,
+                        GameStatus.NICKNAME,
+                    ].includes(gameStatus) && <CopyLinkButton />}
 
                     <div className="phrase">
                         {(gameStatus === GameStatus.PLAYING ||
