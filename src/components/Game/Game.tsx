@@ -12,6 +12,9 @@ import GameStatus from "../../GameStatus";
 import GuessStatus from "../../GuessStatus";
 import Ready from "../Ready/Ready";
 import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
+import Settings from "../Settings/Settings";
+import Difficulty from "../../Difficulty";
+import { DEFAULT_STARTING_LIVES, ROUND_TIME } from "../../constants";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -38,6 +41,12 @@ export default function Game() {
 
     const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
+    const [difficulty, setDifficulty] = useState<Difficulty>(
+        Difficulty.DYNAMIC
+    );
+    const [roundTime, setRoundTime] = useState(ROUND_TIME);
+    const [startingLives, setStartingLives] = useState(DEFAULT_STARTING_LIVES);
+
     const updateTimeProgress = () => {
         const curTime = Date.now();
         const timeProgress =
@@ -53,6 +62,9 @@ export default function Game() {
     const startGame = () => socketRef.current.emit("start game", gid);
     const submitGuess = () =>
         socketRef.current.emit("submit guess", gid, guess);
+    const updateSettings = (difficulty: Difficulty, roundTime: number, startingLives: number) => {
+        socketRef.current.emit("update settings", gid, difficulty, roundTime, startingLives)
+    }
 
     useEffect(() => {
         socketRef.current = io(":3001");
@@ -113,6 +125,12 @@ export default function Game() {
             setDebugInfo(newDebugInfo);
         });
 
+        socketRef.current.on("broadcast settings change", (difficulty: Difficulty, roundTime: number, startingLives: number) => {
+            setDifficulty(difficulty);
+            setRoundTime(roundTime);
+            setStartingLives(startingLives);
+        })
+
         const intervalId = intervalRef.current;
 
         return () => {
@@ -141,6 +159,20 @@ export default function Game() {
 
             {roomExists === true && (
                 <div className="room">
+                    {[GameStatus.WAITING, GameStatus.READY].includes(
+                        gameStatus
+                    ) && (
+                        <Settings
+                            difficulty={difficulty}
+                            setDifficulty={setDifficulty}
+                            roundTime={roundTime}
+                            setRoundTime={setRoundTime}
+                            startingLives={startingLives}
+                            setStartingLives={setStartingLives}
+                            updateSettings={updateSettings}
+                        />
+                    )}
+
                     {gameStatus !== GameStatus.NICKNAME && (
                         <div>
                             <PlayerInfo
@@ -171,9 +203,9 @@ export default function Game() {
                     )}
 
                     {[
-                        GameStatus.READY,
-                        GameStatus.WAITING,
                         GameStatus.NICKNAME,
+                        GameStatus.WAITING,
+                        GameStatus.READY,
                     ].includes(gameStatus) && <CopyLinkButton />}
 
                     {(gameStatus === GameStatus.PLAYING ||

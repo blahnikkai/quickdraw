@@ -2,6 +2,7 @@ import { Server as SocketServer, Socket } from "socket.io";
 import { promises as fs } from "fs";
 import Game from "./Game.js";
 import GameStatus from "../src/GameStatus.js";
+import Difficulty from "../src/Difficulty.js";
 
 export default class GameManager {
     socketServer: SocketServer;
@@ -111,6 +112,16 @@ export default class GameManager {
 
     changeGameStatus(gid: string, newStatus: GameStatus, socket: Socket) {
         this.games.get(gid)?.changeGameStatus(newStatus, socket);
-        this.games.get(gid)?.emitPlayerInfo();
+    }
+
+    updateSettings(
+        gid: string,
+        difficulty: Difficulty,
+        roundTime: number,
+        startingLives: number
+    ) {
+        this.games
+            .get(gid)
+            ?.updateSettings(difficulty, roundTime, startingLives);
     }
 }
