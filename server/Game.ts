@@ -1,7 +1,12 @@
 import { Socket } from "socket.io";
 import Player from "./Player.js";
 import GuessStatus from "../src/GuessStatus.js";
-import { THREE_LET_PROB, POST_ROUND_TIME, ROUND_TIME } from "./constants.js";
+import {
+    THREE_LET_PROB,
+    POST_ROUND_TIME,
+    ROUND_TIME,
+    DEFAULT_STARTING_LIVES,
+} from "../src/constants.js";
 import GameStatus from "../src/GameStatus.js";
 import Difficulty from "../src/Difficulty.js";
 
@@ -42,6 +47,8 @@ export default class Game {
         this.players = new Map();
         this.curRound = 0;
         this.difficulty = Difficulty.DYNAMIC;
+        this.roundTime = ROUND_TIME;
+        this.startingLives = DEFAULT_STARTING_LIVES;
     }
 
     randomLetter(): string {
@@ -58,17 +65,18 @@ export default class Game {
     }
 
     startGame() {
-        this.curRound = 1;
-        this.used.clear();
-        this.startRound(true);
         this.players.forEach((player) => {
             if (player.gameStatus == GameStatus.READY) {
                 player.setGameStatus(GameStatus.PLAYING);
+                player.lives = this.startingLives;
             }
             if (player.gameStatus == GameStatus.WAITING) {
                 player.setGameStatus(GameStatus.SPECTATING);
             }
         });
+        this.used.clear();
+        this.curRound = 1;
+        this.startRound(true);
         this.emitPlayerInfo();
     }
 
@@ -114,12 +122,12 @@ export default class Game {
                 "start round",
                 this.phrase,
                 Date.now(),
-                Date.now() + ROUND_TIME * 1_000
+                Date.now() + this.roundTime * 1_000
             );
         this.emitDebugInfo();
         this.timeoutId = setTimeout(() => {
             this.endRound();
-        }, ROUND_TIME * 1_000);
+        }, this.roundTime * 1_000);
     }
 
     emitDebugInfo() {
@@ -146,13 +154,13 @@ export default class Game {
         if (this.difficulty === Difficulty.EASY) {
             return [3_000, 20_000];
         } else if (this.difficulty === Difficulty.MEDIUM) {
-            return [1_500, 5_0000];
+            return [1_500, 3_000];
         } else if (this.difficulty === Difficulty.HARD) {
             return [500, 1_500];
         } else if (this.difficulty === Difficulty.DYNAMIC) {
             const decay = Math.pow(2, -this.curRound / 12);
             const mn = Math.max(2000 * decay, 500);
-            const mx = Math.min(6000 * decay, 1_500);
+            const mx = Math.max(6000 * decay, 1_500);
             return [mn, mx];
         }
         throw Error("Shouldn't be here");
@@ -172,7 +180,7 @@ export default class Game {
         do {
             phrase = this.randomPhrase(phraseLen);
             curPhraseCnt = this.calcPhraseCnt(phrase);
-        } while (mnPhraseCnt > curPhraseCnt || curPhraseCnt > mxPhraseCnt);
+        } while (curPhraseCnt < mnPhraseCnt || curPhraseCnt > mxPhraseCnt);
         return phrase;
     }
 
@@ -238,6 +246,12 @@ export default class Game {
         socket.emit("room joined");
         this.players.set(socket.id, new Player(socket.id));
         this.emitPlayerInfo();
+        socket.emit(
+            "broadcast settings change",
+            this.difficulty,
+            this.roundTime,
+            this.startingLives
+        );
     }
 
     leaveGame(socket: Socket) {
@@ -278,11 +292,13 @@ export default class Game {
         this.difficulty = difficulty;
         this.roundTime = roundTime;
         this.startingLives = startingLives;
-        this.socketServer.to(this.gid).emit(
-            "broadcast settings change",
-            difficulty,
-            roundTime,
-            startingLives,
-        )
+        this.socketServer
+            .to(this.gid)
+            .emit(
+                "broadcast settings change",
+                difficulty,
+                roundTime,
+                startingLives
+            );
     }
 }

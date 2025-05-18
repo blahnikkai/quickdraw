@@ -1,25 +1,26 @@
 import GameStatus from "../src/GameStatus";
 import GuessStatus from "../src/GuessStatus";
+import { DEFAULT_STARTING_LIVES } from "../src/constants";
 
 export default class Player {
     socketId: string;
     name: string;
-    lives: number;
     lastGuess: string;
     lastGuessStatus: GuessStatus;
     dying: boolean;
     dead: boolean;
     gameStatus: GameStatus;
+    lives: number;
 
     constructor(socketId: string) {
         this.socketId = socketId;
         this.name = "Player";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
-        this.lives = 200;
         this.dying = false;
         this.dead = false;
         this.gameStatus = GameStatus.NICKNAME;
+        this.lives = 100;
     }
 
     get aliveAndPlaying() {
@@ -27,7 +28,7 @@ export default class Player {
     }
 
     reset() {
-        this.lives = 200;
+        this.lives = 100;
         this.dead = false;
         this.gameStatus = GameStatus.WAITING;
     }
@@ -36,7 +37,7 @@ export default class Player {
         this.gameStatus = newGameStatus;
     }
 
-    startRound(): boolean {
+    startRound() {
         if (!this.aliveAndPlaying) {
             return;
         }
@@ -49,7 +50,6 @@ export default class Player {
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
         this.dying = false;
-        return !this.dead;
     }
 
     checkDying() {

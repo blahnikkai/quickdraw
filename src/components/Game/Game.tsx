@@ -14,6 +14,7 @@ import Ready from "../Ready/Ready";
 import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
 import Settings from "../Settings/Settings";
 import Difficulty from "../../Difficulty";
+import { DEFAULT_STARTING_LIVES, ROUND_TIME } from "../../constants";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -43,8 +44,8 @@ export default function Game() {
     const [difficulty, setDifficulty] = useState<Difficulty>(
         Difficulty.DYNAMIC
     );
-    const [roundTime, setRoundTime] = useState(10);
-    const [startingLives, setStartingLives] = useState(6);
+    const [roundTime, setRoundTime] = useState(ROUND_TIME);
+    const [startingLives, setStartingLives] = useState(DEFAULT_STARTING_LIVES);
 
     const updateTimeProgress = () => {
         const curTime = Date.now();

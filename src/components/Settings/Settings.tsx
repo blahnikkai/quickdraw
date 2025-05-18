@@ -32,7 +32,6 @@ export default function Settings({
                     const newDifficulty = strToDifficulty(
                         event.target.value
                     );
-                    console.log(newDifficulty);
                     setDifficulty(newDifficulty);
                     updateSettings(newDifficulty, roundTime, startingLives);
                 }}
@@ -48,7 +47,6 @@ export default function Settings({
                 onChange={(event) => {
                     const newRoundTime = parseInt(event.target.value);
                     setRoundTime(newRoundTime);
-                    console.log(Difficulty[difficulty])
                     updateSettings(difficulty, newRoundTime, startingLives);
                 }}
             ></input>

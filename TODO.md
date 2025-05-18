@@ -4,7 +4,9 @@ High
 - Round time select (static or increasing)
 - Add host privileges, only let the host start
 - Add header/nav
-- FIX: Each child in a list should have a unique "key" prop. PlayerInfo.tsx:11
+- Fix behavior on leave and rejoin. 
+    - Game should end if all players leave
+    - Allow for rejoining and playing again?
 
 Medium
 - Display guess status icons to player and to other players in player info. 
