@@ -19,7 +19,7 @@ export default function Playing({
     return (
         <div className="game-ui ingame">
             <div>Lives: {selfPlayerInfo?.lives}</div>
-            <div className={"last-guess " + selfPlayerInfo?.lastGuessStatus}>
+            <div className={"last-guess self-last-guess " + selfPlayerInfo?.lastGuessStatus}>
                 {selfPlayerInfo?.lastGuess}
             </div>
             <form

@@ -6,9 +6,16 @@
 .last-guess {
     /* 1.2 * 16px +   */
     /* min-height: 24px; */
-    height: 40px;
     background-color: var(--clr-1);
     padding: .5rem;
+    display: flex;
+    align-items: center;
+}
+
+.self-last-guess {
+    height: 30px;
+    justify-content: flex-start;
+    /* line-height: 30px; */
 }
 
 .timer-bar {

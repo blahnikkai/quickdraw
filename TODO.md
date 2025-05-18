@@ -1,17 +1,15 @@
 High
-- Number of lives select
-- Difficulty select
 - Round time select (static or increasing)
 - Add host privileges, only let the host start
 - Add header/nav
-- Fix behavior on leave and rejoin. 
-    - Game should end if all players leave
-    - Allow for rejoining and playing again?
 
 Medium
 - Display guess status icons to player and to other players in player info. 
     - Only for short time, use timeout
 - In general, add simple settings and advanced settings. In advanced settings, players have more control
+- Fix behavior on leave and rejoin. 
+    - Game should end if all players leave
+    - Allow for rejoining and playing again?
 
 Low
 - Add little cowboy drawings
