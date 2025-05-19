@@ -15,6 +15,7 @@ import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
 import Settings from "../Settings/Settings";
 import Difficulty from "../../Difficulty";
 import { DEFAULT_STARTING_LIVES, ROUND_TIME } from "../../constants";
+import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -28,7 +29,8 @@ export default function Game() {
     const [playerInfo, setPlayerInfo] = useState([]);
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player>(undefined);
-    
+
+    const [showingSettings, setShowingSettings] = useState(false);
     const [debugInfo, setDebugInfo] = useState("");
 
     const [difficulty, setDifficulty] = useState<Difficulty>(
@@ -58,9 +60,19 @@ export default function Game() {
     const startGame = () => socketRef.current.emit("start game", gid);
     const submitGuess = () =>
         socketRef.current.emit("submit guess", gid, guess);
-    const updateSettings = (difficulty: Difficulty, roundTime: number, startingLives: number) => {
-        socketRef.current.emit("update settings", gid, difficulty, roundTime, startingLives)
-    }
+    const updateSettings = (
+        difficulty: Difficulty,
+        roundTime: number,
+        startingLives: number
+    ) => {
+        socketRef.current.emit(
+            "update settings",
+            gid,
+            difficulty,
+            roundTime,
+            startingLives
+        );
+    };
 
     useEffect(() => {
         socketRef.current = io(":3001");
@@ -121,11 +133,18 @@ export default function Game() {
             setDebugInfo(newDebugInfo);
         });
 
-        socketRef.current.on("broadcast settings change", (difficulty: Difficulty, roundTime: number, startingLives: number) => {
-            setDifficulty(difficulty);
-            setRoundTime(roundTime);
-            setStartingLives(startingLives);
-        })
+        socketRef.current.on(
+            "broadcast settings change",
+            (
+                difficulty: Difficulty,
+                roundTime: number,
+                startingLives: number
+            ) => {
+                setDifficulty(difficulty);
+                setRoundTime(roundTime);
+                setStartingLives(startingLives);
+            }
+        );
 
         const intervalId = intervalRef.current;
 
@@ -136,28 +155,25 @@ export default function Game() {
     }, []);
 
     return (
-        <main>
-            {roomExists === undefined && <div>Loading</div>}
-
-            {roomExists === false && (
-                <div className="room room-dne">
-                    <div>Room {gid} does not exist.</div>
-                    <button
-                        className="go-home-btn"
-                        onClick={() => {
-                            navigate("/");
-                        }}
-                    >
-                        Go to Homepage
-                    </button>
-                </div>
-            )}
-
-            {roomExists === true && (
-                <div className="room">
+        <div className="game-root">
+            {roomExists && (
+                <nav>
+                    {[
+                        GameStatus.NICKNAME,
+                        GameStatus.WAITING,
+                        GameStatus.READY,
+                    ].includes(gameStatus) && <CopyLinkButton />}
                     {[GameStatus.WAITING, GameStatus.READY].includes(
                         gameStatus
-                    ) && selfPlayerInfo.host && (
+                    ) && (
+                        <ShowSettingsButton
+                            showingSettings={showingSettings}
+                            setShowingSettings={setShowingSettings}
+                        />
+                    )}
+                    {[GameStatus.WAITING, GameStatus.READY].includes(
+                        gameStatus
+                    ) && showingSettings && (
                         <Settings
                             difficulty={difficulty}
                             setDifficulty={setDifficulty}
@@ -166,63 +182,81 @@ export default function Game() {
                             startingLives={startingLives}
                             setStartingLives={setStartingLives}
                             updateSettings={updateSettings}
+                            viewOnly={!selfPlayerInfo.host}
                         />
                     )}
-
-                    {gameStatus !== GameStatus.NICKNAME && (
-                        <div>
-                            <PlayerInfo
-                                playerInfo={playerInfo}
-                                allowableGameStatuses={[GameStatus.SPECTATING]}
-                            />
-                            <PlayerInfo
-                                playerInfo={playerInfo}
-                                allowableGameStatuses={[
-                                    GameStatus.PLAYING,
-                                    GameStatus.READY,
-                                    GameStatus.WAITING,
-                                ]}
-                            />
-                        </div>
-                    )}
-
-                    {gameStatus === GameStatus.NICKNAME && (
-                        <Nickname submitName={submitName} />
-                    )}
-
-                    {gameStatus === GameStatus.WAITING && (
-                        <Waiting winner={winner} readyUp={readyUp} />
-                    )}
-
-                    {gameStatus === GameStatus.READY && (
-                        <Ready startGame={startGame} />
-                    )}
-
-                    {[
-                        GameStatus.NICKNAME,
-                        GameStatus.WAITING,
-                        GameStatus.READY,
-                    ].includes(gameStatus) && <CopyLinkButton />}
-
-                    {(gameStatus === GameStatus.PLAYING ||
-                        gameStatus === GameStatus.SPECTATING) && (
-                        <div>
-                            <div className="phrase">{phrase}</div>
-                            <div>{debugInfo}</div>
-                        </div>
-                    )}
-
-                    {gameStatus === GameStatus.PLAYING && (
-                        <Playing
-                            selfPlayerInfo={selfPlayerInfo}
-                            guess={guess}
-                            setGuess={setGuess}
-                            timeProgress={timeProgress}
-                            submitGuess={submitGuess}
-                        />
-                    )}
-                </div>
+                </nav>
             )}
-        </main>
+            <main>
+                {roomExists === undefined && <div>Loading</div>}
+
+                {roomExists === false && (
+                    <div className="room room-dne">
+                        <div>Room {gid} does not exist.</div>
+                        <button
+                            className="go-home-btn"
+                            onClick={() => {
+                                navigate("/");
+                            }}
+                        >
+                            Go to Homepage
+                        </button>
+                    </div>
+                )}
+
+                {roomExists === true && (
+                    <div className="room">
+                        {gameStatus !== GameStatus.NICKNAME && (
+                            <div>
+                                <PlayerInfo
+                                    playerInfo={playerInfo}
+                                    allowableGameStatuses={[
+                                        GameStatus.SPECTATING,
+                                    ]}
+                                />
+                                <PlayerInfo
+                                    playerInfo={playerInfo}
+                                    allowableGameStatuses={[
+                                        GameStatus.PLAYING,
+                                        GameStatus.READY,
+                                        GameStatus.WAITING,
+                                    ]}
+                                />
+                            </div>
+                        )}
+
+                        {gameStatus === GameStatus.NICKNAME && (
+                            <Nickname submitName={submitName} />
+                        )}
+
+                        {gameStatus === GameStatus.WAITING && (
+                            <Waiting winner={winner} readyUp={readyUp} />
+                        )}
+
+                        {gameStatus === GameStatus.READY && (
+                            <Ready startGame={startGame} />
+                        )}
+
+                        {(gameStatus === GameStatus.PLAYING ||
+                            gameStatus === GameStatus.SPECTATING) && (
+                            <div>
+                                <div className="phrase">{phrase}</div>
+                                <div>{debugInfo}</div>
+                            </div>
+                        )}
+
+                        {gameStatus === GameStatus.PLAYING && (
+                            <Playing
+                                selfPlayerInfo={selfPlayerInfo}
+                                guess={guess}
+                                setGuess={setGuess}
+                                timeProgress={timeProgress}
+                                submitGuess={submitGuess}
+                            />
+                        )}
+                    </div>
+                )}
+            </main>
+        </div>
     );
 }

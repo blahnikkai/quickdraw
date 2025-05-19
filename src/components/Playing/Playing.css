@@ -9,12 +9,14 @@
     background-color: var(--clr-1);
     padding: .5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .self-last-guess {
     height: 30px;
-    justify-content: flex-start;
+    align-items: flex-start;
     /* line-height: 30px; */
 }
 

@@ -25,6 +25,24 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+#root, .game-root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    background-color: var(--clr-6);
+    /* height: 40px; */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: scroll;
+}
+
 main {
     background-image: linear-gradient(var(--clr-5), var(--clr-5), var(--clr-4));
 
@@ -32,8 +50,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    height: 100vh;
+    flex: 1;
 }
 
 button {

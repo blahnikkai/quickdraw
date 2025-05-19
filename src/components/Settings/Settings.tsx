@@ -9,6 +9,7 @@ export default function Settings({
     startingLives,
     setStartingLives,
     updateSettings,
+    viewOnly,
 }: {
     roundTime: number;
     setRoundTime: (newRoundTime: number) => void;
@@ -21,17 +22,17 @@ export default function Settings({
         roundTime: number,
         startingLives: number
     ) => void;
+    viewOnly: boolean;
 }) {
 
     return (
         <form className="game-ui">
             <select
                 name="difficulty"
+                disabled={viewOnly}
                 value={difficulty}
                 onChange={(event) => {
-                    const newDifficulty = strToDifficulty(
-                        event.target.value
-                    );
+                    const newDifficulty = strToDifficulty(event.target.value);
                     setDifficulty(newDifficulty);
                     updateSettings(newDifficulty, roundTime, startingLives);
                 }}
@@ -43,6 +44,7 @@ export default function Settings({
             </select>
             <input
                 type="number"
+                disabled={viewOnly}
                 value={roundTime}
                 onChange={(event) => {
                     const newRoundTime = parseInt(event.target.value);
@@ -52,6 +54,7 @@ export default function Settings({
             ></input>
             <input
                 type="number"
+                disabled={viewOnly}
                 value={startingLives}
                 onChange={(event) => {
                     const newStartingLives = parseInt(event.target.value);
