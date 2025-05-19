@@ -22,30 +22,26 @@ export default function Game() {
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
 
-    const [debugInfo, setDebugInfo] = useState("");
-
-    const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
-
-    const startTimeRef = useRef<number>(undefined);
-    const endTimeRef = useRef<number>(undefined);
-    const [timeProgress, setTimeProgress] = useState(0);
-
-    const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined);
     const selfPlayerInfoRef = useRef<Player>(undefined);
+    const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined);
+    const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
     const [playerInfo, setPlayerInfo] = useState([]);
-    const [winner, setWinner] = useState<Player>(undefined);
-
     const [guess, setGuess] = useState("");
-
-    const socketRef = useRef<Socket>(undefined);
-
-    const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
+    const [winner, setWinner] = useState<Player>(undefined);
+    
+    const [debugInfo, setDebugInfo] = useState("");
 
     const [difficulty, setDifficulty] = useState<Difficulty>(
         Difficulty.DYNAMIC
     );
     const [roundTime, setRoundTime] = useState(ROUND_TIME);
     const [startingLives, setStartingLives] = useState(DEFAULT_STARTING_LIVES);
+
+    const socketRef = useRef<Socket>(undefined);
+    const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
+    const startTimeRef = useRef<number>(undefined);
+    const endTimeRef = useRef<number>(undefined);
+    const [timeProgress, setTimeProgress] = useState(0);
 
     const updateTimeProgress = () => {
         const curTime = Date.now();
@@ -161,7 +157,7 @@ export default function Game() {
                 <div className="room">
                     {[GameStatus.WAITING, GameStatus.READY].includes(
                         gameStatus
-                    ) && (
+                    ) && selfPlayerInfo.host && (
                         <Settings
                             difficulty={difficulty}
                             setDifficulty={setDifficulty}

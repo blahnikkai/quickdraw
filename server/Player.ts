@@ -4,6 +4,7 @@ import { DEFAULT_STARTING_LIVES } from "../src/constants";
 
 export default class Player {
     socketId: string;
+    host: boolean;
     name: string;
     lastGuess: string;
     lastGuessStatus: GuessStatus;
@@ -14,6 +15,7 @@ export default class Player {
 
     constructor(socketId: string) {
         this.socketId = socketId;
+        this.host = false;
         this.name = "Player";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;

@@ -1,6 +1,7 @@
 import "./PlayerInfo.css";
 import Player from "../../../server/Player";
 import GameStatus from "../../GameStatus";
+import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 
 export default function PlayerInfo({
     playerInfo,
@@ -16,12 +17,13 @@ export default function PlayerInfo({
                     allowableGameStatuses.includes(player.gameStatus)
                 )
                 .map((player) => {
-                    
                     const playerIsInWaitingRoom: boolean = [
                         GameStatus.READY,
                         GameStatus.WAITING,
                     ].includes(player.gameStatus);
-                    const gameStatusStr: string = playerIsInWaitingRoom ? player.gameStatus : "";
+                    const gameStatusStr: string = playerIsInWaitingRoom
+                        ? player.gameStatus
+                        : "";
 
                     return (
                         <div
@@ -30,8 +32,12 @@ export default function PlayerInfo({
                                 player.dead ? " dead" : ""
                             }`}
                         >
-                            <div>{player.name}</div>
-                            <div className={`player-game-status ${gameStatusStr.toLowerCase()}`}>
+                            <div>
+                                {player.host ? <FaCrown size={15}/> : ""} {player.name}
+                            </div>
+                            <div
+                                className={`player-game-status ${gameStatusStr.toLowerCase()}`}
+                            >
                                 {gameStatusStr}
                             </div>
                             <div>

@@ -14,12 +14,13 @@ const letters = "abcdefghijklmnopqrstuvwxyz";
 
 export default class Game {
     gid: string;
-    phrase: string;
     socketServer: any;
     dictionary: Set<string>;
     // TODO: could be static?
     twoLetCnts: Map<string, number>;
     threeLetCnts: Map<string, number>;
+    host: string;
+    phrase: string;
     used: Set<string>;
     validCnt: number;
     timeoutId: ReturnType<typeof setTimeout>;
@@ -42,6 +43,7 @@ export default class Game {
         this.socketServer = socketServer;
         this.twoLetCnts = twoLetCnts;
         this.threeLetCnts = threeLetCnts;
+        this.host = "";
         this.used = new Set();
         this.validCnt = 0;
         this.players = new Map();
@@ -244,7 +246,12 @@ export default class Game {
         console.log(`joining game ${this.gid}`);
         socket.join(this.gid);
         socket.emit("room joined");
-        this.players.set(socket.id, new Player(socket.id));
+        const newPlayer = new Player(socket.id);
+        this.players.set(socket.id, newPlayer);
+        if (this.players.size === 1) {
+            newPlayer.host = true;
+            this.host = socket.id;
+        }
         this.emitPlayerInfo();
         socket.emit(
             "broadcast settings change",
@@ -257,7 +264,19 @@ export default class Game {
     leaveGame(socket: Socket) {
         socket.leave(this.gid);
         this.players.delete(socket.id);
+        if (this.host === socket.id) {
+            this.hostLeave();
+        }
         this.emitPlayerInfo();
+    }
+
+    hostLeave() {
+        if (this.players.size === 0) {
+            this.host = "";
+        } else {
+            this.host = this.players.keys().next().value;
+            this.players.get(this.host).host = true;
+        }
     }
 
     emitPlayerInfo() {
