@@ -39,8 +39,16 @@ nav {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
+    border-bottom: 10px solid var(--clr-6);
+}
 
-    overflow: scroll;
+nav > *, .nav-item {
+    margin-top: 10px;
+}
+
+select {
+    background-color: var(--clr-3);
 }
 
 main {

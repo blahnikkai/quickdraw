@@ -1,7 +1,7 @@
 High
-- Round time select (static or increasing)
-- Add host privileges, only let the host start
-- Add header/nav
+- Only let the host start
+- Change text in show settings button to "hide settings" when settings are showing
+- Add home button in nav?
 
 Medium
 - Display guess status icons to player and to other players in player info. 

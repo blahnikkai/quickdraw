@@ -1,6 +1,5 @@
 import { FaGear } from "react-icons/fa6";
 import "./ShowSettingsButton.css";
-import { IconContext } from "react-icons";
 
 export default function ShowSettingsButton({
     showingSettings,

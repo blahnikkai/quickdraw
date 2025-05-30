@@ -1,0 +1,22 @@
+.settings {
+    margin-top: 1px;
+    margin: 2px;
+
+    width: 225px;
+}
+
+.settings-label {
+    color: var(--clr-3);
+    font-size: 16px;
+}
+
+.settings-input {
+    width: 50px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+}

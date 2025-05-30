@@ -158,11 +158,7 @@ export default function Game() {
         <div className="game-root">
             {roomExists && (
                 <nav>
-                    {[
-                        GameStatus.NICKNAME,
-                        GameStatus.WAITING,
-                        GameStatus.READY,
-                    ].includes(gameStatus) && <CopyLinkButton />}
+                    <CopyLinkButton />
                     {[GameStatus.WAITING, GameStatus.READY].includes(
                         gameStatus
                     ) && (
