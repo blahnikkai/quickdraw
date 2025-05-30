@@ -1,6 +1,5 @@
 High
 - Only let the host start
-- Change text in show settings button to "hide settings" when settings are showing
 - Add home button in nav?
 
 Medium

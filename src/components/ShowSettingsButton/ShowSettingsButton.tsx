@@ -15,7 +15,7 @@ export default function ShowSettingsButton({
                 setShowingSettings(!showingSettings);
             }}
         >
-            Show Settings
+            {showingSettings ? "Hide Settings": "Show Settings"}
             <FaGear/>
         </button>
     );
