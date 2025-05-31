@@ -169,18 +169,19 @@ export default function Game() {
                     )}
                     {[GameStatus.WAITING, GameStatus.READY].includes(
                         gameStatus
-                    ) && showingSettings && (
-                        <Settings
-                            difficulty={difficulty}
-                            setDifficulty={setDifficulty}
-                            roundTime={roundTime}
-                            setRoundTime={setRoundTime}
-                            startingLives={startingLives}
-                            setStartingLives={setStartingLives}
-                            updateSettings={updateSettings}
-                            viewOnly={!selfPlayerInfo.host}
-                        />
-                    )}
+                    ) &&
+                        showingSettings && (
+                            <Settings
+                                difficulty={difficulty}
+                                setDifficulty={setDifficulty}
+                                roundTime={roundTime}
+                                setRoundTime={setRoundTime}
+                                startingLives={startingLives}
+                                setStartingLives={setStartingLives}
+                                updateSettings={updateSettings}
+                                viewOnly={!selfPlayerInfo.host}
+                            />
+                        )}
                 </nav>
             )}
             <main>
@@ -230,7 +231,13 @@ export default function Game() {
                         )}
 
                         {gameStatus === GameStatus.READY && (
-                            <Ready startGame={startGame} />
+                            <Ready
+                                startGame={startGame}
+                                hostName={playerInfo.find(
+                                    (player) => player.host
+                                ).name}
+                                selfIsHost={selfPlayerInfo.host}
+                            />
                         )}
 
                         {(gameStatus === GameStatus.PLAYING ||

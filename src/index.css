@@ -69,12 +69,16 @@ button {
     font-size: 16px;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background-color: var(--clr-2);
     cursor: pointer;
 }
 
-button:active {
+button:disabled {
+    background-color: color-mix(in srgb, var(--clr-3) 70%, gray 30%);
+}
+
+button:active:not(:disabled) {
     background-color: var(--clr-1);
 }
 

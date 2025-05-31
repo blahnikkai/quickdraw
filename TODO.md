@@ -1,5 +1,4 @@
 High
-- Only let the host start
 - Add home button in nav?
 
 Medium
