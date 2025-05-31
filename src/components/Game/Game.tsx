@@ -16,6 +16,7 @@ import Settings from "../Settings/Settings";
 import Difficulty from "../../Difficulty";
 import { DEFAULT_STARTING_LIVES, ROUND_TIME } from "../../constants";
 import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton";
+import HomeButton from "../HomeButton/HomeButton";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -158,6 +159,7 @@ export default function Game() {
         <div className="game-root">
             {roomExists && (
                 <nav>
+                    <HomeButton />
                     <CopyLinkButton />
                     {[GameStatus.WAITING, GameStatus.READY].includes(
                         gameStatus
@@ -233,9 +235,10 @@ export default function Game() {
                         {gameStatus === GameStatus.READY && (
                             <Ready
                                 startGame={startGame}
-                                hostName={playerInfo.find(
-                                    (player) => player.host
-                                ).name}
+                                hostName={
+                                    playerInfo.find((player) => player.host)
+                                        .name
+                                }
                                 selfIsHost={selfPlayerInfo.host}
                             />
                         )}

@@ -1,5 +1,7 @@
 High
-- Add home button in nav?
+- Add home icon for home button in nav instead of text
+- Rearrange nav
+- Separate cluttered Game component into Nav, RoomExists, RoomDNE components
 
 Medium
 - Display guess status icons to player and to other players in player info. 
