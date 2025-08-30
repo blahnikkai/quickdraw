@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
-import Player from "../src/shared/Player";
+import Player from "../src/shared/Player.js";
 import GuessStatus from "../src/shared/GuessStatus.js";
 import {
     THREE_LET_PROB,
     POST_ROUND_TIME,
     ROUND_TIME,
     DEFAULT_STARTING_LIVES,
-} from "./constants";
+} from "./constants.js";
 import GameStatus from "../src/shared/GameStatus.js";
 import Difficulty from "../src/shared/Difficulty.js";
 
