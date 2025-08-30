@@ -1,19 +1,17 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "jsx": "react-jsx",
         "module": "system",
         "moduleResolution": "node",
+        "types": ["node"],
         "noImplicitAny": false,
         "noImplicitReturns": false,
         "removeComments": true,
         "preserveConstEnums": true,
-        "outFile": "../../built/local/tsc.js",
+        "outDir": "../dist/",
         "esModuleInterop": true,
         "sourceMap": true,
-        "baseUrl": ".",
-        "paths": {
-            "server/*": ["server/*"]
-        }
+        "rootDir": "..",
     },
+    "include": ["../server/*.ts", "../src/shared/*.ts"],
 }

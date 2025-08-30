@@ -7,14 +7,13 @@ import PlayerInfo from "../PlayerInfo/PlayerInfo";
 import Waiting from "../Waiting/Waiting";
 import Playing from "../Playing/Playing";
 import Nickname from "../Nickname/Nickname";
-import Player from "../../../server/Player";
-import GameStatus from "../../GameStatus";
-import GuessStatus from "../../GuessStatus";
+import Player from "../../shared/Player";
+import GameStatus from "../../shared/GameStatus";
+import GuessStatus from "../../shared/GuessStatus";
+import Difficulty from "../../shared/Difficulty";
 import Ready from "../Ready/Ready";
 import CopyLinkButton from "../CopyLinkButton/CopyLinkButton";
 import Settings from "../Settings/Settings";
-import Difficulty from "../../Difficulty";
-import { DEFAULT_STARTING_LIVES, ROUND_TIME } from "../../constants";
 import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton";
 import HomeButton from "../HomeButton/HomeButton";
 
@@ -37,8 +36,8 @@ export default function Game() {
     const [difficulty, setDifficulty] = useState<Difficulty>(
         Difficulty.DYNAMIC
     );
-    const [roundTime, setRoundTime] = useState(ROUND_TIME);
-    const [startingLives, setStartingLives] = useState(DEFAULT_STARTING_LIVES);
+    const [roundTime, setRoundTime] = useState(0);
+    const [startingLives, setStartingLives] = useState(0);
 
     const socketRef = useRef<Socket>(undefined);
     const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);

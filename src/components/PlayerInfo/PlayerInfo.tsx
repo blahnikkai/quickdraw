@@ -1,6 +1,6 @@
 import "./PlayerInfo.css";
-import Player from "../../../server/Player";
-import GameStatus from "../../GameStatus";
+import Player from "../../shared/Player";
+import GameStatus from "../../shared/GameStatus";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 
 export default function PlayerInfo({

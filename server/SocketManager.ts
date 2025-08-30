@@ -1,8 +1,8 @@
 import { Server as SocketServer, Socket } from "socket.io";
 import { Server } from "node:http";
 import GameManager from "./GameManager.js";
-import GameStatus from "../src/GameStatus.js";
-import Difficulty from "../src/Difficulty.js";
+import GameStatus from "../src/shared/GameStatus.js";
+import Difficulty from "../src/shared/Difficulty.js";
 
 export default class SocketManager {
     socketServer: SocketServer;

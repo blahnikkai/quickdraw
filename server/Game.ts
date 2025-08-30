@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
-import Player from "./Player.js";
-import GuessStatus from "../src/GuessStatus.js";
+import Player from "../src/shared/Player";
+import GuessStatus from "../src/shared/GuessStatus.js";
 import {
     THREE_LET_PROB,
     POST_ROUND_TIME,
     ROUND_TIME,
     DEFAULT_STARTING_LIVES,
-} from "../src/constants.js";
-import GameStatus from "../src/GameStatus.js";
-import Difficulty from "../src/Difficulty.js";
+} from "./constants";
+import GameStatus from "../src/shared/GameStatus.js";
+import Difficulty from "../src/shared/Difficulty.js";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 

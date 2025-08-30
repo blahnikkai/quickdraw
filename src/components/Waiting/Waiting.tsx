@@ -1,4 +1,4 @@
-import Player from "../../../server/Player";
+import Player from "../../shared/Player";
 
 export default function Waiting({
     winner,

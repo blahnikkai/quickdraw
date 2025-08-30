@@ -1,7 +1,7 @@
 import "./Playing.css";
-import Player from "../../../server/Player";
-import GuessStatus from "../../GuessStatus";
-import GameStatus from "../../GameStatus";
+import Player from "../../shared/Player";
+import GuessStatus from "../../shared/GuessStatus";
+import GameStatus from "../../shared/GameStatus";
 
 export default function Playing({
     selfPlayerInfo,

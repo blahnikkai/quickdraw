@@ -1,6 +1,6 @@
-import GameStatus from "../src/GameStatus";
-import GuessStatus from "../src/GuessStatus";
-import { DEFAULT_STARTING_LIVES } from "../src/constants";
+import GameStatus from "./GameStatus";
+import GuessStatus from "./GuessStatus";
+import { DEFAULT_STARTING_LIVES } from "../../server/constants";
 
 export default class Player {
     socketId: string;
