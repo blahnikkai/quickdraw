@@ -9,10 +9,12 @@ export default function Home() {
     const [joinGid, setJoinGid] = useState(null);
 
     useEffect(() => {
-        socketRef.current = io("https://playreggie.ddns.net");
-        socketRef.current.on("game created", (gid) => {
+        socketRef.current = io(import.meta.env.VITE_BACKEND_URL);
+
+        socketRef.current.on("game created", (gid: string) => {
             navigate(`/game/${gid}`);
         });
+
         return () => {
             socketRef.current.disconnect();
         };

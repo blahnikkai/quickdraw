@@ -3,6 +3,7 @@ High
 - Rearrange nav bar (home should be left of copy link)
 - BUG: you can submit after time expires, and other players will lose 2 lives (only tested with 2 total players)
 - Separate cluttered Game component into Nav, RoomExists, RoomDNE components
+- Configure environment variables to select dev and prod urls
 
 Medium
 - Display guess status *icons* to player and to other players in player info. 

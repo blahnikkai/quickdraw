@@ -22,6 +22,7 @@ export default function Game() {
     const { gid } = useParams();
     const [roomExists, setRoomExists] = useState<boolean>(undefined);
     const [phrase, setPhrase] = useState("");
+    const [roundActive, setRoundActive] = useState(false);
 
     const selfPlayerInfoRef = useRef<Player>(undefined);
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined);
@@ -75,7 +76,7 @@ export default function Game() {
     };
 
     useEffect(() => {
-        socketRef.current = io("https://playreggie.ddns.net");
+        socketRef.current = io(import.meta.env.VITE_BACKEND_URL);
 
         socketRef.current.emit("join", gid);
 
@@ -93,6 +94,7 @@ export default function Game() {
         socketRef.current.on(
             "start round",
             (newPhrase: string, start: number, end: number) => {
+                setRoundActive(true);
                 setGuess("");
                 setPhrase(newPhrase);
                 setTimeProgress(0);
@@ -105,6 +107,7 @@ export default function Game() {
         );
 
         socketRef.current.on("end round", () => {
+            setRoundActive(false);
             clearInterval(intervalRef.current);
         });
 
@@ -257,6 +260,7 @@ export default function Game() {
                                 setGuess={setGuess}
                                 timeProgress={timeProgress}
                                 submitGuess={submitGuess}
+                                roundActive={roundActive}
                             />
                         )}
                     </div>

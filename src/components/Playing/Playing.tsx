@@ -1,7 +1,7 @@
 import "./Playing.css";
-import Player from "../../shared/Player";
-import GuessStatus from "../../shared/GuessStatus";
-import GameStatus from "../../shared/GameStatus";
+import Player from "../../shared/Player.js";
+import GuessStatus from "../../shared/GuessStatus.js";
+import GameStatus from "../../shared/GameStatus.js";
 
 export default function Playing({
     selfPlayerInfo,
@@ -9,23 +9,30 @@ export default function Playing({
     setGuess,
     timeProgress,
     submitGuess,
+    roundActive,
 }: {
     selfPlayerInfo: Player;
     guess: string;
     setGuess: CallableFunction;
     timeProgress: number;
     submitGuess: () => void;
+    roundActive: boolean;
 }) {
     return (
         <div className="game-ui ingame">
             <div>Lives: {selfPlayerInfo?.lives}</div>
-            <div className={"last-guess self-last-guess " + selfPlayerInfo?.lastGuessStatus}>
+            <div
+                className={
+                    "last-guess self-last-guess " +
+                    selfPlayerInfo?.lastGuessStatus
+                }
+            >
                 {selfPlayerInfo?.lastGuess}
             </div>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();
-                    if(selfPlayerInfo?.lastGuessStatus != GuessStatus.VALID) {
+                    if (selfPlayerInfo?.lastGuessStatus != GuessStatus.VALID) {
                         submitGuess();
                     }
                 }}
@@ -34,7 +41,10 @@ export default function Playing({
                     className="guess-input"
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
-                    disabled={selfPlayerInfo.gameStatus != GameStatus.PLAYING}
+                    disabled={
+                        !roundActive ||
+                        selfPlayerInfo.gameStatus != GameStatus.PLAYING
+                    }
                 />
             </form>
             <div

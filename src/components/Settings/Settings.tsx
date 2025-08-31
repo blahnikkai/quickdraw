@@ -1,4 +1,4 @@
-import Difficulty, { strToDifficulty } from "../../shared/Difficulty";
+import Difficulty, { strToDifficulty } from "../../shared/Difficulty.js";
 import "./Settings.css";
 
 export default function Settings({
