@@ -60,7 +60,7 @@ export default function Game() {
         socketRef.current.emit("change game status", gid, GameStatus.READY);
     const startGame = () => socketRef.current.emit("start game", gid);
     const submitGuess = () =>
-        socketRef.current.emit("submit guess", gid, guess);
+        socketRef.current.emit("submit guess", gid, guess.toLowerCase());
     const updateSettings = (
         difficulty: Difficulty,
         roundTime: number,
