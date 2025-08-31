@@ -75,7 +75,7 @@ export default function Game() {
     };
 
     useEffect(() => {
-        socketRef.current = io("54.81.245.75:3001");
+        socketRef.current = io("https://54.81.245.75:3001");
 
         socketRef.current.emit("join", gid);
 
