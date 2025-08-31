@@ -5,6 +5,10 @@
     align-items: center;
 }
 
+.show-settings-btn {
+    position: relative;
+}
+
 .nav-icon {
     margin-right: 0.3rem;
 }

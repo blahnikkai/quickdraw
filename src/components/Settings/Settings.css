@@ -1,8 +1,11 @@
 .settings {
+    background-color: var(--clr-6);
+
     margin-top: 1px;
     margin: 2px;
 
     width: 225px;
+    position: absolute;
 }
 
 .settings-label {

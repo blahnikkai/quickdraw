@@ -163,29 +163,31 @@ export default function Game() {
                 <nav>
                     <HomeButton />
                     <CopyLinkButton />
-                    {[GameStatus.WAITING, GameStatus.READY].includes(
-                        gameStatus
-                    ) && (
-                        <ShowSettingsButton
-                            showingSettings={showingSettings}
-                            setShowingSettings={setShowingSettings}
-                        />
-                    )}
-                    {[GameStatus.WAITING, GameStatus.READY].includes(
-                        gameStatus
-                    ) &&
-                        showingSettings && (
-                            <Settings
-                                difficulty={difficulty}
-                                setDifficulty={setDifficulty}
-                                roundTime={roundTime}
-                                setRoundTime={setRoundTime}
-                                startingLives={startingLives}
-                                setStartingLives={setStartingLives}
-                                updateSettings={updateSettings}
-                                viewOnly={!selfPlayerInfo.host}
+                    <div className="settings-container">
+                        {[GameStatus.WAITING, GameStatus.READY].includes(
+                            gameStatus
+                        ) && (
+                            <ShowSettingsButton
+                                showingSettings={showingSettings}
+                                setShowingSettings={setShowingSettings}
                             />
                         )}
+                        {[GameStatus.WAITING, GameStatus.READY].includes(
+                            gameStatus
+                        ) &&
+                            showingSettings && (
+                                <Settings
+                                    difficulty={difficulty}
+                                    setDifficulty={setDifficulty}
+                                    roundTime={roundTime}
+                                    setRoundTime={setRoundTime}
+                                    startingLives={startingLives}
+                                    setStartingLives={setStartingLives}
+                                    updateSettings={updateSettings}
+                                    viewOnly={!selfPlayerInfo.host}
+                                />
+                            )}
+                    </div>
                 </nav>
             )}
             <main>

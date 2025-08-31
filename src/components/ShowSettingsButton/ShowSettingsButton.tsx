@@ -9,7 +9,7 @@ export default function ShowSettingsButton({
 }) {
     return (
         <button
-            className="nav-btn"
+            className="nav-btn show-settings-btn"
             onClick={() => {
                 setShowingSettings(!showingSettings);
             }}
