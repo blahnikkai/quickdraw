@@ -12,8 +12,5 @@
         "esModuleInterop": true,
         "sourceMap": true,
         "baseUrl": ".",
-        "paths": {
-            "server/*": ["server/*"]
-        }
     },
 }

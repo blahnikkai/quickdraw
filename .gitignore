@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 dist/
+
+quickdraw-key-pair.pem
+aws-deploy-script.sh
