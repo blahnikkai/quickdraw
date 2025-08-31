@@ -9,7 +9,7 @@ export default function Home() {
     const [joinGid, setJoinGid] = useState(null);
 
     useEffect(() => {
-        socketRef.current = io("http://54.81.245.75:3001");
+        socketRef.current = io("https://3.90.125.101");
         socketRef.current.on("game created", (gid) => {
             navigate(`/game/${gid}`);
         });
