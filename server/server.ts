@@ -8,7 +8,10 @@ const socketManager = new SocketManager(server);
 
 socketManager.listen();
 
-const ip = "0.0.0.0";
+// all addresses
+// const ip = "0.0.0.0";
+// we can do localhost because requests are reverse proxied by nginx
+const ip = "localhost";
 const port = 3001;
 server.listen(port, ip, () => {
     console.log(`server running at http://${ip}:${port}`);
