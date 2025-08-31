@@ -75,7 +75,7 @@ export default function Game() {
     };
 
     useEffect(() => {
-        socketRef.current = io("https://3.90.125.101");
+        socketRef.current = io("https://playreggie.ddns.net");
 
         socketRef.current.emit("join", gid);
 
