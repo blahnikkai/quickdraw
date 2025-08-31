@@ -15,3 +15,18 @@
 .go-home-btn {
     text-decoration: underline;
 }
+
+nav {
+    background-color: var(--clr-6);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    
+    margin: 0;
+    padding: 0;
+}
+
+nav > * {
+    margin: 0.5rem 0.5rem;
+}

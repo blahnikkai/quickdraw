@@ -23,18 +23,16 @@ export default function Home() {
     return (
         <main className="home">
             <div className="home-section">
-                Create a new game
                 <button
                     onClick={() => {
                         socketRef.current.emit("create game");
                     }}
                 >
-                    Play
+                    Create a Game
                 </button>
             </div>
             - or -
             <div className="home-section">
-                Join an existing game
                 <form
                     className="join-game-form"
                     onSubmit={(e) => {
@@ -48,7 +46,7 @@ export default function Home() {
                             setJoinGid(e.target.value);
                         }}
                     ></input>
-                    <button>Join</button>
+                    <button>Join Game</button>
                 </form>
             </div>
         </main>

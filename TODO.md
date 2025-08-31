@@ -1,13 +1,10 @@
 High
 - Add home icon for home button in nav instead of text
 - Rearrange nav bar (home should be left of copy link)
-- BUG: you can submit after time expires, and other players will lose 2 lives (only tested with 2 total players)
 - Separate cluttered Game component into Nav, RoomExists, RoomDNE components
-- Configure environment variables to select dev and prod urls
 
 Medium
-- Display guess status *icons* to player and to other players in player info. 
-    - Only for short time, use timeout
+- Allow settings to be changed before entering nickname
 - In general, add simple settings and advanced settings. In advanced settings, players have more control
 - Fix behavior on leave and rejoin.
     - Game should end if all players leave
@@ -17,6 +14,8 @@ Medium
 - Add regex clues
 
 Low
+- Display guess status *icons* to player and to other players in player info. 
+    - Only for short time, use timeout
 - Add little cowboy drawings
 - Add cowboy sound effects
 - Wrong guess leads to shorter timer

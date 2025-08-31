@@ -1,5 +1,4 @@
 import { FaGear } from "react-icons/fa6";
-import "./ShowSettingsButton.css";
 
 export default function ShowSettingsButton({
     showingSettings,
@@ -10,13 +9,18 @@ export default function ShowSettingsButton({
 }) {
     return (
         <button
-            className="show-settings-btn"
+            className="nav-btn"
             onClick={() => {
                 setShowingSettings(!showingSettings);
             }}
+            style={{
+                backgroundColor: showingSettings
+                    ? "var(--clr-1)"
+                    : "var(--clr-3)",
+            }}
         >
-            {showingSettings ? "Hide Settings": "Show Settings"}
-            <FaGear/>
+            <FaGear className="nav-icon"/>
+            {showingSettings ? " Hide Settings" : " Show Settings"}
         </button>
     );
 }

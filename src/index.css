@@ -32,18 +32,6 @@ body {
     flex-direction: column;
 }
 
-nav {
-    background-color: var(--clr-6);
-    /* height: 40px; */
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    border-bottom: 10px solid var(--clr-6);
-}
-
 nav > *,
 .nav-item {
     margin-top: 10px;
