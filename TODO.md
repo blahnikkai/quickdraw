@@ -20,12 +20,12 @@ Low
 - Add cowboy sound effects
 - Wrong guess leads to shorter timer
 - New font
-- Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
 - Only allow unique nicknames?
 - Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably
 - Add animations/transition to names on join
+- Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
 - Change passing Socket to socketId in backend
-- Give a bonus to the person with the rarest word
+- Give a bonus to the person with the rarest word (how would i even implement this bruh)
 
 Unsorted
 - Pass functions to components instead of socket and gid. 
