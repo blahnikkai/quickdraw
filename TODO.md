@@ -32,8 +32,16 @@ Unsorted
 what this mean?
 a callback, idiot
 
-Bugs
-- Losers can submit?
+Live playtesting
 - Put something to show you're dead?
 - Make it so that everyone can see the timer
 - 404 when clicking a game
+- Add a name limit
+- Be able to unready
+- Add some transition time
+- Delete previous answer on submit
+- Gun noise
+- Cowboys shoot whoever loses
+- Show a more obvious signal of losing a life
+- If you submit right as you die you don't lose a life? maybe saw this?
+- Pluto
