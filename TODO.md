@@ -26,25 +26,20 @@ Low
 - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
 - Change passing Socket to socketId in backend
 - Give a bonus to the person with the rarest word (how would i even implement this bruh)
-
-Unsorted
 - Pass functions to components instead of socket and gid. 
-what this mean?
-a callback, idiot
+    * what this mean?
+    * a callback, idiot
 
 Live playtesting
-- Put something to show you're dead?
-- Make it so that everyone can see the timer
-- 404 when clicking a game
+- Show a more obvious signal of losing a life
+    * And put a visual signal of being dead. This is less important since input is disabled
 - Add a name limit
 - Be able to unready
 - Add some transition time before game starts (and a little bit between rounds)
-- Delete previous answer on submit
-- Gun noise
 - Cowboys shoot whoever loses
-- Show a more obvious signal of losing a life
-- If you submit right as you die you don't lose a life? maybe saw this?
-- Words that don't work (mainly proper nouns): Pluto, europe, 
-- Make last part with only two people more suspenseful
-- Make 2nd place get shot
-- Add custom difficulty in advanced settings
+    * Gun noise
+- If you submit right as you die you don't lose a life? I maybe saw this?
+- Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
+- Make last part with only two people more suspenseful somehow
+    * Make 2nd place get shot?
+- Add custom difficulty in advanced settings (especially important for playtesting)

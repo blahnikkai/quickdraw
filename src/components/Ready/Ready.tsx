@@ -1,4 +1,4 @@
-import Player from "../../shared/Player";
+import Player from "../../shared/Player.js";
 
 export default function Ready({
     startGame,
