@@ -38,10 +38,13 @@ Live playtesting
 - 404 when clicking a game
 - Add a name limit
 - Be able to unready
-- Add some transition time
+- Add some transition time before game starts (and a little bit between rounds)
 - Delete previous answer on submit
 - Gun noise
 - Cowboys shoot whoever loses
 - Show a more obvious signal of losing a life
 - If you submit right as you die you don't lose a life? maybe saw this?
-- Pluto
+- Words that don't work (mainly proper nouns): Pluto, europe, 
+- Make last part with only two people more suspenseful
+- Make 2nd place get shot
+- Add custom difficulty in advanced settings

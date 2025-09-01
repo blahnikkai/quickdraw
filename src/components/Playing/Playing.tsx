@@ -2,6 +2,7 @@ import "./Playing.css";
 import Player from "../../shared/Player.js";
 import GuessStatus from "../../shared/GuessStatus.js";
 import GameStatus from "../../shared/GameStatus.js";
+import { useEffect, useState, useRef } from "react";
 
 export default function Playing({
     selfPlayerInfo,
@@ -18,6 +19,23 @@ export default function Playing({
     submitGuess: () => void;
     roundActive: boolean;
 }) {
+    const [inputDisabled, setInputDisabled] = useState(false);
+    const inputRef = useRef(null);
+    
+    useEffect(() => {
+        const newInputDisabled =
+            !roundActive ||
+            selfPlayerInfo.gameStatus != GameStatus.PLAYING ||
+            selfPlayerInfo.lives === 0;
+        setInputDisabled(newInputDisabled);
+    }, [roundActive, selfPlayerInfo]);
+    
+    useEffect(() => {
+        if(!inputDisabled) {
+            inputRef.current.focus();
+        }
+    }, [inputDisabled])
+    
     return (
         <div className="game-ui ingame">
             <div>Lives: {selfPlayerInfo?.lives}</div>
@@ -38,14 +56,12 @@ export default function Playing({
                 }}
             >
                 <input
+                    ref={inputRef}
+                    autoFocus
                     className="guess-input"
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
-                    disabled={
-                        !roundActive ||
-                        selfPlayerInfo.gameStatus != GameStatus.PLAYING ||
-                        selfPlayerInfo.lives === 0
-                    }
+                    disabled={inputDisabled}
                 />
             </form>
             <div

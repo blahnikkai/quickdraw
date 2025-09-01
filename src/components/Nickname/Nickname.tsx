@@ -24,6 +24,7 @@ export default function Nickname({
             <label className="nickname">
                 Enter a nickname:
                 <input
+                    autoFocus
                     className={"nickname" + (invalidName ? " invalid-name" : "")}
                     onChange={(event) => setName(event.target.value)}
                     defaultValue={name}
