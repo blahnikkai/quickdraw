@@ -12,3 +12,7 @@
 .nav-icon {
     margin-right: 0.3rem;
 }
+
+.active {
+    background-color: var(--clr-1);
+}
