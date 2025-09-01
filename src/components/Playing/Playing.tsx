@@ -26,6 +26,7 @@ export default function Playing({
         const newInputDisabled =
             !roundActive ||
             selfPlayerInfo.gameStatus != GameStatus.PLAYING ||
+            selfPlayerInfo.lastGuessStatus === GuessStatus.VALID ||
             selfPlayerInfo.lives === 0;
         setInputDisabled(newInputDisabled);
     }, [roundActive, selfPlayerInfo]);

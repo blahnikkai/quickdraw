@@ -100,11 +100,9 @@ export default function Game() {
                 setGuess("");
                 setPhrase(newPhrase);
                 setTimeProgress(0);
-                if (!selfPlayerInfoRef.current.dead) {
-                    startTimeRef.current = start;
-                    endTimeRef.current = end;
-                    intervalRef.current = setInterval(updateTimeProgress, 300);
-                }
+                startTimeRef.current = start;
+                endTimeRef.current = end;
+                intervalRef.current = setInterval(updateTimeProgress, 300);
             }
         );
 
@@ -123,10 +121,6 @@ export default function Game() {
                 setSelfPlayerInfo(newSelf);
                 setGameStatus(newSelf.gameStatus);
                 selfPlayerInfoRef.current = newSelf;
-                if (newSelf.lastGuessStatus === GuessStatus.VALID) {
-                    clearInterval(intervalRef.current);
-                    setGuess("");
-                }
             }
         );
 
