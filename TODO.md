@@ -31,3 +31,9 @@ Unsorted
 - Pass functions to components instead of socket and gid. 
 what this mean?
 a callback, idiot
+
+Bugs
+- Losers can submit?
+- Put something to show you're dead?
+- Make it so that everyone can see the timer
+- 404 when clicking a game

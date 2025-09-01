@@ -43,7 +43,8 @@ export default function Playing({
                     onChange={(event) => setGuess(event.target.value)}
                     disabled={
                         !roundActive ||
-                        selfPlayerInfo.gameStatus != GameStatus.PLAYING
+                        selfPlayerInfo.gameStatus != GameStatus.PLAYING ||
+                        selfPlayerInfo.lives === 0
                     }
                 />
             </form>
