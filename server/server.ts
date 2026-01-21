@@ -10,7 +10,8 @@ socketManager.listen();
 
 // all addresses
 // const ip = "0.0.0.0";
-// we can do localhost because requests are reverse proxied by nginx
+// we can do localhost because requests are reverse proxied by nginx 
+// so requests to the server will be coming through the localhost interface from nginx
 const ip = "localhost";
 const port = 3001;
 server.listen(port, ip, () => {
