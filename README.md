@@ -4,7 +4,7 @@
 1. Run backend with  
 `npx tsx server/server`
 2. Run frontend with  
-`npm start`
+`npm run dev`
 
 ## To build for distribution
 Compile backend from server/
@@ -35,5 +35,5 @@ Server process running with pm2
 `pm2 list`
 `pm2 describe quickdraw`
 
-Something like
-pm2 start server.js --name quickdraw
+Run from inside
+`pm2 start server.js --name quickdraw`

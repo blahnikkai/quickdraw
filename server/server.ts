@@ -13,7 +13,7 @@ socketManager.listen();
 // we can do localhost because requests are reverse proxied by nginx 
 // so requests to the server will be coming through the localhost interface from nginx
 const ip = "localhost";
-const port = 3001;
+const port = 3002;
 server.listen(port, ip, () => {
     console.log(`server running at http://${ip}:${port}`);
 });
