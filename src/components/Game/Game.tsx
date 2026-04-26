@@ -78,7 +78,6 @@ export default function Game() {
     };
 
     useEffect(() => {
-        console.log(import.meta.env.VITE_BACKEND_URL);
         socketRef.current = io(import.meta.env.VITE_BACKEND_URL);
 
         socketRef.current.emit("join", gid);

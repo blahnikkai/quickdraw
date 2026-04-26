@@ -3,6 +3,8 @@ import Game from './components/Game/Game'
 import Home from './components/Home/Home'
 
 function App() {
+    console.log("hello");
+    console.log(import.meta.env.VITE_BACKEND_URL);
     return (
         <BrowserRouter>
             <Routes>
