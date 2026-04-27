@@ -9,8 +9,9 @@ function App() {
     
     useEffect(() => {
         async function send_get_request() {
-            let resp = await fetch(import.meta.env.VITE_BACKEND_URL);
-            console.log(resp);
+            let resp = await fetch("https://blahnikkai.ddns.net/test");
+            let result = await resp.text();
+            console.log(result);
         }
         send_get_request()
     }, [])

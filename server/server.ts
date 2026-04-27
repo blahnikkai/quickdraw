@@ -1,14 +1,13 @@
 import express from "express";
 import { createServer } from "node:http";
 import SocketManager from "./SocketManager.js";
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
-app.get("/", function (request, response) {
-    var obj = { id: "20", Content: "bello"};
-
-    response.writeHead(200, { "Content-Type": "application/json" });
-    response.write(JSON.stringify(obj));
+app.get("/test", function (request, response) {
+    response.send("bello!!!")
 });
 
 const server = createServer(app);
