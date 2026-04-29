@@ -3,6 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
+export function getSocketIOOptions() {
+    if (import.meta.env.VITE_PATH_OPTION !== "") {
+        return { path: import.meta.env.VITE_PATH_OPTION };
+    }
+    return {}
+}
+
 export default function Home() {
     const navigate = useNavigate();
     const socketRef = useRef(null);
@@ -10,10 +17,8 @@ export default function Home() {
 
     useEffect(() => {
         let options = {};
-        if(import.meta.env.VITE_PATH_OPTION !== "") {
-            options = {path: import.meta.env.VITE_PATH_OPTION};
-        }
-        socketRef.current = io(import.meta.env.VITE_BACKEND_URL, options);
+
+        socketRef.current = io(import.meta.env.VITE_BACKEND_URL, getSocketIOOptions());
 
         socketRef.current.on("game created", (gid: string) => {
             navigate(`/game/${gid}`);

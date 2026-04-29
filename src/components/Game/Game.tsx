@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Game.css";
+import { getSocketIOOptions } from "../Home/Home.js";
 import PlayerInfo from "../PlayerInfo/PlayerInfo.js";
 import Waiting from "../Waiting/Waiting.js";
 import Playing from "../Playing/Playing.js";
 import Nickname from "../Nickname/Nickname.js";
 import Player from "../../shared/Player.js";
 import GameStatus from "../../shared/GameStatus.js";
-import GuessStatus from "../../shared/GuessStatus.js";
 import Difficulty from "../../shared/Difficulty.js";
 import Ready from "../Ready/Ready.js";
 import CopyLinkButton from "../CopyLinkButton/CopyLinkButton.js";
@@ -78,11 +78,7 @@ export default function Game() {
     };
 
     useEffect(() => {
-        let options = {};
-        if(import.meta.env.VITE_PATH_OPTION !== "") {
-            options = {path: import.meta.env.VITE_PATH_OPTION};
-        }
-        socketRef.current = io(import.meta.env.VITE_BACKEND_URL, options);
+        socketRef.current = io(import.meta.env.VITE_BACKEND_URL, getSocketIOOptions());
 
         socketRef.current.emit("join", gid);
 
