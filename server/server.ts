@@ -6,10 +6,6 @@ import cors from 'cors';
 const app = express();
 app.use(cors());
 
-app.get("/test", function (request, response) {
-    response.send("bello!!!")
-});
-
 const server = createServer(app);
 const socketManager = new SocketManager(server);
 
