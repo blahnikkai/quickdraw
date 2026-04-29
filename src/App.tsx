@@ -9,7 +9,7 @@ function App() {
     
     useEffect(() => {
         async function send_get_request() {
-            let resp = await fetch("https://blahnikkai.ddns.net/test");
+            let resp = await fetch("https://blahnikkai.ddns.net/api/quickdraw/test");
             let result = await resp.text();
             console.log(result);
         }

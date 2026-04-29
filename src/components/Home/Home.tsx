@@ -9,7 +9,11 @@ export default function Home() {
     const [joinGid, setJoinGid] = useState(null);
 
     useEffect(() => {
-        socketRef.current = io(import.meta.env.VITE_BACKEND_URL);
+        let options = {};
+        if(import.meta.env.VITE_PATH_OPTION !== "") {
+            options = {path: import.meta.env.VITE_PATH_OPTION};
+        }
+        socketRef.current = io(import.meta.env.VITE_BACKEND_URL, options);
 
         socketRef.current.on("game created", (gid: string) => {
             navigate(`/game/${gid}`);

@@ -35,5 +35,5 @@ Server process running with pm2
 `pm2 list`
 `pm2 describe quickdraw`
 
-Run from inside
-`pm2 start server.js --name quickdraw`
+Run on ec2 instance
+`pm2 start dist/server/server.js --name quickdraw`
