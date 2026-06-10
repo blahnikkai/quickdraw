@@ -59,11 +59,11 @@ export default class GameManager {
     }
 
     startGame(gid: string) {
-        this.games.get(gid).startGame();
+        this.games.get(gid)?.startGame();
     }
 
     checkGuess(gid: string, guess: string, socket: Socket) {
-        this.games.get(gid).checkGuess(guess, socket);
+        this.games.get(gid)?.checkGuess(guess, socket);
     }
 
     gameExists(gid: string): boolean {
@@ -75,7 +75,7 @@ export default class GameManager {
             socket.emit("room dne");
             return;
         }
-        this.games.get(gid).joinGame(socket);
+        this.games.get(gid)?.joinGame(socket);
     }
 
     leaveGame(gid: string, socket: Socket) {
@@ -83,15 +83,15 @@ export default class GameManager {
         if (!this.gameExists(gid)) {
             return;
         }
-        this.games.get(gid).leaveGame(socket);
+        this.games.get(gid)?.leaveGame(socket);
         // if there are 0 players in a game, and 1 second from now there are still 0 players, delete the game
         // the 1 second wait is because react useEffect causes almost instant join -> leave -> join
-        if (this.games.get(gid).playerCnt === 0) {
+        if (this.games.get(gid)?.playerCnt === 0) {
             setTimeout(() => {
                 console.log(this.games.keys());
                 if (
                     this.gameExists(gid) &&
-                    this.games.get(gid).playerCnt === 0
+                    this.games.get(gid)?.playerCnt === 0
                 ) {
                     console.log(`deleting game ${gid}`);
                     this.games.delete(gid);

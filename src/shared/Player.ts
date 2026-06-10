@@ -6,7 +6,7 @@ export default class Player {
     host: boolean;
     name: string;
     lastGuess: string;
-    lastGuessStatus: GuessStatus;
+    lastGuessStatus: GuessStatus | undefined;
     dying: boolean;
     dead: boolean;
     gameStatus: GameStatus;

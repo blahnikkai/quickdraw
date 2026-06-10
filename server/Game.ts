@@ -23,7 +23,7 @@ export default class Game {
     phrase: string;
     used: Set<string>;
     validCnt: number;
-    timeoutId: ReturnType<typeof setTimeout>;
+    timeoutId: ReturnType<typeof setTimeout> | null;
     players: Map<string, Player>;
     curRound: number;
     difficulty: Difficulty;
@@ -46,6 +46,7 @@ export default class Game {
         this.host = "";
         this.used = new Set();
         this.validCnt = 0;
+        this.timeoutId = null;
         this.players = new Map();
         this.curRound = 0;
         this.difficulty = Difficulty.DYNAMIC;
@@ -59,7 +60,7 @@ export default class Game {
     }
 
     randomPhrase(length: number): string {
-        const letters = [];
+        const letters: String[] = [];
         for (let i = 0; i < length; i++) {
             letters.push(this.randomLetter());
         }
@@ -82,7 +83,7 @@ export default class Game {
         this.emitPlayerInfo();
     }
 
-    endGame(winner: Player = undefined) {
+    endGame(winner: Player | null = null) {
         this.curRound = 0;
         this.players.forEach((player: Player) => {
             player.reset();
@@ -142,7 +143,9 @@ export default class Game {
 
     endRound() {
         this.socketServer.to(this.gid).emit("end round");
-        clearTimeout(this.timeoutId);
+        if (this.timeoutId !== null) {
+            clearTimeout(this.timeoutId);
+        }
         this.players.forEach((player) => {
             player.checkDying();
         });
@@ -187,7 +190,7 @@ export default class Game {
     }
 
     checkGuess(guess: string, socket: Socket) {
-        let guessStatus: GuessStatus = undefined;
+        let guessStatus: GuessStatus;
         if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
             guessStatus = GuessStatus.INVALID;
         } else if (this.used.has(guess)) {
@@ -206,7 +209,7 @@ export default class Game {
     }
 
     checkRoundOver() {
-        // only 1 player left
+        // end round if only 1 player is left without a valid answer, or if only one player is alive
         if (
             (this.aliveCnt > 1 && this.aliveCnt - this.validCnt === 1) ||
             (this.aliveCnt === 1 && this.validCnt === 1)
@@ -289,7 +292,7 @@ export default class Game {
     }
 
     changeName(newName: string, socket: Socket) {
-        this.players.get(socket.id).setName(newName);
+        this.players.get(socket.id)?.setName(newName);
         const newStatus =
             this.curRound === 0 ? GameStatus.WAITING : GameStatus.SPECTATING;
         this.changeGameStatus(newStatus, socket);
@@ -299,7 +302,7 @@ export default class Game {
     }
 
     changeGameStatus(newStatus: GameStatus, socket: Socket) {
-        this.players.get(socket.id).setGameStatus(newStatus);
+        this.players.get(socket.id)?.setGameStatus(newStatus);
         this.emitPlayerInfo();
     }
 

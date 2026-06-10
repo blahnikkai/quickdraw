@@ -20,16 +20,16 @@ import HomeButton from "../HomeButton/HomeButton.js";
 export default function Game() {
     const navigate = useNavigate();
     const { gid } = useParams();
-    const [roomExists, setRoomExists] = useState<boolean>(undefined);
+    const [roomExists, setRoomExists] = useState<boolean>(true);
     const [phrase, setPhrase] = useState("");
     const [roundActive, setRoundActive] = useState(false);
 
     const selfPlayerInfoRef = useRef<Player>(undefined);
-    const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player>(undefined);
+    const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
-    const [playerInfo, setPlayerInfo] = useState([]);
+    const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
     const [guess, setGuess] = useState("");
-    const [winner, setWinner] = useState<Player>(undefined);
+    const [winner, setWinner] = useState<Player | undefined | null>(undefined);
 
     const [showingSettings, setShowingSettings] = useState(false);
     const [debugInfo, setDebugInfo] = useState("");
@@ -55,12 +55,12 @@ export default function Game() {
     };
 
     const submitName = (name: string) =>
-        socketRef.current.emit("submit name", gid, name);
+        socketRef.current?.emit("submit name", gid, name);
     const readyUp = () =>
-        socketRef.current.emit("change game status", gid, GameStatus.READY);
-    const startGame = () => socketRef.current.emit("start game", gid);
+        socketRef.current?.emit("change game status", gid, GameStatus.READY);
+    const startGame = () => socketRef.current?.emit("start game", gid);
     const submitGuess = () => {
-        socketRef.current.emit("submit guess", gid, guess.toLowerCase());
+        socketRef.current?.emit("submit guess", gid, guess.toLowerCase());
         setGuess("");
     }
     const updateSettings = (
@@ -68,7 +68,7 @@ export default function Game() {
         roundTime: number,
         startingLives: number
     ) => {
-        socketRef.current.emit(
+        socketRef.current?.emit(
             "update settings",
             gid,
             difficulty,
@@ -116,8 +116,11 @@ export default function Game() {
             (newPlayerInfo: Player[]) => {
                 setPlayerInfo(newPlayerInfo);
                 const newSelf = newPlayerInfo.find(
-                    (player: Player) => player.socketId === socketRef.current.id
+                    (player: Player) => player.socketId === socketRef.current?.id
                 );
+                if (newSelf === undefined) {
+                    return;
+                }
                 setSelfPlayerInfo(newSelf);
                 setGameStatus(newSelf.gameStatus);
                 selfPlayerInfoRef.current = newSelf;
@@ -148,7 +151,7 @@ export default function Game() {
         const intervalId = intervalRef.current;
 
         return () => {
-            socketRef.current.disconnect();
+            socketRef.current?.disconnect();
             clearInterval(intervalId);
         };
     }, []);
@@ -163,11 +166,11 @@ export default function Game() {
                         {[GameStatus.WAITING, GameStatus.READY].includes(
                             gameStatus
                         ) && (
-                            <ShowSettingsButton
-                                showingSettings={showingSettings}
-                                setShowingSettings={setShowingSettings}
-                            />
-                        )}
+                                <ShowSettingsButton
+                                    showingSettings={showingSettings}
+                                    setShowingSettings={setShowingSettings}
+                                />
+                            )}
                         {[GameStatus.WAITING, GameStatus.READY].includes(
                             gameStatus
                         ) &&
@@ -180,7 +183,7 @@ export default function Game() {
                                     startingLives={startingLives}
                                     setStartingLives={setStartingLives}
                                     updateSettings={updateSettings}
-                                    viewOnly={!selfPlayerInfo.host}
+                                    viewOnly={!selfPlayerInfo?.host}
                                 />
                             )}
                     </div>
@@ -236,20 +239,19 @@ export default function Game() {
                             <Ready
                                 startGame={startGame}
                                 hostName={
-                                    playerInfo.find((player) => player.host)
-                                        .name
+                                    playerInfo.find((player) => player.host).name
                                 }
-                                selfIsHost={selfPlayerInfo.host}
+                                selfIsHost={selfPlayerInfo ? selfPlayerInfo.host : false}
                             />
                         )}
 
                         {(gameStatus === GameStatus.PLAYING ||
                             gameStatus === GameStatus.SPECTATING) && (
-                            <div>
-                                <div className="phrase">{phrase}</div>
-                                <div>{debugInfo}</div>
-                            </div>
-                        )}
+                                <div>
+                                    <div className="phrase">{phrase}</div>
+                                    <div>{debugInfo}</div>
+                                </div>
+                            )}
 
                         {gameStatus === GameStatus.PLAYING && (
                             <Playing

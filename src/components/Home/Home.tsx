@@ -1,4 +1,4 @@
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
@@ -12,12 +12,10 @@ export function getSocketIOOptions() {
 
 export default function Home() {
     const navigate = useNavigate();
-    const socketRef = useRef(null);
-    const [joinGid, setJoinGid] = useState(null);
+    const socketRef = useRef<Socket>(null);
+    const [joinGid, setJoinGid] = useState<String>("");
 
     useEffect(() => {
-        let options = {};
-
         socketRef.current = io(import.meta.env.VITE_BACKEND_URL, getSocketIOOptions());
 
         socketRef.current.on("game created", (gid: string) => {
@@ -25,7 +23,7 @@ export default function Home() {
         });
 
         return () => {
-            socketRef.current.disconnect();
+            socketRef.current?.disconnect();
         };
     }, []);
 
@@ -34,7 +32,7 @@ export default function Home() {
             <div className="home-section">
                 <button
                     onClick={() => {
-                        socketRef.current.emit("create game");
+                        socketRef.current?.emit("create game");
                     }}
                 >
                     Create a Game
