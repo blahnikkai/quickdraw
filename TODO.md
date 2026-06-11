@@ -1,7 +1,8 @@
 High
 - UX
     - Use just home icon for home button in nav instead of including text
-    - New font
+    - New font. Cowboy or pixelated?
+    - Rearrange UI elements based on Figma mockup.
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
@@ -11,6 +12,8 @@ High
     - Cowboy theming
         - Cowboys shoot whoever loses
             - Gun noise
+        - Little shake animation when you lose a life
+        - As you lose lives, you could be getting more and more hanged, could be getting shot
         - Add little cowboy drawings. Let people pick what cowboy they want to be.
         - Add cowboy sound effects
 
@@ -23,8 +26,9 @@ High
 - Settings
     - Allow settings to be changed before entering nickname
     - In general, add simple settings and advanced settings. In advanced settings, players have more control
-    - Add custom difficulty in advanced settings (especially important for playtesting)
-    - In advanced settings, allow the host
+    - In advanced settings
+        - Custom difficulty (important for playtesting)
+        - Pick whether rareness or longer word is used in 1v1 tiebreaker
 
 - Fix behavior on leave and rejoin
     - Game should end if all players leave
@@ -42,9 +46,9 @@ High
 
 - Gameplay and gamemodes
     - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s
-    - Separate "rare words" , where a player only dies when they can't name a more rare word
+    - Separate "rare words" gamemode, where a player dies if their word is the least rare.
     - Add regex clues
-    - Give a bonus to the person with the rarest word (how would i even implement this bruh)
+    - Give a bonus to the person with the rarest word
 
 - Code cleanliness
     - Frontend
