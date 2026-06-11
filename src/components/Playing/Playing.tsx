@@ -20,7 +20,7 @@ export default function Playing({
     roundActive: boolean;
 }) {
     const [inputDisabled, setInputDisabled] = useState(false);
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     
     useEffect(() => {
         const newInputDisabled =
@@ -33,7 +33,7 @@ export default function Playing({
     
     useEffect(() => {
         if(!inputDisabled) {
-            inputRef.current.focus();
+            inputRef.current?.focus();
         }
     }, [inputDisabled])
     

@@ -11,28 +11,33 @@ export default class GameManager {
     twoLetCnts: Map<string, number>;
     threeLetCnts: Map<string, number>;
 
-    constructor(socketServer: SocketServer) {
+    constructor(socketServer: SocketServer, dictionary: Set<string>, twoLetCnts: Map<string, number>, threeLetCnts: Map<string, number>) {
         this.socketServer = socketServer;
         this.games = new Map();
+        this.dictionary = dictionary;
+        this.twoLetCnts = twoLetCnts;
+        this.threeLetCnts = threeLetCnts;
     }
 
-    async loadSeqCnts() {
+    static async create(socketServer: SocketServer) {
         const twoLetData = await fs.readFile("./dictionary/two_let_cnts.json", {
             encoding: "utf-8",
         });
-        this.twoLetCnts = new Map(Object.entries(JSON.parse(twoLetData)));
+        const twoLetCnts: Map<string, number> = new Map(Object.entries(JSON.parse(twoLetData)));
 
         const threeLetData = await fs.readFile(
             "./dictionary/three_let_cnts.json",
             { encoding: "utf-8" }
         );
-        this.threeLetCnts = new Map(Object.entries(JSON.parse(threeLetData)));
+        const threeLetCnts: Map<string, number> = new Map(Object.entries(JSON.parse(threeLetData)));
 
         const dictionaryData = await fs.readFile("./dictionary/enable1.txt", {
             encoding: "utf-8",
         });
         const wordLst = dictionaryData.split("\n");
-        this.dictionary = new Set(wordLst);
+        const dictionary = new Set(wordLst);
+        
+        return new GameManager(socketServer, dictionary, twoLetCnts, threeLetCnts)
     }
 
     async createGame() {
@@ -44,9 +49,6 @@ export default class GameManager {
                 (10 ** n - 10 ** (n - 1)) * Math.random() + 10 ** (n - 1)
             ).toString();
         } while (this.games.has(gid));
-        if (this.twoLetCnts === undefined) {
-            await this.loadSeqCnts();
-        }
         const newGame = new Game(
             gid,
             this.socketServer,

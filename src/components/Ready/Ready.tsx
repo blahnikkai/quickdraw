@@ -7,7 +7,7 @@ export default function Ready({
 }: {
     startGame: () => void;
     selfIsHost: boolean;
-    hostName: string;
+    hostName: string | null;
 }) {
     return (
         <form
@@ -18,9 +18,13 @@ export default function Ready({
             }}
         >
             <button disabled={!selfIsHost}>
-                {selfIsHost
-                    ? "Start Game"
-                    : `Waiting for ${hostName} to start the game`}
+                {hostName === null && "There is no host. Something went wrong, please reload."}
+                {hostName !== null &&
+                    (selfIsHost
+                        ? "Start Game"
+                        : `Waiting for ${hostName} to start the game`
+                    )
+                }
             </button>
         </form>
     );

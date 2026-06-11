@@ -8,14 +8,20 @@ export default class SocketManager {
     socketServer: SocketServer;
     gameManager: GameManager;
 
-    constructor(httpServer: Server) {
-        this.socketServer = new SocketServer(httpServer, {
+    constructor(socketServer: SocketServer, gameManager: GameManager) {
+        this.socketServer = socketServer;
+        this.gameManager = gameManager;
+    }
+
+    static async create(httpServer: Server) {
+        const socketServer = new SocketServer(httpServer, {
             cors: {
                 origin: "*",
                 methods: ["GET", "POST"],
             },
         });
-        this.gameManager = new GameManager(this.socketServer);
+        const gameManager = await GameManager.create(socketServer);
+        return new SocketManager(socketServer, gameManager);
     }
 
     listen() {
@@ -37,7 +43,7 @@ export default class SocketManager {
             });
 
             socket.on("check room exists", (gid: string) => {
-                if(this.gameManager.gameExists(gid)) {
+                if (this.gameManager.gameExists(gid)) {
                     socket.emit("room exists")
                 }
                 else {

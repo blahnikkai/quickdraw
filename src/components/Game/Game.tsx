@@ -28,6 +28,7 @@ export default function Game() {
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
+    const host = playerInfo.find((player) => player.host)
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player | undefined | null>(undefined);
 
@@ -47,6 +48,9 @@ export default function Game() {
     const [timeProgress, setTimeProgress] = useState(0);
 
     const updateTimeProgress = () => {
+        if (startTimeRef.current === undefined || endTimeRef.current === undefined) {
+            return;
+        }
         const curTime = Date.now();
         const timeProgress =
             (curTime - startTimeRef.current) /
@@ -123,6 +127,7 @@ export default function Game() {
                 }
                 setSelfPlayerInfo(newSelf);
                 setGameStatus(newSelf.gameStatus);
+                // Can be deleted?
                 selfPlayerInfoRef.current = newSelf;
             }
         );
@@ -148,11 +153,9 @@ export default function Game() {
             }
         );
 
-        const intervalId = intervalRef.current;
-
         return () => {
             socketRef.current?.disconnect();
-            clearInterval(intervalId);
+            clearInterval(intervalRef.current);
         };
     }, []);
 
@@ -239,7 +242,7 @@ export default function Game() {
                             <Ready
                                 startGame={startGame}
                                 hostName={
-                                    playerInfo.find((player) => player.host).name
+                                    host ? host.name : null
                                 }
                                 selfIsHost={selfPlayerInfo ? selfPlayerInfo.host : false}
                             />
@@ -253,7 +256,7 @@ export default function Game() {
                                 </div>
                             )}
 
-                        {gameStatus === GameStatus.PLAYING && (
+                        {gameStatus === GameStatus.PLAYING && selfPlayerInfo && (
                             <Playing
                                 selfPlayerInfo={selfPlayerInfo}
                                 guess={guess}

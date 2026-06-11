@@ -1,10 +1,10 @@
-import Player from "../../shared/Player";
+import Player from "../../shared/Player.js";
 
 export default function Waiting({
     winner,
     readyUp,
 }: {
-    winner: Player;
+    winner: Player | null | undefined;
     readyUp: () => void;
 }) {
     return (
@@ -15,8 +15,8 @@ export default function Waiting({
                 readyUp();
             }}
         >
-            {winner &&
-                (winner.name ? winner.name + " won the game!" : "Nobody won!")}
+            {winner !== undefined &&
+                (winner !== null ? winner.name + " won the game!" : "Nobody won!")}
             <button>Ready Up</button>
         </form>
     );

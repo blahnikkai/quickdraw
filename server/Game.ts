@@ -174,7 +174,11 @@ export default class Game {
     calcPhraseCnt(phrase: string) {
         const phraseCnts =
             phrase.length === 3 ? this.threeLetCnts : this.twoLetCnts;
-        return phraseCnts.get(phrase);
+        const ans = phraseCnts.get(phrase);
+        if (ans === undefined) {
+            throw new Error("Phrase not found in phrase counts");
+        }
+        return ans;
     }
 
     generatePhrase(): string {
@@ -190,6 +194,10 @@ export default class Game {
     }
 
     checkGuess(guess: string, socket: Socket) {
+        const player = this.players.get(socket.id)
+        if (player === undefined) {
+            return;
+        }
         let guessStatus: GuessStatus;
         if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
             guessStatus = GuessStatus.INVALID;
@@ -200,8 +208,8 @@ export default class Game {
             this.used.add(guess);
             guessStatus = GuessStatus.VALID;
         }
-        this.players.get(socket.id).lastGuess = guess;
-        this.players.get(socket.id).lastGuessStatus = guessStatus;
+        player.lastGuess = guess;
+        player.lastGuessStatus = guessStatus;
         this.emitPlayerInfo();
         if (guessStatus === GuessStatus.VALID) {
             this.checkRoundOver();
@@ -276,10 +284,19 @@ export default class Game {
     hostLeave() {
         if (this.players.size === 0) {
             this.host = "";
-        } else {
-            this.host = this.players.keys().next().value;
-            this.players.get(this.host).host = true;
+            return;
+        } 
+        const newHostId = this.players.keys().next().value;
+        if(newHostId === undefined) {
+            this.host = "";
+            return;
         }
+        this.host = newHostId;
+        const newHost = this.players.get(this.host);
+        if (newHost === undefined) {
+            return;
+        }
+        newHost.host = true;
     }
 
     emitPlayerInfo() {
