@@ -1,45 +1,56 @@
 High
-- Add home icon for home button in nav instead of text
-- Rearrange nav bar (home should be left of copy link)
-- Separate cluttered Game component into Nav, RoomExists, RoomDNE components
+- UX
+    - Use just home icon for home button in nav instead of including text
+    - New font
+    - Add animations/transition to names on join
+    - Show a more obvious signal of losing a life
+        - And a visual signal of being dead. This is less important since input is disabled.
+    - Display your own user info separately from everyone elses.
+    - Add some transition time before game starts (and a little bit between rounds)
+    - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
+    - Cowboy theming
+        - Cowboys shoot whoever loses
+            - Gun noise
+        - Add little cowboy drawings. Let people pick what cowboy they want to be.
+        - Add cowboy sound effects
 
-Medium
-- Allow settings to be changed before entering nickname
-- In general, add simple settings and advanced settings. In advanced settings, players have more control
-- Fix behavior on leave and rejoin.
+- Bugs
+    - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
+
+- Word List
+    - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
+
+- Settings
+    - Allow settings to be changed before entering nickname
+    - In general, add simple settings and advanced settings. In advanced settings, players have more control
+    - Add custom difficulty in advanced settings (especially important for playtesting)
+    - In advanced settings, allow the host
+
+- Fix behavior on leave and rejoin
     - Game should end if all players leave
     - Allow for rejoining and playing again?
-- Add temporary timeout if you enter a wrong phrase
-- Add speeding up each round
-- Add regex clues
 
-Low
-- Display guess status *icons* to player and to other players in player info. 
-    - Only for short time, use timeout
-- Add little cowboy drawings
-- Add cowboy sound effects
-- Wrong guess leads to shorter timer
-- New font
-- Only allow unique nicknames?
-- Don't display user info to self? I wrote this a while ago tbh, not sure what it means, just display separately probably
-- Add animations/transition to names on join
-- Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
-- Change passing Socket to socketId in backend
-- Give a bonus to the person with the rarest word (how would i even implement this bruh)
-- Pass functions to components instead of socket and gid. 
-    * what this mean?
-    * a callback, idiot
+- Difficulty and timing
+    - Add temporary timeout if you enter a wrong phrase
+    - Add speeding up each round
+    - Wrong guess leads to shorter timer
 
-Live playtesting
-- Show a more obvious signal of losing a life
-    * And put a visual signal of being dead. This is less important since input is disabled
-- Add a name limit
-- Be able to unready
-- Add some transition time before game starts (and a little bit between rounds)
-- Cowboys shoot whoever loses
-    * Gun noise
-- If you submit right as you die you don't lose a life? I maybe saw this?
-- Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
-- Make last part with only two people more suspenseful somehow
-    * Make 2nd place get shot?
-- Add custom difficulty in advanced settings (especially important for playtesting)
+- Naming and waiting
+    - Add a name length limit
+    - Only allow unique nicknames
+    - Be able to unready
+
+- Gameplay and gamemodes
+    - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s
+    - Separate "rare words" , where a player only dies when they can't name a more rare word
+    - Add regex clues
+    - Give a bonus to the person with the rarest word (how would i even implement this bruh)
+
+- Code cleanliness
+    - Frontend
+        - Separate cluttered Game component into Nav, RoomExists, RoomDNE components
+    - Backend
+        - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
+        - Change passing Socket to socketId in backend
+        - Pass callback functions to components instead of socket and gid.
+
