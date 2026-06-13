@@ -16,6 +16,7 @@ import CopyLinkButton from "../CopyLinkButton/CopyLinkButton.js";
 import Settings from "../Settings/Settings.js";
 import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton.js";
 import HomeButton from "../HomeButton/HomeButton.js";
+import Nav from "../Nav/Nav.js";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -161,37 +162,21 @@ export default function Game() {
 
     return (
         <div className="game-root">
-            {roomExists && (
-                <nav>
-                    <HomeButton />
-                    <CopyLinkButton />
-                    <div className="settings-container">
-                        {[GameStatus.WAITING, GameStatus.READY].includes(
-                            gameStatus
-                        ) && (
-                                <ShowSettingsButton
-                                    showingSettings={showingSettings}
-                                    setShowingSettings={setShowingSettings}
-                                />
-                            )}
-                        {[GameStatus.WAITING, GameStatus.READY].includes(
-                            gameStatus
-                        ) &&
-                            showingSettings && (
-                                <Settings
-                                    difficulty={difficulty}
-                                    setDifficulty={setDifficulty}
-                                    roundTime={roundTime}
-                                    setRoundTime={setRoundTime}
-                                    startingLives={startingLives}
-                                    setStartingLives={setStartingLives}
-                                    updateSettings={updateSettings}
-                                    viewOnly={!selfPlayerInfo?.host}
-                                />
-                            )}
-                    </div>
-                </nav>
-            )}
+            {roomExists &&
+                <Nav
+                    gameStatus={gameStatus}
+                    showingSettings={showingSettings}
+                    setShowingSettings={setShowingSettings}
+                    difficulty={difficulty}
+                    setDifficulty={setDifficulty}
+                    roundTime={roundTime}
+                    setRoundTime={setRoundTime}
+                    startingLives={startingLives}
+                    setStartingLives={setStartingLives}
+                    updateSettings={updateSettings}
+                    viewOnly={!(selfPlayerInfo?.host)}
+                />
+            }
             <main>
                 {roomExists === undefined && <div>Loading</div>}
 
