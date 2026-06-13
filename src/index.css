@@ -1,10 +1,10 @@
 :root {
-    --clr-1: #b45d3f;
+    --clr-1: #201207;
     --clr-2: #dd8d4c;
-    --clr-3: #e5d09d;
+    --clr-3: #FFF4DE;
     --clr-4: #d2dddb;
-    --clr-5: #b0cde3;
-    --clr-6: #2e1710;
+    --clr-5: #A9CEE5;
+    --clr-6: #201207;
     --clr-valid: #06e642;
     --clr-invalid-1: #ff7b6a;
     --clr-invalid-2: #f81717;
@@ -42,7 +42,7 @@ select {
 }
 
 main {
-    background-image: linear-gradient(var(--clr-5), var(--clr-5), var(--clr-4));
+    background-color: var(--clr-5);
 
     display: flex;
     flex-direction: column;
@@ -55,7 +55,7 @@ button {
     background-color: var(--clr-3);
     border-radius: 0.5rem;
     padding: 0.5rem;
-    border: 1px solid var(--clr-2);
+    border: none;
     font-size: 16px;
 }
 

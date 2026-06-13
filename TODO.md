@@ -1,7 +1,6 @@
 High
 - UX
     - Use just home icon for home button in nav instead of including text
-    - New font. Cowboy or pixelated?
     - Rearrange UI elements based on Figma mockup.
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
@@ -9,6 +8,7 @@ High
     - Display your own user info separately from everyone elses.
     - Add some transition time before game starts (and a little bit between rounds)
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
+    - Change fonts of certain elements. Cowboy or pixelated?
     - Cowboy theming
         - Cowboys shoot whoever loses
             - Gun noise
