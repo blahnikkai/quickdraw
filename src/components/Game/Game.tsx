@@ -191,25 +191,16 @@ export default function Game() {
                 {roomExists === true && (
                     <div className="room room-exists">
                         {gameStatus !== GameStatus.NICKNAME && (
-                            <div className="">
-                                <div className="spectator-info">
-                                    <PlayerInfo
-                                        playerInfo={playerInfo}
-                                        allowableGameStatuses={[
-                                            GameStatus.SPECTATING,
-                                        ]}
-                                    />
-                                </div>
-                                <div className="active-info">
-                                    <PlayerInfo
-                                        playerInfo={playerInfo}
-                                        allowableGameStatuses={[
-                                            GameStatus.PLAYING,
-                                            GameStatus.READY,
-                                            GameStatus.WAITING,
-                                        ]}
-                                    />
-                                </div>
+                            <div className="active-info">
+                                <PlayerInfo
+                                    playerInfo={playerInfo}
+                                    selfPlayerInfo={undefined}
+                                    allowableGameStatuses={[
+                                        GameStatus.PLAYING,
+                                        GameStatus.READY,
+                                        GameStatus.WAITING,
+                                    ]}
+                                />
                             </div>
                         )}
 

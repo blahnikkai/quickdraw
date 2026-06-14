@@ -1,14 +1,12 @@
 :root {
-    --clr-1: #201207;
+    --clr-dark: #201207;
     --clr-2: #dd8d4c;
     --clr-3: #FFF4DE;
-    --clr-4: #d2dddb;
+    --clr-light: #d2dddb;
     --clr-5: #A9CEE5;
     --clr-6: #201207;
-    --clr-valid: #06e642;
-    --clr-invalid-1: #ff7b6a;
-    --clr-invalid-2: #f81717;
-    --clr-red: #B70000;
+    --clr-valid: #03B70F;
+    --clr-invalid: #B70000;
 }
 
 * {
@@ -72,11 +70,11 @@ button:disabled {
 }
 
 button:active:not(:disabled) {
-    background-color: var(--clr-1);
+    background-color: var(--clr-dark);
 }
 
 input {
-    border: 1px solid var(--clr-1);
+    border: 1px solid var(--clr-dark);
     background-color: var(--clr-3);
     border-radius: 0.5rem;
     padding: 0.25rem 0.5rem;

@@ -7,7 +7,8 @@
     padding: 1em;
     margin: 1em;
 
-    border: 6px solid var(--clr-1);
+    /* background-color: var(--clr-dark); */
+
     border-radius: .5em;
 
     display: flex;

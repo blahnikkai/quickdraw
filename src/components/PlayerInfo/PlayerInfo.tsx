@@ -5,16 +5,18 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown.js";
 
 export default function PlayerInfo({
     playerInfo,
+    selfPlayerInfo,
     allowableGameStatuses,
 }: {
     playerInfo: Player[];
+    selfPlayerInfo: Player | undefined;
     allowableGameStatuses: GameStatus[];
 }) {
     return (
         <div className="players">
             {playerInfo
                 .filter((player) =>
-                    allowableGameStatuses.includes(player.gameStatus)
+                    allowableGameStatuses.includes(player.gameStatus) && player.socketId !== selfPlayerInfo?.socketId
                 )
                 .map((player) => {
                     const playerIsInWaitingRoom: boolean = [
@@ -28,29 +30,32 @@ export default function PlayerInfo({
                     return (
                         <div
                             key={player.socketId}
-                            className={`player ${player.dying ? " dying" : ""}${
-                                player.dead ? " dead" : ""
-                            }`}
+                            className={`player`}
                         >
-                            <div>
-                                {player.host ? <FaCrown size={15}/> : ""} {player.name}
+                            <div className={`player-stats ${player.dying ? " dying" : ""}${player.dead ? " dead" : ""}`}>
+                                <div>
+                                    {/* {player.host ? <FaCrown size={1} /> : ""} */}
+                                    {player.name}
+                                </div>
+                                <div
+                                    className={`player-game-status ${gameStatusStr.toLowerCase()}`}
+                                >
+                                    {gameStatusStr}
+                                </div>
+                                <div>
+                                    {player.gameStatus == GameStatus.PLAYING &&
+                                        player.lives}
+                                </div>
                             </div>
-                            <div
-                                className={`player-game-status ${gameStatusStr.toLowerCase()}`}
-                            >
-                                {gameStatusStr}
-                            </div>
-                            <div>
-                                {player.gameStatus == GameStatus.PLAYING &&
-                                    player.lives}
-                            </div>
-                            <div
-                                className={
-                                    player.lastGuessStatus &&
-                                    "last-guess " + player.lastGuessStatus
-                                }
-                            >
-                                {player.lastGuess}
+                            <div className="guess-container">
+                                <div
+                                    className={
+                                        player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
+                                    }
+                                >
+                                    {player.lastGuess}
+                                </div>
+                                <img src="/assets/images/speech_bubble.svg" height="50" width="100" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
                             </div>
                         </div>
                     );

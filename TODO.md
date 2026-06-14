@@ -1,5 +1,7 @@
 High
 - UX
+    - Add crown or some indicator for host
+    - Add speech bubble graphics for guess
     - Use just home icon for home button in nav instead of including text
     - Rearrange UI elements based on Figma mockup.
     - Add animations/transition to names on join

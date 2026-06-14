@@ -2,33 +2,40 @@
     display: flex;
     flex-direction: column;
 
-    align-items: flex-start;
-    justify-content: space-evenly;
+    height: 100%;
 
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .player {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-around;
 
-    /* height: 150px; */
-
+    margin: 1rem;
     padding: .5rem;
 }
 
-.player > * {
-    height: 30px;
-    width: 100px;
+.player-stats {
+    background-color: black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 8rem;
+    min-height: 5rem;
+    padding: .5rem 2.5rem;
+}
+
+.player * {
+    color: var(--clr-light);
     text-align: center;
 }
 
 .dying {
-    box-sizing: border-box;
-    -webkit-box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
-    -moz-box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
-    box-shadow:inset 0px 0px 0px 10px var(--clr-invalid-2);
+    background-color: var(--clr-invalid);
 }
 
 .dead * {
@@ -40,7 +47,7 @@
 }
 
 .invalid {
-    color: var(--clr-invalid-1);
+    color: var(--clr-invalid);
 }
 
 .used {
@@ -59,4 +66,25 @@
 
 .waiting {
     color: yellow;
+}
+
+.guess-container {
+    position: relative;
+    height: 100%;
+}
+
+.other-guess {
+    position: absolute;
+    left: 0.4rem;
+    top: -1.6rem;
+}
+
+.speech-bubble {
+    position: absolute;
+    left: 0.2rem;
+    top: 0.5rem;
+}
+
+.invisible {
+    display: none;
 }
