@@ -4,8 +4,26 @@
 
 .room {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.vert-info {
+    display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.phrase-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.debug-info {
+    font-size: 12px;
 }
 
 .room-dne > * {

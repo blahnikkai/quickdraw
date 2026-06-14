@@ -21,7 +21,7 @@ export default function Playing({
 }) {
     const [inputDisabled, setInputDisabled] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    
+
     useEffect(() => {
         const newInputDisabled =
             !roundActive ||
@@ -30,16 +30,21 @@ export default function Playing({
             selfPlayerInfo.lives === 0;
         setInputDisabled(newInputDisabled);
     }, [roundActive, selfPlayerInfo]);
-    
+
     useEffect(() => {
-        if(!inputDisabled) {
+        if (!inputDisabled) {
             inputRef.current?.focus();
         }
     }, [inputDisabled])
-    
+
     return (
-        <div className="game-ui ingame">
-            <div>Lives: {selfPlayerInfo?.lives}</div>
+        <div className="game-ui">
+            <div className="timer-container">
+                <div
+                    className="timer-bar"
+                    style={{ width: `${100 * (1 - timeProgress)}%` }}
+                ></div>
+            </div>
             <div
                 className={
                     "last-guess self-last-guess " +
@@ -48,7 +53,9 @@ export default function Playing({
             >
                 {selfPlayerInfo?.lastGuess}
             </div>
+            <div className="life-cnt">{selfPlayerInfo?.lives} lives</div>
             <form
+                className="guess-form"
                 onSubmit={(event) => {
                     event.preventDefault();
                     if (selfPlayerInfo?.lastGuessStatus != GuessStatus.VALID) {
@@ -65,10 +72,6 @@ export default function Playing({
                     disabled={inputDisabled}
                 />
             </form>
-            <div
-                className="timer-bar"
-                style={{ width: `${100 * (1 - timeProgress)}%` }}
-            ></div>
         </div>
     );
 }

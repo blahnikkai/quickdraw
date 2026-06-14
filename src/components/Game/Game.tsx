@@ -12,10 +12,6 @@ import Player from "../../shared/Player.js";
 import GameStatus from "../../shared/GameStatus.js";
 import Difficulty from "../../shared/Difficulty.js";
 import Ready from "../Ready/Ready.js";
-import CopyLinkButton from "../CopyLinkButton/CopyLinkButton.js";
-import Settings from "../Settings/Settings.js";
-import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton.js";
-import HomeButton from "../HomeButton/HomeButton.js";
 import Nav from "../Nav/Nav.js";
 
 export default function Game() {
@@ -215,42 +211,44 @@ export default function Game() {
                             </div>
                         )}
 
-                        {gameStatus === GameStatus.NICKNAME && (
-                            <Nickname submitName={submitName} />
-                        )}
-
-                        {gameStatus === GameStatus.WAITING && (
-                            <Waiting winner={winner} readyUp={readyUp} />
-                        )}
-
-                        {gameStatus === GameStatus.READY && (
-                            <Ready
-                                startGame={startGame}
-                                hostName={
-                                    host ? host.name : null
-                                }
-                                selfIsHost={selfPlayerInfo ? selfPlayerInfo.host : false}
-                            />
-                        )}
-
-                        {(gameStatus === GameStatus.PLAYING ||
-                            gameStatus === GameStatus.SPECTATING) && (
-                                <div>
-                                    <div className="phrase">{phrase}</div>
-                                    <div>{debugInfo}</div>
-                                </div>
+                        <div className="vert-info">
+                            {gameStatus === GameStatus.NICKNAME && (
+                                <Nickname submitName={submitName} />
                             )}
 
-                        {gameStatus === GameStatus.PLAYING && selfPlayerInfo && (
-                            <Playing
-                                selfPlayerInfo={selfPlayerInfo}
-                                guess={guess}
-                                setGuess={setGuess}
-                                timeProgress={timeProgress}
-                                submitGuess={submitGuess}
-                                roundActive={roundActive}
-                            />
-                        )}
+                            {gameStatus === GameStatus.WAITING && (
+                                <Waiting winner={winner} readyUp={readyUp} />
+                            )}
+
+                            {gameStatus === GameStatus.READY && (
+                                <Ready
+                                    startGame={startGame}
+                                    hostName={
+                                        host ? host.name : null
+                                    }
+                                    selfIsHost={selfPlayerInfo ? selfPlayerInfo.host : false}
+                                />
+                            )}
+
+                            {(gameStatus === GameStatus.PLAYING ||
+                                gameStatus === GameStatus.SPECTATING) && (
+                                    <div className="phrase-container">
+                                        <div className="phrase">{phrase}</div>
+                                        <div className="debug-info">{debugInfo}</div>
+                                    </div>
+                                )}
+
+                            {gameStatus === GameStatus.PLAYING && selfPlayerInfo && (
+                                <Playing
+                                    selfPlayerInfo={selfPlayerInfo}
+                                    guess={guess}
+                                    setGuess={setGuess}
+                                    timeProgress={timeProgress}
+                                    submitGuess={submitGuess}
+                                    roundActive={roundActive}
+                                />
+                            )}
+                        </div>
                     </div>
                 )}
             </main>
