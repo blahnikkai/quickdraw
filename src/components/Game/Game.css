@@ -1,13 +1,20 @@
-.phrase {
-    font-size: 25px;
-}
-
 .room {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
+}
+
+.room-exists {
+    flex-direction: row;
+}
+
+.room-dne {
+    flex-direction: column;
+}
+
+.room-dne > * {
+    margin: 10px;
 }
 
 .vert-info {
@@ -22,29 +29,20 @@
     align-items: center;
 }
 
-.debug-info {
-    font-size: 12px;
+.phrase {
+    font-size: 25px;
 }
 
-.room-dne > * {
-    margin: 10px;
+.debug-info {
+    font-size: 12px;
 }
 
 .go-home-btn {
     text-decoration: underline;
 }
 
-nav {
-    background-color: var(--clr-6);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    
-    margin: 0;
-    padding: 0;
-}
-
-nav > * {
-    margin: 0.5rem 0.5rem;
+.active-info {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

@@ -4,6 +4,7 @@ import CopyLinkButton from "../CopyLinkButton/CopyLinkButton.js";
 import HomeButton from "../HomeButton/HomeButton.js";
 import Settings from "../Settings/Settings.js";
 import ShowSettingsButton from "../ShowSettingsButton/ShowSettingsButton.js";
+import "./Nav.css"
 
 export default function Nav({
     gameStatus,

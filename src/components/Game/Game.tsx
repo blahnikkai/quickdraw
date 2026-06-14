@@ -32,9 +32,7 @@ export default function Game() {
     const [showingSettings, setShowingSettings] = useState(false);
     const [debugInfo, setDebugInfo] = useState("");
 
-    const [difficulty, setDifficulty] = useState<Difficulty>(
-        Difficulty.DYNAMIC
-    );
+    const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.DYNAMIC);
     const [roundTime, setRoundTime] = useState(0);
     const [startingLives, setStartingLives] = useState(0);
 
@@ -191,23 +189,27 @@ export default function Game() {
                 )}
 
                 {roomExists === true && (
-                    <div className="room">
+                    <div className="room room-exists">
                         {gameStatus !== GameStatus.NICKNAME && (
-                            <div>
-                                <PlayerInfo
-                                    playerInfo={playerInfo}
-                                    allowableGameStatuses={[
-                                        GameStatus.SPECTATING,
-                                    ]}
-                                />
-                                <PlayerInfo
-                                    playerInfo={playerInfo}
-                                    allowableGameStatuses={[
-                                        GameStatus.PLAYING,
-                                        GameStatus.READY,
-                                        GameStatus.WAITING,
-                                    ]}
-                                />
+                            <div className="">
+                                <div className="spectator-info">
+                                    <PlayerInfo
+                                        playerInfo={playerInfo}
+                                        allowableGameStatuses={[
+                                            GameStatus.SPECTATING,
+                                        ]}
+                                    />
+                                </div>
+                                <div className="active-info">
+                                    <PlayerInfo
+                                        playerInfo={playerInfo}
+                                        allowableGameStatuses={[
+                                            GameStatus.PLAYING,
+                                            GameStatus.READY,
+                                            GameStatus.WAITING,
+                                        ]}
+                                    />
+                                </div>
                             </div>
                         )}
 

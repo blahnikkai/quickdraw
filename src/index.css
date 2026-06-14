@@ -43,6 +43,8 @@ select {
 }
 
 main {
+    position: relative;
+
     background-color: var(--clr-5);
 
     display: flex;
