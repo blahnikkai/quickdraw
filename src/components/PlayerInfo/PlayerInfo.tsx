@@ -3,7 +3,7 @@ import Player from "../../shared/Player.js";
 import GameStatus from "../../shared/GameStatus.js";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown.js";
 
-export default function PlayerInfo({
+export default function Players({
     playerInfo,
     selfPlayerInfo,
 }: {

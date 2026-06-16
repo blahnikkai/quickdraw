@@ -30,7 +30,7 @@ export default function Nickname({
                     defaultValue={name}
                 />
             </label>
-            <button>Join</button>
+            <button>Join Lobby</button>
         </form>
     );
 }

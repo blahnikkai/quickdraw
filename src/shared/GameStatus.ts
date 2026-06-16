@@ -4,7 +4,9 @@ enum GameStatus {
     // button to join a game, game can't start if someone is waiting
     WAITING = "Waiting",
     // spectating
-    SPECTATING = "Spectating",
+    SPECTATING_WAITING = "SpectatingWaiting",
+    // spectating
+    SPECTATING_PLAYING = "SpectatingGame",
     // ready to start game
     READY = "Ready",
     // playing the game

@@ -1,11 +1,14 @@
 .players {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 
     height: 100%;
 
-    align-items: flex-start;
-    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .player {

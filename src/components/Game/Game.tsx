@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Game.css";
 import { getSocketIOOptions } from "../Home/Home.js";
-import PlayerInfo from "../PlayerInfo/PlayerInfo.js";
+import Players from "../PlayerInfo/PlayerInfo.js";
 import Waiting from "../Waiting/Waiting.js";
 import Playing from "../Playing/Playing.js";
 import Nickname from "../Nickname/Nickname.js";
@@ -59,6 +59,10 @@ export default function Game() {
         socketRef.current?.emit("submit name", gid, name);
     const readyUp = () =>
         socketRef.current?.emit("change game status", gid, GameStatus.READY);
+    const spectate = () =>
+        socketRef.current?.emit("change game status", gid, GameStatus.SPECTATING_WAITING);
+    const unready = () =>
+        socketRef.current?.emit("change game status", gid, GameStatus.WAITING);
     const startGame = () => socketRef.current?.emit("start game", gid);
     const submitGuess = () => {
         socketRef.current?.emit("submit guess", gid, guess.toLowerCase());
@@ -192,17 +196,17 @@ export default function Game() {
 
                 {roomExists === true && (
                     <div className="room room-exists">
-                        <div className="player-info">
-                            <PlayerInfo
-                                playerInfo={playerInfo}
-                                selfPlayerInfo={undefined}
-                            />
-                        </div>
-
-
-                        <Spectators
-                            playerInfo={playerInfo}
-                        />
+                        {gameStatus !== GameStatus.NICKNAME &&
+                            <>
+                                <Players
+                                    playerInfo={playerInfo}
+                                    selfPlayerInfo={undefined}
+                                />
+                                <Spectators
+                                    playerInfo={playerInfo}
+                                />
+                            </>
+                        }
 
                         <div className="center-info">
                             {gameStatus === GameStatus.NICKNAME && (
@@ -210,7 +214,7 @@ export default function Game() {
                             )}
 
                             {gameStatus === GameStatus.WAITING && (
-                                <Waiting winner={winner} readyUp={readyUp} />
+                                <Waiting winner={winner} readyUp={readyUp} spectate={spectate}/>
                             )}
 
                             {gameStatus === GameStatus.READY && (
@@ -220,11 +224,17 @@ export default function Game() {
                                         host ? host.name : null
                                     }
                                     selfIsHost={selfPlayerInfo ? selfPlayerInfo.host : false}
+                                    playerInfo={playerInfo}
+                                    unready={unready}
                                 />
                             )}
 
+                            {gameStatus === GameStatus.SPECTATING_WAITING && (
+                                <button onClick={() => unready()}>Join game</button>
+                            )}
+
                             {(gameStatus === GameStatus.PLAYING ||
-                                gameStatus === GameStatus.SPECTATING) && (
+                                gameStatus === GameStatus.SPECTATING_PLAYING) && (
                                     <div>
                                         <div className="phrase-container">
                                             <div className="phrase">{phrase}</div>

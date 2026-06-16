@@ -29,9 +29,14 @@ export default class Player {
     }
 
     reset() {
-        this.lives = 100;
+        this.lives = 1337;
         this.dead = false;
-        this.gameStatus = GameStatus.WAITING;
+        if (this.gameStatus === GameStatus.SPECTATING_PLAYING || this.gameStatus === GameStatus.SPECTATING_WAITING) {
+            this.gameStatus = GameStatus.SPECTATING_WAITING;
+        }
+        else if (this.gameStatus !== GameStatus.NICKNAME) {
+            this.gameStatus = GameStatus.WAITING;
+        }
     }
 
     setGameStatus(newGameStatus: GameStatus) {

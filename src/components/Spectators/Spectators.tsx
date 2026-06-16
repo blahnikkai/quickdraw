@@ -8,7 +8,8 @@ export default function Spectators({
     playerInfo: Player[];
 }) {
     const allowableGameStatuses = [
-        GameStatus.SPECTATING,
+        GameStatus.SPECTATING_WAITING,
+        GameStatus.SPECTATING_PLAYING,
     ]
     return (
         <div className="spectators">

@@ -69,12 +69,13 @@ export default class Game {
 
     startGame() {
         this.players.forEach((player) => {
-            if (player.gameStatus == GameStatus.READY) {
+            // shouldn't be able to start the game when someone is waiting, but as a fallback, just let them play
+            if (player.gameStatus == GameStatus.READY || player.gameStatus == GameStatus.WAITING) {
                 player.setGameStatus(GameStatus.PLAYING);
                 player.lives = this.startingLives;
             }
-            if (player.gameStatus == GameStatus.WAITING) {
-                player.setGameStatus(GameStatus.SPECTATING);
+            if (player.gameStatus == GameStatus.SPECTATING_WAITING) {
+                player.setGameStatus(GameStatus.SPECTATING_PLAYING);
             }
         });
         this.used.clear();
@@ -311,9 +312,9 @@ export default class Game {
     changeName(newName: string, socket: Socket) {
         this.players.get(socket.id)?.setName(newName);
         const newStatus =
-            this.curRound === 0 ? GameStatus.WAITING : GameStatus.SPECTATING;
+            this.curRound === 0 ? GameStatus.WAITING : GameStatus.SPECTATING_PLAYING;
         this.changeGameStatus(newStatus, socket);
-        if (newStatus === GameStatus.SPECTATING) {
+        if (newStatus === GameStatus.SPECTATING_PLAYING) {
             this.emitPhrase(socket.id);
         }
     }

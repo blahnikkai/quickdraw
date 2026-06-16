@@ -41,13 +41,6 @@
     text-decoration: underline;
 }
 
-.player-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-}
-
 .timer-container {
     width: 100%;
     margin-top: 1rem;
