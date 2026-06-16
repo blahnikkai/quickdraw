@@ -39,12 +39,6 @@ export default function Playing({
 
     return (
         <div className="game-ui">
-            <div className="timer-container">
-                <div
-                    className="timer-bar"
-                    style={{ width: `${100 * (1 - timeProgress)}%` }}
-                ></div>
-            </div>
             <div
                 className={
                     "last-guess self-last-guess " +

@@ -28,20 +28,6 @@
     margin-top: 5rem;
 }
 
-.timer-container {
-    width: 100%;
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.timer-bar {
-    background-color: var(--clr-invalid);
-    height: 1rem;
-    width: 100%;
-}
-
 .life-cnt {
     margin-top: 5rem;
     font-size: 12px;

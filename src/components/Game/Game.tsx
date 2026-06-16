@@ -14,6 +14,7 @@ import Difficulty from "../../shared/Difficulty.js";
 import Ready from "../Ready/Ready.js";
 import Nav from "../Nav/Nav.js";
 import Spectators from "../Spectators/Spectators.js";
+import GuessStatus from "../../shared/GuessStatus.js";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -224,9 +225,17 @@ export default function Game() {
 
                             {(gameStatus === GameStatus.PLAYING ||
                                 gameStatus === GameStatus.SPECTATING) && (
-                                    <div className="phrase-container">
-                                        <div className="phrase">{phrase}</div>
-                                        <div className="debug-info">{debugInfo}</div>
+                                    <div>
+                                        <div className="phrase-container">
+                                            <div className="phrase">{phrase}</div>
+                                            <div className="debug-info">{debugInfo}</div>
+                                        </div>
+                                        <div className="timer-container">
+                                            <div
+                                                className={(selfPlayerInfo?.lastGuessStatus === GuessStatus.VALID ? "valid-timer-bar" : "invalid-timer-bar") + " timer-bar"}
+                                                style={{ width: `${100 * (1 - timeProgress)}%` }}
+                                            ></div>
+                                        </div>
                                     </div>
                                 )}
 
