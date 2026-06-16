@@ -1,13 +1,10 @@
 High
 - UX
     - Add crown or some indicator for host
-    - Add speech bubble graphics for guess
-    - Use just home icon for home button in nav instead of including text
     - Rearrange UI elements based on Figma mockup.
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
-    - Display your own user info separately from everyone elses.
     - Add some transition time before game starts (and a little bit between rounds)
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
     - Change fonts of certain elements. Cowboy or pixelated?
@@ -20,6 +17,7 @@ High
         - Add cowboy sound effects
 
 - Bugs
+    - Need to let the host spectate.
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
 
 - Word List
@@ -44,11 +42,10 @@ High
 - Naming and waiting
     - Add a name length limit
     - Only allow unique nicknames
-    - Be able to unready
 
 - Gameplay and gamemodes
     - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s
-    - Separate "rare words" gamemode, where a player dies if their word is the least rare.
+    - Separate "rare words" gamemode, where a player dies if their word is the least rare of everyone
     - Add regex clues
     - Give a bonus to the person with the rarest word
 
@@ -58,5 +55,4 @@ High
     - Backend
         - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
         - Change passing Socket to socketId in backend
-        - Pass callback functions to components instead of socket and gid.
 

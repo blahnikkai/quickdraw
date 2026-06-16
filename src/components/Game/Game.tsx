@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Game.css";
+import explosionSound from '/assets/sounds/explosion.wav';
+import goodSound from '/assets/sounds/good.wav';
+import hurtSound from '/assets/sounds/hurt.wav';
 import { getSocketIOOptions } from "../Home/Home.js";
 import Players from "../PlayerInfo/PlayerInfo.js";
 import Waiting from "../Waiting/Waiting.js";
@@ -94,7 +97,10 @@ export default function Game() {
             setRoomExists(false);
         });
 
+        const explosionAudio = new Audio(explosionSound);
+        explosionAudio.volume = 0.2;
         socketRef.current.on("game ended", (winner: Player) => {
+            explosionAudio.play();
             setWinner(winner);
         });
 
@@ -116,6 +122,10 @@ export default function Game() {
             clearInterval(intervalRef.current);
         });
 
+        const goodAudio = new Audio(goodSound);
+        goodAudio.volume = 0.5;
+        const hurtAudio = new Audio(hurtSound);
+        hurtAudio.volume = 0.5;
         socketRef.current.on(
             "update player info",
             (newPlayerInfo: Player[]) => {
@@ -130,6 +140,12 @@ export default function Game() {
                 setGameStatus(newSelf.gameStatus);
                 // Can be deleted?
                 selfPlayerInfoRef.current = newSelf;
+                if (newSelf.lastGuessStatus === GuessStatus.VALID && selfPlayerInfo?.lastGuessStatus !== GuessStatus.VALID) {
+                    goodAudio.play();
+                }
+                if (newSelf.dying && !selfPlayerInfo?.dying) {
+                    hurtAudio.play();
+                }
             }
         );
 
@@ -214,7 +230,7 @@ export default function Game() {
                             )}
 
                             {gameStatus === GameStatus.WAITING && (
-                                <Waiting winner={winner} readyUp={readyUp} spectate={spectate}/>
+                                <Waiting winner={winner} readyUp={readyUp} spectate={spectate} />
                             )}
 
                             {gameStatus === GameStatus.READY && (
@@ -254,7 +270,6 @@ export default function Game() {
                                     selfPlayerInfo={selfPlayerInfo}
                                     guess={guess}
                                     setGuess={setGuess}
-                                    timeProgress={timeProgress}
                                     submitGuess={submitGuess}
                                     roundActive={roundActive}
                                 />

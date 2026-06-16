@@ -8,14 +8,12 @@ export default function Playing({
     selfPlayerInfo,
     guess,
     setGuess,
-    timeProgress,
     submitGuess,
     roundActive,
 }: {
     selfPlayerInfo: Player;
     guess: string;
     setGuess: CallableFunction;
-    timeProgress: number;
     submitGuess: () => void;
     roundActive: boolean;
 }) {
