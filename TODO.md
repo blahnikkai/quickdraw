@@ -2,11 +2,14 @@ High
 - UX
     - Add crown or some indicator for host
     - Rearrange UI elements based on Figma mockup.
+    - Change button hover colors
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
     - Add some transition time before game starts (and a little bit between rounds)
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
+    - Audio
+        - Play a random audio from several of the same type (eg on hurt, pick one of hurt1, hurt2, hurt3, ...)
     - Change fonts of certain elements. Cowboy or pixelated?
     - Cowboy theming
         - Cowboys shoot whoever loses

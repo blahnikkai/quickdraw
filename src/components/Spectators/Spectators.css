@@ -3,4 +3,9 @@
     right: 0;
     top: 0;
     height: 100%;
+    padding: 0.8rem 1.8rem;
+}
+
+.spectator {
+    margin: 0;
 }

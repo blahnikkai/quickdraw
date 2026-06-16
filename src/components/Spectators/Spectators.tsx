@@ -23,19 +23,7 @@ export default function Spectators({
                             key={player.socketId}
                             className="spectator"
                         >
-                            <div>
-                                {player.name}
-                            </div>
-                            <div className="guess-container">
-                                <div
-                                    className={
-                                        player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
-                                    }
-                                >
-                                    {player.lastGuess}
-                                </div>
-                                <img src="/assets/images/speech_bubble.svg" height="50" width="100" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
-                            </div>
+                            {player.name}
                         </div>
                     );
                 })}
