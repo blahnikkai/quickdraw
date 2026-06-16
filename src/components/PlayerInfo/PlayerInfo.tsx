@@ -6,12 +6,15 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown.js";
 export default function PlayerInfo({
     playerInfo,
     selfPlayerInfo,
-    allowableGameStatuses,
 }: {
     playerInfo: Player[];
     selfPlayerInfo: Player | undefined;
-    allowableGameStatuses: GameStatus[];
 }) {
+    const allowableGameStatuses = [
+        GameStatus.PLAYING,
+        GameStatus.READY,
+        GameStatus.WAITING,
+    ]
     return (
         <div className="players">
             {playerInfo
@@ -30,7 +33,7 @@ export default function PlayerInfo({
                     return (
                         <div
                             key={player.socketId}
-                            className={`player`}
+                            className="player"
                         >
                             <div className={`player-stats ${player.dying ? " dying" : ""}${player.dead ? " dead" : ""}`}>
                                 <div>

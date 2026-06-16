@@ -13,6 +13,7 @@ import GameStatus from "../../shared/GameStatus.js";
 import Difficulty from "../../shared/Difficulty.js";
 import Ready from "../Ready/Ready.js";
 import Nav from "../Nav/Nav.js";
+import Spectators from "../Spectators/Spectators.js";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -190,21 +191,19 @@ export default function Game() {
 
                 {roomExists === true && (
                     <div className="room room-exists">
-                        {gameStatus !== GameStatus.NICKNAME && (
-                            <div className="active-info">
-                                <PlayerInfo
-                                    playerInfo={playerInfo}
-                                    selfPlayerInfo={undefined}
-                                    allowableGameStatuses={[
-                                        GameStatus.PLAYING,
-                                        GameStatus.READY,
-                                        GameStatus.WAITING,
-                                    ]}
-                                />
-                            </div>
-                        )}
+                        <div className="player-info">
+                            <PlayerInfo
+                                playerInfo={playerInfo}
+                                selfPlayerInfo={undefined}
+                            />
+                        </div>
 
-                        <div className="vert-info">
+
+                        <Spectators
+                            playerInfo={playerInfo}
+                        />
+
+                        <div className="center-info">
                             {gameStatus === GameStatus.NICKNAME && (
                                 <Nickname submitName={submitName} />
                             )}

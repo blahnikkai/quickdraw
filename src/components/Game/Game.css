@@ -17,7 +17,7 @@
     margin: 10px;
 }
 
-.vert-info {
+.center-info {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +41,7 @@
     text-decoration: underline;
 }
 
-.active-info {
+.player-info {
     position: absolute;
     top: 0;
     left: 0;

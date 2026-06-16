@@ -1,7 +1,7 @@
 enum GameStatus {
     // entering nickname
     NICKNAME = "Nickname",
-    // button to join a game, if game starts, they'll be spectating
+    // button to join a game, game can't start if someone is waiting
     WAITING = "Waiting",
     // spectating
     SPECTATING = "Spectating",
