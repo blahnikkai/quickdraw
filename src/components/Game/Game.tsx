@@ -28,10 +28,10 @@ export default function Game() {
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
     const gameStatus = selfPlayerInfo?.gameStatus ?? GameStatus.NICKNAME;
-    
+
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
     const host = playerInfo.find((player) => player.host)
-    
+
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player | undefined | null>(undefined);
 
@@ -59,14 +59,17 @@ export default function Game() {
         setTimeProgress(timeProgress);
     };
 
+    const changeGameStatus = (newGameStatus: GameStatus) => 
+        socketRef.current?.emit("change game status", gid, newGameStatus);
+    const readyUp = () =>
+        changeGameStatus(GameStatus.READY);
+    const spectate = () =>
+        changeGameStatus(GameStatus.SPECTATING_WAITING);
+    const unready = () =>
+        changeGameStatus(GameStatus.WAITING);
+
     const submitName = (name: string) =>
         socketRef.current?.emit("submit name", gid, name);
-    const readyUp = () =>
-        socketRef.current?.emit("change game status", gid, GameStatus.READY);
-    const spectate = () =>
-        socketRef.current?.emit("change game status", gid, GameStatus.SPECTATING_WAITING);
-    const unready = () =>
-        socketRef.current?.emit("change game status", gid, GameStatus.WAITING);
     const startGame = () => socketRef.current?.emit("start game", gid);
     const submitGuess = () => {
         socketRef.current?.emit("submit guess", gid, guess.toLowerCase());
