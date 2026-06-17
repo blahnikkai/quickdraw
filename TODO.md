@@ -1,6 +1,7 @@
 High
 - UX
     - Add crown or some indicator for host
+    - Make words in speech bubbles more centered
     - Add animations/transition to names on join
     - Add more space between winner message and the central buttons
     - Show a more obvious signal of losing a life

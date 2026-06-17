@@ -50,12 +50,14 @@ export default function Players({
                                 </div>
                             </div>
                             <div className="guess-container">
-                                <div
-                                    className={
-                                        player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
-                                    }
-                                >
-                                    {player.lastGuess}
+                                <div className="guess-text-container">
+                                    <div
+                                        className={
+                                            player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
+                                        }
+                                    >
+                                        {player.lastGuess}
+                                    </div>
                                 </div>
                                 <img src="/assets/images/speech_bubble.svg" height="50" width="100" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
                             </div>
