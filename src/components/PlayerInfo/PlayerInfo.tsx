@@ -36,9 +36,8 @@ export default function Players({
                             className="player"
                         >
                             <div className={`player-stats ${player.dying ? " dying" : ""}${player.dead ? " dead" : ""}`}>
-                                <div>
-                                    {/* {player.host ? <FaCrown size={1} /> : ""} */}
-                                    {player.name}
+                                <div className="player-name">
+                                    {player.host ? <FaCrown size={16} className="crown" /> : ""} {player.name} 
                                 </div>
                                 <div
                                     className={`player-game-status ${gameStatusStr.toLowerCase()}`}

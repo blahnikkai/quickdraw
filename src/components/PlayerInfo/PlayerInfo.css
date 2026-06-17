@@ -32,6 +32,16 @@
     padding: .5rem 2.5rem;
 }
 
+.player-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.crown {
+    display: inline;
+    margin: auto 0.5rem;
+}
+
 .player * {
     color: var(--clr-light);
     text-align: center;
