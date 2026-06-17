@@ -51,7 +51,7 @@ export default function Ready({
             }
             {!selfIsHost &&
                 <>
-                    <p className="centered">{displayText}</p>
+                    <p className="centered small">{displayText}</p>
                     <p className="centered">--</p>
                 </>
             }

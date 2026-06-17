@@ -1,3 +1,7 @@
 .centered {
     text-align: center;
 }
+
+.small {
+    font-size: 16px;
+}
