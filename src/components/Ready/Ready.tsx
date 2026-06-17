@@ -1,5 +1,6 @@
 import GameStatus from "../../shared/GameStatus.js";
 import Player from "../../shared/Player.js";
+import "./Ready.css"
 
 export default function Ready({
     startGame,
@@ -15,35 +16,46 @@ export default function Ready({
     unready: () => void;
 }) {
     const someoneUnready = playerInfo.some((player: Player) => player.gameStatus === GameStatus.WAITING);
-    const buttonDisabled = !selfIsHost || someoneUnready || hostName === null;
 
-    let buttonText = "";
+    let displayText = "";
     if (hostName === null) {
-        buttonText = "There is no host. Something went wrong, please reload";
+        displayText = "There is no host. Something went wrong, please reload";
     }
     else if (someoneUnready) {
-        buttonText = "Waiting for all players to be ready";
+        displayText = "Waiting for all players to be ready";
     }
     else if (!selfIsHost) {
-        buttonText = `Waiting for ${hostName} to start the game`
+        displayText = `Waiting for ${hostName} to start the game`
     }
     else {
-        buttonText = "Start game"
+        displayText = "Start game"
     }
 
     return (
         <div className="game-ui">
-            <form
-                className="game-ui"
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    startGame();
-                }}
-            >
-                <button disabled={buttonDisabled}>
-                    {buttonText}
-                </button>
-            </form>
+            {selfIsHost &&
+                <>
+                    <form
+                        className="game-ui"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            startGame();
+                        }}
+                    >
+                        <button disabled={someoneUnready}>
+                            {displayText}
+                        </button>
+                    </form>
+                    <p className="centered">- or -</p>
+                </>
+            }
+            {!selfIsHost &&
+                <>
+                    <p className="centered">{displayText}</p>
+                    <p className="centered">--</p>
+                </>
+            }
+
             <button
                 onClick={() => unready()}
             >

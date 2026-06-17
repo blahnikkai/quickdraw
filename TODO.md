@@ -1,9 +1,8 @@
 High
 - UX
     - Add crown or some indicator for host
-    - Rearrange UI elements based on Figma mockup.
-    - Change button hover colors
     - Add animations/transition to names on join
+    - 
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
     - Add some transition time before game starts (and a little bit between rounds)
@@ -11,16 +10,16 @@ High
     - Audio
         - Play a random audio from several of the same type (eg on hurt, pick one of hurt1, hurt2, hurt3, ...)
     - Change fonts of certain elements. Cowboy or pixelated?
+    - Little shake animation when you lose a life
     - Cowboy theming
         - Cowboys shoot whoever loses
             - Gun noise
-        - Little shake animation when you lose a life
         - As you lose lives, you could be getting more and more hanged, could be getting shot
-        - Add little cowboy drawings. Let people pick what cowboy they want to be.
+        - Add little cowboy drawings. Let people pick what cowboy they want to be
         - Add cowboy sound effects
 
 - Bugs
-    - Need to let the host spectate.
+    - Need to let the host spectate and assign a new host
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
 
 - Word List
@@ -35,7 +34,7 @@ High
 
 - Fix behavior on leave and rejoin
     - Game should end if all players leave
-    - Allow for rejoining and playing again?
+    - Allow for rejoining and playing again? I think I meant like re-entering the game.
 
 - Difficulty and timing
     - Add temporary timeout if you enter a wrong phrase
@@ -58,4 +57,3 @@ High
     - Backend
         - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
         - Change passing Socket to socketId in backend
-
