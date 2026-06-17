@@ -27,10 +27,11 @@ export default function Game() {
     const [roundActive, setRoundActive] = useState(false);
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
-    // TODO: this can be a normal variable 
-    const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
+    const gameStatus = selfPlayerInfo?.gameStatus ?? GameStatus.NICKNAME;
+    
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
     const host = playerInfo.find((player) => player.host)
+    
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player | undefined | null>(undefined);
 
@@ -137,7 +138,6 @@ export default function Game() {
                     return;
                 }
                 setSelfPlayerInfo(newSelf);
-                setGameStatus(newSelf.gameStatus);
                 if (newSelf.lastGuessStatus === GuessStatus.VALID && selfPlayerInfo?.lastGuessStatus !== GuessStatus.VALID) {
                     goodAudio.play();
                 }

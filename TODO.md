@@ -2,7 +2,7 @@ High
 - UX
     - Add crown or some indicator for host
     - Add animations/transition to names on join
-    - 
+    - Add more space between winner message and the central buttons
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
     - Add some transition time before game starts (and a little bit between rounds)
