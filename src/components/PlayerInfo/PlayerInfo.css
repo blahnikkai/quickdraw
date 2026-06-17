@@ -90,8 +90,9 @@
 }
 
 .guess-text-container {
-    margin: -1.6rem 0 -0.6rem;
+    margin: -1.2rem 1.0rem -0.6rem;
     border: 2px solid black;
+    border-radius: 50%;
     background-color: var(--clr-bg);
     width: 100%;
     z-index: 100;

@@ -50,7 +50,7 @@ export default function Players({
                                 </div>
                             </div>
                             <div className="guess-container">
-                                <div className="guess-text-container">
+                                <div className={"guess-text-container" + (player.lastGuessStatus == null ? " invisible" : "")}>
                                     <div
                                         className={
                                             player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
@@ -59,7 +59,7 @@ export default function Players({
                                         {player.lastGuess}
                                     </div>
                                 </div>
-                                <img src="/assets/images/speech_bubble.svg" height="50" width="100" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
+                                <img src="/assets/images/speech_bubble_point.svg" height="25" width="50" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
                             </div>
                         </div>
                     );
