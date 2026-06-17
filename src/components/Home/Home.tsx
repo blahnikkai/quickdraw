@@ -53,7 +53,7 @@ export default function Home() {
                             setJoinGid(e.target.value);
                         }}
                     ></input>
-                    <button>Join Game</button>
+                    <button>Join Lobby</button>
                 </form>
             </div>
         </main>

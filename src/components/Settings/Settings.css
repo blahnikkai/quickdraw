@@ -1,5 +1,5 @@
 .settings {
-    background-color: var(--clr-6);
+    background-color: var(--clr-dark);
 
     margin-top: 1px;
     margin: 2px;
@@ -9,7 +9,7 @@
 }
 
 .settings-label {
-    color: var(--clr-3);
+    color: var(--clr-light);
     font-size: 16px;
 }
 

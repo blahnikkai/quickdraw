@@ -1,17 +1,15 @@
 :root {
     --clr-dark: #201207;
-    --clr-2: #dd8d4c;
-    --clr-3: #FFF4DE;
-    --clr-light: #d2dddb;
-    --clr-5: #A9CEE5;
-    --clr-6: #201207;
+    --clr-light: #FFF4DE;
+    --clr-tan: #ecd098;
+    --clr-bg: #A9CEE5;
     --clr-valid: #03B70F;
     --clr-invalid: #B70000;
 }
 
 * {
     box-sizing: border-box;
-    color: var(--clr-6);
+    color: var(--clr-dark);
     font-family: "Andika", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
         "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
         "Helvetica Neue", sans-serif;
@@ -37,13 +35,13 @@ nav>*,
 }
 
 select {
-    background-color: var(--clr-3);
+    background-color: var(--clr-light);
 }
 
 main {
     position: relative;
 
-    background-color: var(--clr-5);
+    background-color: var(--clr-bg);
 
     display: flex;
     flex-direction: column;
@@ -53,7 +51,7 @@ main {
 }
 
 button {
-    background-color: var(--clr-3);
+    background-color: var(--clr-light);
     border-radius: 0.5rem;
     padding: 0.5rem;
     border: none;
@@ -61,12 +59,12 @@ button {
 }
 
 button:hover:not(:disabled) {
-    background-color: var(--clr-2);
+    background-color: var(--clr-tan);
     cursor: pointer;
 }
 
 button:disabled {
-    background-color: color-mix(in srgb, var(--clr-3) 70%, gray 30%);
+    background-color: color-mix(in srgb, var(--clr-light) 70%, gray 30%);
 }
 
 button:active:not(:disabled) {
@@ -75,11 +73,11 @@ button:active:not(:disabled) {
 
 input {
     border: 1px solid var(--clr-dark);
-    background-color: var(--clr-3);
+    background-color: var(--clr-light);
     border-radius: 0.5rem;
     padding: 0.25rem 0.5rem;
 }
 
 input:disabled {
-    background-color: var(--clr-2);
+    background-color: var(--clr-tan);
 }

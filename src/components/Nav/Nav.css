@@ -1,5 +1,5 @@
 nav {
-    background-color: var(--clr-6);
+    background-color: var(--clr-dark);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
