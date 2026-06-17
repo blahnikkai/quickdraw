@@ -1,4 +1,5 @@
 import Player from "../../shared/Player.js";
+import "./Winner.css"
 
 export default function Waiting({
     winner,
@@ -18,8 +19,10 @@ export default function Waiting({
                     readyUp();
                 }}
             >
-                {winner !== undefined &&
-                    (winner !== null ? winner.name + " won the game!" : "Nobody won!")}
+                <p className="winner-display">
+                    {winner !== undefined &&
+                        (winner !== null ? winner.name + " won the game!" : "Nobody won!")}
+                </p>
                 <button>Ready Up</button>
             </form>
             <p>- or -</p>
