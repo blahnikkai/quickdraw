@@ -82,24 +82,25 @@
 }
 
 .guess-container {
-    position: relative;
-
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .guess-text-container {
-    position: absolute;
-    top: -1rem;
+    margin: -0.5rem 0;
+    width: 100%;
+    z-index: 100;
 }
 
 .other-guess {
-    
+    margin: auto;
+    width: 100%;
 }
 
 .speech-bubble {
-    position: absolute;
-    top: 1rem;
-    left: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .invisible {
