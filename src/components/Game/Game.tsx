@@ -26,8 +26,8 @@ export default function Game() {
     const [phrase, setPhrase] = useState("");
     const [roundActive, setRoundActive] = useState(false);
 
-    const selfPlayerInfoRef = useRef<Player>(undefined);
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
+    // TODO: this can be a normal variable 
     const [gameStatus, setGameStatus] = useState(GameStatus.NICKNAME);
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
     const host = playerInfo.find((player) => player.host)
@@ -138,8 +138,6 @@ export default function Game() {
                 }
                 setSelfPlayerInfo(newSelf);
                 setGameStatus(newSelf.gameStatus);
-                // Can be deleted?
-                selfPlayerInfoRef.current = newSelf;
                 if (newSelf.lastGuessStatus === GuessStatus.VALID && selfPlayerInfo?.lastGuessStatus !== GuessStatus.VALID) {
                     goodAudio.play();
                 }
