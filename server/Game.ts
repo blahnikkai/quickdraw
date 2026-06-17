@@ -11,6 +11,12 @@ import GameStatus from "../src/shared/GameStatus.js";
 import Difficulty from "../src/shared/Difficulty.js";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
+const hostGameStatuses = [
+    GameStatus.NICKNAME,
+    GameStatus.WAITING,
+    GameStatus.READY,
+    GameStatus.PLAYING,
+]
 
 export default class Game {
     gid: string;
@@ -277,27 +283,24 @@ export default class Game {
         socket.leave(this.gid);
         this.players.delete(socket.id);
         if (this.host === socket.id) {
-            this.hostLeave();
+            this.assignNewHost();
         }
         this.emitPlayerInfo();
     }
 
-    hostLeave() {
-        if (this.players.size === 0) {
-            this.host = "";
-            return;
-        } 
-        const newHostId = this.players.keys().next().value;
-        if(newHostId === undefined) {
-            this.host = "";
-            return;
+    assignNewHost() {
+        const oldHost = this.players.get(this.host);
+        if (oldHost != null) {
+            oldHost.host = false;
         }
-        this.host = newHostId;
-        const newHost = this.players.get(this.host);
-        if (newHost === undefined) {
-            return;
+        this.host = "";
+        for (const [_, player] of this.players) {
+            if (hostGameStatuses.includes(player.gameStatus)) {
+                this.host = player.socketId;
+                player.host = true;
+                return;
+            }
         }
-        newHost.host = true;
     }
 
     emitPlayerInfo() {
@@ -320,7 +323,18 @@ export default class Game {
     }
 
     changeGameStatus(newStatus: GameStatus, socket: Socket) {
-        this.players.get(socket.id)?.setGameStatus(newStatus);
+        const player = this.players.get(socket.id);
+        if (player == null) {
+            return;
+        }
+        player.setGameStatus(newStatus);
+        if (socket.id == this.host && !hostGameStatuses.includes(newStatus)) {
+            this.assignNewHost();
+        }
+        if (this.host === "" && hostGameStatuses.includes(newStatus)) {
+            player.host = true;
+            this.host = player.socketId;
+        }
         this.emitPlayerInfo();
     }
 
