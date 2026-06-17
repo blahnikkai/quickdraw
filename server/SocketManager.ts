@@ -51,10 +51,6 @@ export default class SocketManager {
                 }
             });
 
-            socket.on("leave", (gid: string) => {
-                this.gameManager.leaveGame(gid, socket);
-            });
-
             socket.on("start game", (gid: string) => {
                 this.gameManager.startGame(gid);
             });

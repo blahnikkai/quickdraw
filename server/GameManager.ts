@@ -82,28 +82,34 @@ export default class GameManager {
 
     leaveGame(gid: string, socket: Socket) {
         console.log(`leaving game ${gid}`);
-        if (!this.gameExists(gid)) {
+        const game = this.games.get(gid);
+        if (game == null) {
             return;
         }
-        this.games.get(gid)?.leaveGame(socket);
+        game.leaveGame(socket);
+        if (game.curRound !== 0 && game.aliveCnt === 0) {
+            game.endGame();
+            console.log("ending game early");
+        }
+
         // if there are 0 players in a game, and 1 second from now there are still 0 players, delete the game
         // the 1 second wait is because react useEffect causes almost instant join -> leave -> join
-        if (this.games.get(gid)?.playerCnt === 0) {
+        if (game.playerCnt === 0) {
             setTimeout(() => {
                 console.log(this.games.keys());
                 if (
                     this.gameExists(gid) &&
-                    this.games.get(gid)?.playerCnt === 0
+                    game.playerCnt === 0
                 ) {
                     console.log(`deleting game ${gid}`);
                     this.games.delete(gid);
                 }
-            }, 10_000);
+            }, 1_000);
         }
     }
 
     disconnect(socket: Socket) {
-        this.games.forEach((game, gid) => {
+        this.games.forEach((_, gid) => {
             this.leaveGame(gid, socket);
         });
     }

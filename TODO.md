@@ -19,7 +19,7 @@ High
         - Add cowboy sound effects
 
 - Bugs
-    - Need to let the host spectate and assign a new host
+    - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
 
 - Word List

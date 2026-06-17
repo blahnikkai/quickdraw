@@ -91,6 +91,9 @@ export default class Game {
     }
 
     endGame(winner: Player | null = null) {
+        if (this.timeoutId !== null) {
+            clearTimeout(this.timeoutId);
+        }
         this.curRound = 0;
         this.players.forEach((player: Player) => {
             player.reset();
