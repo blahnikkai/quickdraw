@@ -16,10 +16,8 @@
 
 .last-guess {
     padding: .5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    width: 100%;
 }
 
 .self-last-guess {
@@ -39,4 +37,8 @@
 
 .guess-input {
     width: 100%;
+}
+
+.correct-part {
+    color: var(--clr-purple);
 }

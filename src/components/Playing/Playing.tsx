@@ -20,6 +20,18 @@ export default function Playing({
     const [inputDisabled, setInputDisabled] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const splitOnCorrectPart = (partialGuess: string, phrase: string): string[] => {
+        const index = partialGuess.indexOf(phrase);
+        if (index === -1) {
+            return [partialGuess, "", ""]
+        }
+        const p1 = partialGuess.substring(0, index);
+        const p2 = partialGuess.substring(index, index + phrase.length);
+        const p3 = partialGuess.substring(index + phrase.length);
+        return [p1, p2, p3];
+    }
+    const [guessBeforePhrase, guessContainingPhrase, guessAfterPhrase] = splitOnCorrectPart(guess, "wh");
+
     useEffect(() => {
         const newInputDisabled =
             !roundActive ||
@@ -37,14 +49,14 @@ export default function Playing({
 
     return (
         <div className="game-ui">
-            <div
+            <p
                 className={
                     "last-guess self-last-guess " +
                     selfPlayerInfo?.lastGuessStatus
                 }
             >
-                {selfPlayerInfo?.lastGuess}
-            </div>
+                {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
+            </p>
             <div className="life-cnt">{selfPlayerInfo?.lives} lives</div>
             <form
                 className="guess-form"
