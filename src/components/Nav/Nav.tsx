@@ -18,7 +18,7 @@ export default function Nav({
     setStartingLives,
     updateSettings,
     viewOnly,
-} : {
+}: {
     gameStatus: GameStatus;
     showingSettings: boolean;
     setShowingSettings: (newShowingSettings: boolean) => void;
@@ -40,29 +40,31 @@ export default function Nav({
             <HomeButton />
             <CopyLinkButton />
             <div className="settings-container">
-                {[GameStatus.WAITING, GameStatus.READY].includes(
-                    gameStatus
-                ) && (
-                        <ShowSettingsButton
-                            showingSettings={showingSettings}
-                            setShowingSettings={setShowingSettings}
-                        />
-                    )}
-                {[GameStatus.WAITING, GameStatus.READY].includes(
-                    gameStatus
-                ) &&
-                    showingSettings && (
-                        <Settings
-                            difficulty={difficulty}
-                            setDifficulty={setDifficulty}
-                            roundTime={roundTime}
-                            setRoundTime={setRoundTime}
-                            startingLives={startingLives}
-                            setStartingLives={setStartingLives}
-                            updateSettings={updateSettings}
-                            viewOnly={viewOnly}
-                        />
-                    )}
+                <>
+                    {[GameStatus.WAITING, GameStatus.READY].includes(
+                        gameStatus
+                    ) && (
+                            <ShowSettingsButton
+                                showingSettings={showingSettings}
+                                setShowingSettings={setShowingSettings}
+                            />
+                        )}
+                    {[GameStatus.WAITING, GameStatus.READY].includes(
+                        gameStatus
+                    ) &&
+                        showingSettings && (
+                            <Settings
+                                difficulty={difficulty}
+                                setDifficulty={setDifficulty}
+                                roundTime={roundTime}
+                                setRoundTime={setRoundTime}
+                                startingLives={startingLives}
+                                setStartingLives={setStartingLives}
+                                updateSettings={updateSettings}
+                                viewOnly={viewOnly}
+                            />
+                        )}
+                </>
             </div>
         </nav>
     );

@@ -9,13 +9,13 @@ export default function ShowSettingsButton({
 }) {
     return (
         <button
-            className={`nav-btn show-settings-btn ${showingSettings ? " active" : ""}`}
+            className={`nav-btn show-settings-btn ${showingSettings ? "active" : ""}`}
             onClick={() => {
                 setShowingSettings(!showingSettings);
             }}
         >
             <FaGear className="nav-icon"/>
-            {showingSettings ? " Hide Settings" : " Show Settings"}
+            Settings
         </button>
     );
 }

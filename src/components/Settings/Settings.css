@@ -1,16 +1,22 @@
 .settings {
-    background-color: var(--clr-dark);
+    background-color: color-mix(in srgb, var(--clr-dark) 80%, black 20%);
 
     margin-top: 1px;
     margin: 2px;
 
+    padding: 1rem 0;
+
     width: 225px;
     position: absolute;
+
+    z-index: 100;
 }
 
 .settings-label {
     color: var(--clr-light);
     font-size: 16px;
+
+    margin-top: auto;
 }
 
 .settings-input {
@@ -20,6 +26,9 @@
 .form-group {
     display: flex;
     flex-direction: row;
-
     justify-content: space-between;
+    
+    width: 100%;
+    
+    padding: 0 1rem;
 }

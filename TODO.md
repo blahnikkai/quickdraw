@@ -1,5 +1,6 @@
 High
 - UX
+    - Show words as people are typing them *
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
@@ -25,13 +26,13 @@ High
 
 - Settings
     - Allow settings to be changed before entering nickname
+    - Add a little message to non-hosts telling them that settings are view only *
     - In general, add simple settings and advanced settings. In advanced settings, players have more control
     - In advanced settings
-        - Custom difficulty (important for playtesting)
+        - Fully custom difficulty (important for playtesting)
         - Pick whether rareness or longer word is used in 1v1 tiebreaker
 
 - Fix behavior on leave and rejoin
-    - Game should end if all players leave
     - Allow for rejoining and playing again? I think I meant like re-entering the game.
 
 - Difficulty and timing
@@ -40,11 +41,11 @@ High
     - Wrong guess leads to shorter timer
 
 - Naming and waiting
-    - Add a name length limit
+    - Add a name length limit *
     - Only allow unique nicknames
 
 - Gameplay and gamemodes
-    - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s
+    - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s *
     - Separate "rare words" gamemode, where a player dies if their word is the least rare of everyone
     - Add regex clues
     - Give a bonus to the person with the rarest word
