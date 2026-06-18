@@ -58,8 +58,18 @@ export default function Game() {
             (endTimeRef.current - startTimeRef.current);
         setTimeProgress(timeProgress);
     };
+    const splitOnCorrectPart = (partialGuess: string, phrase: string): string[] => {
+        const index = partialGuess.indexOf(phrase);
+        if (index === -1) {
+            return [partialGuess, "", ""]
+        }
+        const p1 = partialGuess.substring(0, index);
+        const p2 = partialGuess.substring(index, index + phrase.length);
+        const p3 = partialGuess.substring(index + phrase.length);
+        return [p1, p2, p3];
+    }
 
-    const changeGameStatus = (newGameStatus: GameStatus) => 
+    const changeGameStatus = (newGameStatus: GameStatus) =>
         socketRef.current?.emit("change game status", gid, newGameStatus);
     const readyUp = () =>
         changeGameStatus(GameStatus.READY);
@@ -71,6 +81,13 @@ export default function Game() {
     const submitName = (name: string) =>
         socketRef.current?.emit("submit name", gid, name);
     const startGame = () => socketRef.current?.emit("start game", gid);
+
+    const changePartialGuess = (newPartialGuess: string) => {
+        socketRef.current?.emit("update partial guess", gid, newPartialGuess);
+    }
+    useEffect(() => {
+        changePartialGuess(guess);
+    }, [guess])
     const submitGuess = () => {
         socketRef.current?.emit("submit guess", gid, guess.toLowerCase());
         setGuess("");
@@ -218,6 +235,8 @@ export default function Game() {
                                 <Players
                                     playerInfo={playerInfo}
                                     selfPlayerInfo={undefined}
+                                    phrase={phrase}
+                                    splitOnCorrectPart={splitOnCorrectPart}
                                 />
                                 <Spectators
                                     playerInfo={playerInfo}
@@ -273,6 +292,8 @@ export default function Game() {
                                     setGuess={setGuess}
                                     submitGuess={submitGuess}
                                     roundActive={roundActive}
+                                    phrase={phrase}
+                                    splitOnCorrectPart={splitOnCorrectPart}
                                 />
                             )}
                         </div>

@@ -64,6 +64,10 @@ export default class GameManager {
         this.games.get(gid)?.startGame();
     }
 
+    updatePartialGuess(gid: string, partialGuess: string, socket: Socket) {
+        this.games.get(gid)?.updatePartialGuess(partialGuess, socket);
+    }
+
     checkGuess(gid: string, guess: string, socket: Socket) {
         this.games.get(gid)?.checkGuess(guess, socket);
     }

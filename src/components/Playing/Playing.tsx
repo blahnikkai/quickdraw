@@ -10,27 +10,19 @@ export default function Playing({
     setGuess,
     submitGuess,
     roundActive,
+    phrase,
+    splitOnCorrectPart,
 }: {
     selfPlayerInfo: Player;
     guess: string;
     setGuess: CallableFunction;
     submitGuess: () => void;
     roundActive: boolean;
+    phrase: string;
+    splitOnCorrectPart: (partialGuess: string, phrase: string) => string[];
 }) {
     const [inputDisabled, setInputDisabled] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const splitOnCorrectPart = (partialGuess: string, phrase: string): string[] => {
-        const index = partialGuess.indexOf(phrase);
-        if (index === -1) {
-            return [partialGuess, "", ""]
-        }
-        const p1 = partialGuess.substring(0, index);
-        const p2 = partialGuess.substring(index, index + phrase.length);
-        const p3 = partialGuess.substring(index + phrase.length);
-        return [p1, p2, p3];
-    }
-    const [guessBeforePhrase, guessContainingPhrase, guessAfterPhrase] = splitOnCorrectPart(guess, "wh");
 
     useEffect(() => {
         const newInputDisabled =
@@ -45,18 +37,26 @@ export default function Playing({
         if (!inputDisabled) {
             inputRef.current?.focus();
         }
-    }, [inputDisabled])
+    }, [inputDisabled]);
+
+    const [guessBeforePhrase, guessContainingPhrase, guessAfterPhrase] = splitOnCorrectPart(selfPlayerInfo.partialGuess, phrase);
+    const lastGuessEmpty = selfPlayerInfo.lastGuessStatus == null
+    const partialGuessEmpty = selfPlayerInfo.partialGuess === ""
 
     return (
         <div className="game-ui">
-            <p
-                className={
-                    "last-guess self-last-guess " +
-                    selfPlayerInfo?.lastGuessStatus
-                }
-            >
-                {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
-            </p>
+            <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
+                {!lastGuessEmpty && partialGuessEmpty && <div
+                    className={
+                        "other-guess " + selfPlayerInfo.lastGuessStatus
+                    }
+                >
+                    {selfPlayerInfo.lastGuess}
+                </div>}
+                {!partialGuessEmpty && <div className="other-guess partial-guess">
+                    {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
+                </div>}
+            </div>
             <div className="life-cnt">{selfPlayerInfo?.lives} lives</div>
             <form
                 className="guess-form"

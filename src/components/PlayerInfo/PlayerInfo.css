@@ -101,6 +101,12 @@
 .other-guess {
     margin: auto;
     width: 100%;
+    padding: .5rem;
+    text-align: center;
+}
+
+.partial-guess {
+    color: black;
 }
 
 .speech-bubble {

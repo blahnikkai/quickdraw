@@ -203,8 +203,17 @@ export default class Game {
         return phrase;
     }
 
+    updatePartialGuess(partialGuess: string, socket: Socket) {
+        const player = this.players.get(socket.id);
+        if (player == null) {
+            return;
+        }
+        player.partialGuess = partialGuess;
+        this.emitPlayerInfo();
+    }
+
     checkGuess(guess: string, socket: Socket) {
-        const player = this.players.get(socket.id)
+        const player = this.players.get(socket.id);
         if (player === undefined) {
             return;
         }

@@ -5,6 +5,7 @@ export default class Player {
     socketId: string;
     host: boolean;
     name: string;
+    partialGuess: string;
     lastGuess: string;
     lastGuessStatus: GuessStatus | undefined;
     dying: boolean;
@@ -16,6 +17,7 @@ export default class Player {
         this.socketId = socketId;
         this.host = false;
         this.name = "Player";
+        this.partialGuess = "";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
         this.dying = false;

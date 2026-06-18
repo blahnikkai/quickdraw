@@ -55,6 +55,10 @@ export default class SocketManager {
                 this.gameManager.startGame(gid);
             });
 
+            socket.on("update partial guess", (gid: string, partialGuess: string) => {
+                this.gameManager.updatePartialGuess(gid, partialGuess, socket);
+            });
+
             socket.on("submit guess", (gid: string, guess: string) => {
                 this.gameManager.checkGuess(gid, guess, socket);
             });

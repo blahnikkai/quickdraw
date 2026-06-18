@@ -6,9 +6,13 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown.js";
 export default function Players({
     playerInfo,
     selfPlayerInfo,
+    phrase,
+    splitOnCorrectPart
 }: {
     playerInfo: Player[];
     selfPlayerInfo: Player | undefined;
+    phrase: string;
+    splitOnCorrectPart: (arg0: string, arg1: string) => string[];
 }) {
     const allowableGameStatuses = [
         GameStatus.PLAYING,
@@ -29,6 +33,9 @@ export default function Players({
                     const gameStatusStr: string = playerIsInWaitingRoom
                         ? player.gameStatus
                         : "";
+                    const [guessBeforePhrase, guessContainingPhrase, guessAfterPhrase] = splitOnCorrectPart(player.partialGuess, phrase);
+                    const lastGuessEmpty = player.lastGuessStatus == null
+                    const partialGuessEmpty = player.partialGuess === ""
 
                     return (
                         <div
@@ -50,16 +57,19 @@ export default function Players({
                                 </div>
                             </div>
                             <div className="guess-container">
-                                <div className={"guess-text-container" + (player.lastGuessStatus == null ? " invisible" : "")}>
-                                    <div
+                                <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
+                                    {!lastGuessEmpty && partialGuessEmpty && <div
                                         className={
-                                            player.lastGuessStatus != null ? "other-guess last-guess " + player.lastGuessStatus : ""
+                                            "other-guess " + player.lastGuessStatus
                                         }
                                     >
                                         {player.lastGuess}
-                                    </div>
+                                    </div>}
+                                    {!partialGuessEmpty && <div className="other-guess partial-guess">
+                                        {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
+                                    </div>}
                                 </div>
-                                <img src="/assets/images/speech_bubble_point.svg" height="25" width="50" className={player.lastGuessStatus == null ? "invisible" : "speech-bubble"}></img>
+                                <img src="/assets/images/speech_bubble_point.svg" height="25" width="50" className={lastGuessEmpty && partialGuessEmpty ? "invisible" : "speech-bubble"}></img>
                             </div>
                         </div>
                     );
