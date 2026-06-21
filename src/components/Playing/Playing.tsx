@@ -3,6 +3,7 @@ import Player from "../../shared/Player.js";
 import GuessStatus from "../../shared/GuessStatus.js";
 import GameStatus from "../../shared/GameStatus.js";
 import { useEffect, useState, useRef } from "react";
+import Guess from "../Guess/Guess.js";
 
 export default function Playing({
     selfPlayerInfo,
@@ -11,7 +12,6 @@ export default function Playing({
     submitGuess,
     roundActive,
     phrase,
-    splitOnCorrectPart,
 }: {
     selfPlayerInfo: Player;
     guess: string;
@@ -19,7 +19,6 @@ export default function Playing({
     submitGuess: () => void;
     roundActive: boolean;
     phrase: string;
-    splitOnCorrectPart: (partialGuess: string, phrase: string) => string[];
 }) {
     const [inputDisabled, setInputDisabled] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -39,23 +38,14 @@ export default function Playing({
         }
     }, [inputDisabled]);
 
-    const [guessBeforePhrase, guessContainingPhrase, guessAfterPhrase] = splitOnCorrectPart(selfPlayerInfo.partialGuess, phrase);
-    const lastGuessEmpty = selfPlayerInfo.lastGuessStatus == null
-    const partialGuessEmpty = selfPlayerInfo.partialGuess === ""
-
     return (
         <div className="game-ui">
-            <div className={"self-guess"}>
-                {!lastGuessEmpty && partialGuessEmpty && <div
-                    className={
-                        "" + selfPlayerInfo.lastGuessStatus
-                    }
-                >
-                    {selfPlayerInfo.lastGuess}
-                </div>}
-                {!partialGuessEmpty && <div className="partial-guess">
-                    {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
-                </div>}
+            <div className="self-guess">
+                <Guess
+                    phrase={phrase}
+                    player={selfPlayerInfo}
+                    extra_classname=""
+                />
             </div>
             <div className="life-cnt">{selfPlayerInfo?.lives} lives</div>
             <form

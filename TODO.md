@@ -20,6 +20,7 @@ High
 - Bugs
     - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
+    - If you make a wrong guess, then type a new guess, and then delete it, it displays the old wrong guess.
 
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber

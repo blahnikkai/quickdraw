@@ -58,16 +58,6 @@ export default function Game() {
             (endTimeRef.current - startTimeRef.current);
         setTimeProgress(timeProgress);
     };
-    const splitOnCorrectPart = (partialGuess: string, phrase: string): string[] => {
-        const index = partialGuess.indexOf(phrase);
-        if (index === -1) {
-            return [partialGuess, "", ""]
-        }
-        const p1 = partialGuess.substring(0, index);
-        const p2 = partialGuess.substring(index, index + phrase.length);
-        const p3 = partialGuess.substring(index + phrase.length);
-        return [p1, p2, p3];
-    }
 
     const changeGameStatus = (newGameStatus: GameStatus) =>
         socketRef.current?.emit("change game status", gid, newGameStatus);
@@ -236,7 +226,6 @@ export default function Game() {
                                     playerInfo={playerInfo}
                                     selfPlayerInfo={undefined}
                                     phrase={phrase}
-                                    splitOnCorrectPart={splitOnCorrectPart}
                                 />
                                 <Spectators
                                     playerInfo={playerInfo}
@@ -293,7 +282,6 @@ export default function Game() {
                                     submitGuess={submitGuess}
                                     roundActive={roundActive}
                                     phrase={phrase}
-                                    splitOnCorrectPart={splitOnCorrectPart}
                                 />
                             )}
                         </div>
