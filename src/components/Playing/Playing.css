@@ -14,13 +14,11 @@
     margin: .5rem 0 0 0;
 }
 
-.last-guess {
+.self-guess {
     padding: .5rem;
     text-align: center;
     width: 100%;
-}
-
-.self-last-guess {
+    
     height: 30px;
     align-items: flex-start;
     margin-top: 5rem;

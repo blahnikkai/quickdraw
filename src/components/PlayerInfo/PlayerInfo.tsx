@@ -60,12 +60,12 @@ export default function Players({
                                 <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
                                     {!lastGuessEmpty && partialGuessEmpty && <div
                                         className={
-                                            "other-guess " + player.lastGuessStatus
+                                            "side-guess " + player.lastGuessStatus
                                         }
                                     >
                                         {player.lastGuess}
                                     </div>}
-                                    {!partialGuessEmpty && <div className="other-guess partial-guess">
+                                    {!partialGuessEmpty && <div className="side-guess partial-guess">
                                         {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
                                     </div>}
                                 </div>

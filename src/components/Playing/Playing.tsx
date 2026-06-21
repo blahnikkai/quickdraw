@@ -45,15 +45,15 @@ export default function Playing({
 
     return (
         <div className="game-ui">
-            <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
+            <div className={"self-guess"}>
                 {!lastGuessEmpty && partialGuessEmpty && <div
                     className={
-                        "other-guess " + selfPlayerInfo.lastGuessStatus
+                        "" + selfPlayerInfo.lastGuessStatus
                     }
                 >
                     {selfPlayerInfo.lastGuess}
                 </div>}
-                {!partialGuessEmpty && <div className="other-guess partial-guess">
+                {!partialGuessEmpty && <div className="partial-guess">
                     {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
                 </div>}
             </div>
