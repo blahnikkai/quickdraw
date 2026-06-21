@@ -209,6 +209,9 @@ export default class Game {
             return;
         }
         player.partialGuess = partialGuess;
+        if (partialGuess !== "") {
+            player.lastGuess = "";
+        }
         this.emitPlayerInfo();
     }
 

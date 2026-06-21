@@ -32,7 +32,7 @@ export default function Players({
                     const gameStatusStr: string = playerIsInWaitingRoom
                         ? player.gameStatus
                         : "";
-                    const lastGuessEmpty = player.lastGuessStatus == null
+                    const lastGuessEmpty = player.lastGuess === ""
                     const partialGuessEmpty = player.partialGuess === ""
 
                     return (
