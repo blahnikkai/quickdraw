@@ -3,11 +3,9 @@ import Player from '../../shared/Player.js';
 export default function Guess({
     phrase,
     player,
-    extra_classname,
 }: {
     phrase: string,
     player: Player,
-    extra_classname: string,
 }) {
     const splitOnCorrectPart = (partialGuess: string, phrase: string): string[] => {
         const index = partialGuess.indexOf(phrase);
@@ -28,14 +26,14 @@ export default function Guess({
             {
                 !lastGuessEmpty && partialGuessEmpty &&
                 <div
-                    className={extra_classname + " " + player.lastGuessStatus}
+                    className={"guess " + player.lastGuessStatus}
                 >
                     {player.lastGuess}
                 </div>
             }
             {
                 !partialGuessEmpty &&
-                <div className={extra_classname + " partial-guess"}>
+                <div className={"guess partial-guess"}>
                     {guessBeforePhrase}<span className="correct-part">{guessContainingPhrase}</span>{guessAfterPhrase}
                 </div>
             }

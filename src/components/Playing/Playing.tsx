@@ -44,7 +44,6 @@ export default function Playing({
                 <Guess
                     phrase={phrase}
                     player={selfPlayerInfo}
-                    extra_classname=""
                 />
             </div>
             <div className="life-cnt">{selfPlayerInfo?.lives} lives</div>

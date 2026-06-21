@@ -98,11 +98,8 @@
     z-index: 100;
 }
 
-.side-guess {
-    margin: auto;
-    width: 100%;
+.guess {
     padding: .5rem;
-    text-align: center;
 }
 
 .partial-guess {

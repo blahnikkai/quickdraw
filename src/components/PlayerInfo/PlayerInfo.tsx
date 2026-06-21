@@ -59,7 +59,6 @@ export default function Players({
                                     <Guess
                                         phrase={phrase}
                                         player={player}
-                                        extra_classname="side-guess"
                                     />
                                 </div>
                                 <img src="/assets/images/speech_bubble_point.svg" height="25" width="50" className={lastGuessEmpty && partialGuessEmpty ? "invisible" : "speech-bubble"}></img>
