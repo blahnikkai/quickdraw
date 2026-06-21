@@ -33,6 +33,10 @@ export default class Player {
     reset() {
         this.lives = 1337;
         this.dead = false;
+        this.partialGuess = "";
+        this.lastGuess = "";
+        this.lastGuessStatus = undefined;
+        this.dying = false;
         if (this.gameStatus === GameStatus.SPECTATING_PLAYING || this.gameStatus === GameStatus.SPECTATING_WAITING) {
             this.gameStatus = GameStatus.SPECTATING_WAITING;
         }
@@ -56,6 +60,7 @@ export default class Player {
             }
         }
         this.lastGuess = "";
+        this.partialGuess = "";
         this.lastGuessStatus = undefined;
         this.dying = false;
     }
