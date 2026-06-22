@@ -27,7 +27,7 @@ function calcSeqCnt(wordLst: string[], possSeq: string): number {
 }
 
 function addLetter(seqs: string[]): string[] {
-    let newSeqs = []
+    let newSeqs: string[] = []
     for (const seq of seqs) {
         for (const letter of letters) {
             newSeqs.push(seq + letter)

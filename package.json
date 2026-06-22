@@ -10,6 +10,7 @@
         "@testing-library/user-event": "^13.5.0",
         "@types/node": "^24.3.0",
         "cors": "^2.8.6",
+        "csv-parser": "^3.2.1",
         "express": "^5.1.0",
         "fs": "^0.0.1-security",
         "path": "^0.12.7",

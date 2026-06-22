@@ -1,6 +1,5 @@
 High
 - UX
-    - Show words as people are typing them *
     - Add animations/transition to names on join
     - Show a more obvious signal of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
@@ -20,10 +19,10 @@ High
 - Bugs
     - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
-    - If you make a wrong guess, then type a new guess, and then delete it, it displays the old wrong guess.
 
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
+    - Rarity list is very web based, should change to the one used by word freq
 
 - Settings
     - Allow settings to be changed before entering nickname
@@ -42,7 +41,7 @@ High
     - Wrong guess leads to shorter timer
 
 - Naming and waiting
-    - Add a name length limit *
+    - Add a name length limit
     - Only allow unique nicknames
 
 - Gameplay and gamemodes

@@ -25,6 +25,7 @@ export default class Game {
     // TODO: could be static?
     twoLetCnts: Map<string, number>;
     threeLetCnts: Map<string, number>;
+    wordRarityMap: Map<string, number>;
     host: string;
     phrase: string;
     used: Set<string>;
@@ -41,7 +42,8 @@ export default class Game {
         socketServer: any,
         dictionary: Set<string>,
         twoLetCnts: Map<string, number>,
-        threeLetCnts: Map<string, number>
+        threeLetCnts: Map<string, number>,
+        wordRarityMap: Map<string, number>,
     ) {
         this.gid = gid;
         this.phrase = "";
@@ -49,6 +51,7 @@ export default class Game {
         this.socketServer = socketServer;
         this.twoLetCnts = twoLetCnts;
         this.threeLetCnts = threeLetCnts;
+        this.wordRarityMap = wordRarityMap;
         this.host = "";
         this.used = new Set();
         this.validCnt = 0;

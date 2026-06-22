@@ -1,5 +1,7 @@
 import { Server as SocketServer, Socket } from "socket.io";
-import { promises as fs } from "fs";
+import fs from "fs";
+import { promises } from "fs";
+import csv from 'csv-parser';
 import Game from "./Game.js";
 import GameStatus from "../src/shared/GameStatus.js";
 import Difficulty from "../src/shared/Difficulty.js";
@@ -10,34 +12,53 @@ export default class GameManager {
     dictionary: Set<string>;
     twoLetCnts: Map<string, number>;
     threeLetCnts: Map<string, number>;
+    wordRarityMap: Map<string, number>;
 
-    constructor(socketServer: SocketServer, dictionary: Set<string>, twoLetCnts: Map<string, number>, threeLetCnts: Map<string, number>) {
+    constructor(socketServer: SocketServer, dictionary: Set<string>, twoLetCnts: Map<string, number>, threeLetCnts: Map<string, number>, wordRarityMap: Map<string, number>) {
         this.socketServer = socketServer;
         this.games = new Map();
         this.dictionary = dictionary;
         this.twoLetCnts = twoLetCnts;
         this.threeLetCnts = threeLetCnts;
+        this.wordRarityMap = wordRarityMap;
+    }
+
+    static async parseWordRarity(): Promise<Map<string, number>> {
+        const wordRarityMap: Map<string, number> = new Map();
+        const stream = fs.createReadStream("./dictionary/word_rarity_list.csv")
+            .pipe(csv());
+
+        for await (const row of stream) {
+            const numAppearances = row["count"];
+            const rarityScore = Math.log10(numAppearances / 430.8);
+            wordRarityMap.set(row["word"], rarityScore);
+        }
+
+        return wordRarityMap;
     }
 
     static async create(socketServer: SocketServer) {
-        const twoLetData = await fs.readFile("./dictionary/two_let_cnts.json", {
+        const wordRarityMap = await GameManager.parseWordRarity();
+        console.log(wordRarityMap);
+
+        const twoLetData = await promises.readFile("./dictionary/two_let_cnts.json", {
             encoding: "utf-8",
         });
         const twoLetCnts: Map<string, number> = new Map(Object.entries(JSON.parse(twoLetData)));
 
-        const threeLetData = await fs.readFile(
+        const threeLetData = await promises.readFile(
             "./dictionary/three_let_cnts.json",
             { encoding: "utf-8" }
         );
         const threeLetCnts: Map<string, number> = new Map(Object.entries(JSON.parse(threeLetData)));
 
-        const dictionaryData = await fs.readFile("./dictionary/enable1.txt", {
+        const dictionaryData = await promises.readFile("./dictionary/enable1.txt", {
             encoding: "utf-8",
         });
         const wordLst = dictionaryData.split("\n");
         const dictionary = new Set(wordLst);
-        
-        return new GameManager(socketServer, dictionary, twoLetCnts, threeLetCnts)
+
+        return new GameManager(socketServer, dictionary, twoLetCnts, threeLetCnts, wordRarityMap);
     }
 
     async createGame() {
@@ -54,7 +75,8 @@ export default class GameManager {
             this.socketServer,
             this.dictionary,
             this.twoLetCnts,
-            this.threeLetCnts
+            this.threeLetCnts,
+            this.wordRarityMap,
         );
         this.games.set(gid, newGame);
         return gid;
