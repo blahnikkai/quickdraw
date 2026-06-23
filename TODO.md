@@ -19,6 +19,7 @@ High
 - Bugs
     - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
+    - Test that word set definitely doesn't carry over between games somehow. "gonad" was supposedly used even though I think I used it a while ago, seems a bit unlikely that it was the same game
 
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber

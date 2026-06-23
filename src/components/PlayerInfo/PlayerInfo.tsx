@@ -42,7 +42,7 @@ export default function Players({
                             key={player.socketId}
                             className="player"
                         >
-                            <div className={`player-stats ${player.dying ? " dying" : ""}${player.dead ? " dead" : ""}`}>
+                            <div className={`player-stats ${player.dying ? " dying" : ""}${player.dead ? " dead" : ""}${leastRarePlayer === player.socketId ? " least-rare" : ""}`}>
                                 <div className="player-name">
                                     {player.host ? <FaCrown size={16} className="crown" /> : ""} {player.name}
                                 </div>

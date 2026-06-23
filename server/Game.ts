@@ -359,7 +359,7 @@ export default class Game {
     }
 
     emitLeastRarePlayer() {
-        this.socketServer.to(this.gid).emit("updated least rare player", this.leastRarePlayer);
+        this.socketServer.to(this.gid).emit("update least rare player", this.leastRarePlayer);
     }
 
     emitPhrase(socketId: string) {
