@@ -1,3 +1,15 @@
+.least-rare-main {
+    border-color: var(--clr-blue);
+}
+
+.dying-main {
+    border-color: var(--clr-invalid);
+}
+
+.dead-main {
+    border-color: gray;
+}
+
 .room {
     display: flex;
     align-items: center;

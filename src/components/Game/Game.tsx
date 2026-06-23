@@ -33,6 +33,7 @@ export default function Game() {
     const host = playerInfo.find((player) => player.host)
 
     const [leastRarePlayer, setLeastRarePlayer] = useState<string>("");
+    const isLeastRarePlayer = selfPlayerInfo?.socketId != null && selfPlayerInfo?.socketId === leastRarePlayer
 
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player | undefined | null>(undefined);
@@ -207,7 +208,7 @@ export default function Game() {
                     viewOnly={!(selfPlayerInfo?.host)}
                 />
             }
-            <main>
+            <main className={(isLeastRarePlayer ? "least-rare-main" : "") + (selfPlayerInfo?.dying ? " dying-main" : "") + (selfPlayerInfo?.dead ? " dead-main": "")}>
                 {roomExists === undefined && <div>Loading</div>}
 
                 {roomExists === false && (

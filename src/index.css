@@ -52,6 +52,8 @@ main {
     align-items: center;
     justify-content: center;
     flex: 1;
+
+    border: 1rem solid transparent;
 }
 
 button {
