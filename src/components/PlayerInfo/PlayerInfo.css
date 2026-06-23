@@ -65,11 +65,11 @@
 }
 
 .used {
-    color: yellow;
+    color: var(--clr-yellow);
 }
 
 .less_rare {
-    color: blue;
+    color: var(--clr-blue);
 }
 
 .player-game-status {
