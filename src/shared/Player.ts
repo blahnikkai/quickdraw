@@ -8,6 +8,7 @@ export default class Player {
     partialGuess: string;
     lastGuess: string;
     lastGuessStatus: GuessStatus | undefined;
+    lastGuessRarity: number;
     dying: boolean;
     dead: boolean;
     gameStatus: GameStatus;
@@ -20,6 +21,7 @@ export default class Player {
         this.partialGuess = "";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
+        this.lastGuessRarity = 10;
         this.dying = false;
         this.dead = false;
         this.gameStatus = GameStatus.NICKNAME;
@@ -36,6 +38,7 @@ export default class Player {
         this.partialGuess = "";
         this.lastGuess = "";
         this.lastGuessStatus = undefined;
+        this.lastGuessRarity = 10;
         this.dying = false;
         if (this.gameStatus === GameStatus.SPECTATING_PLAYING || this.gameStatus === GameStatus.SPECTATING_WAITING) {
             this.gameStatus = GameStatus.SPECTATING_WAITING;
@@ -62,6 +65,7 @@ export default class Player {
         this.lastGuess = "";
         this.partialGuess = "";
         this.lastGuessStatus = undefined;
+        this.lastGuessRarity = 10;
         this.dying = false;
     }
 

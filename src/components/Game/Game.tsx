@@ -32,6 +32,8 @@ export default function Game() {
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
     const host = playerInfo.find((player) => player.host)
 
+    const [leastRarePlayer, setLeastRarePlayer] = useState<string>("");
+
     const [guess, setGuess] = useState("");
     const [winner, setWinner] = useState<Player | undefined | null>(undefined);
 
@@ -161,6 +163,10 @@ export default function Game() {
             setPhrase(newPhrase);
         });
 
+        socketRef.current.on("update least rare player", (newLeastRarePlayer: string) => {
+            setLeastRarePlayer(newLeastRarePlayer);
+        });
+
         socketRef.current.on("update debug info", (newDebugInfo: string) => {
             setDebugInfo(newDebugInfo);
         });
@@ -226,6 +232,7 @@ export default function Game() {
                                     playerInfo={playerInfo}
                                     selfPlayerInfo={undefined}
                                     phrase={phrase}
+                                    leastRarePlayer={leastRarePlayer}
                                 />
                                 <Spectators
                                     playerInfo={playerInfo}

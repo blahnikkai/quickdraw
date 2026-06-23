@@ -36,6 +36,7 @@ export default class Game {
     difficulty: Difficulty;
     roundTime: number;
     startingLives: number;
+    leastRarePlayer: string;
 
     constructor(
         gid: string,
@@ -61,6 +62,7 @@ export default class Game {
         this.difficulty = Difficulty.DYNAMIC;
         this.roundTime = ROUND_TIME;
         this.startingLives = DEFAULT_STARTING_LIVES;
+        this.leastRarePlayer = "";
     }
 
     randomLetter(): string {
@@ -122,6 +124,8 @@ export default class Game {
     startRound(firstRound: boolean = false) {
         this.curRound++;
         this.validCnt = 0;
+        this.leastRarePlayer = "";
+        this.emitLeastRarePlayer();
         if (!firstRound) {
             this.players.forEach((player) => {
                 player.startRound();
@@ -218,25 +222,48 @@ export default class Game {
         this.emitPlayerInfo();
     }
 
+    calcGuessStatus(guess: string, player: Player): GuessStatus {
+        if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
+            return GuessStatus.INVALID;
+        } else if (this.used.has(guess)) {
+            return GuessStatus.USED;
+        }
+
+        const rarityScore = this.wordRarityMap.get(guess);
+        if (rarityScore == null) {
+            throw Error("Word not found in rarity map");
+        }
+        player.lastGuessRarity = rarityScore;
+        if (this.aliveCnt === 2) {
+            for (const [socketId, player] of this.players) {
+                const leastRare = this.players.get(this.leastRarePlayer)?.lastGuessRarity ?? 0;
+                if (player.lastGuessRarity > leastRare) {
+                    this.leastRarePlayer = socketId;
+                }
+            }
+            if (this.leastRarePlayer == player.socketId) {
+                return GuessStatus.LESS_RARE;
+            }
+        }
+        this.validCnt++;
+        this.used.add(guess);
+        return GuessStatus.VALID;
+
+    }
+
     checkGuess(guess: string, socket: Socket) {
         const player = this.players.get(socket.id);
         if (player === undefined) {
             return;
         }
-        let guessStatus: GuessStatus;
-        if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
-            guessStatus = GuessStatus.INVALID;
-        } else if (this.used.has(guess)) {
-            guessStatus = GuessStatus.USED;
-        } else {
-            this.validCnt++;
-            this.used.add(guess);
-            guessStatus = GuessStatus.VALID;
-        }
+
         player.lastGuess = guess;
-        player.lastGuessStatus = guessStatus;
+        player.lastGuessStatus = this.calcGuessStatus(guess, player);
+        if (this.leastRarePlayer !== "") {
+            this.emitLeastRarePlayer();
+        }
         this.emitPlayerInfo();
-        if (guessStatus === GuessStatus.VALID) {
+        if (player.lastGuessStatus === GuessStatus.VALID && this.aliveCnt !== 2) {
             this.checkRoundOver();
         }
     }
@@ -324,6 +351,10 @@ export default class Game {
     emitPlayerInfo() {
         const playerInfo = Array.from(this.players.values());
         this.socketServer.to(this.gid).emit("update player info", playerInfo);
+    }
+
+    emitLeastRarePlayer() {
+        this.socketServer.to(this.gid).emit("updated least rare player", this.leastRarePlayer);
     }
 
     emitPhrase(socketId: string) {

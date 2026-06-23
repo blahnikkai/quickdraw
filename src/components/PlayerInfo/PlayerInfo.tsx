@@ -8,10 +8,12 @@ export default function Players({
     playerInfo,
     selfPlayerInfo,
     phrase,
+    leastRarePlayer,
 }: {
     playerInfo: Player[];
     selfPlayerInfo: Player | undefined;
     phrase: string;
+    leastRarePlayer: string;
 }) {
     const allowableGameStatuses = [
         GameStatus.PLAYING,
@@ -55,6 +57,8 @@ export default function Players({
                                 </div>
                             </div>
                             <div className="guess-container">
+                                <div>{player.lastGuessRarity}</div>
+                                <div>Is {player.socketId + ", " + leastRarePlayer}</div>
                                 <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
                                     <Guess
                                         phrase={phrase}
