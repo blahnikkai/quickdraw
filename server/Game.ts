@@ -185,7 +185,7 @@ export default class Game {
             const mx = Math.max(6000 * decay, 1_500);
             return [mn, mx];
         }
-        throw Error("Shouldn't be here");
+        throw new Error("Shouldn't be here");
     }
 
     calcPhraseCnt(phrase: string) {
@@ -231,7 +231,8 @@ export default class Game {
 
         const rarityScore = this.wordRarityMap.get(guess);
         if (rarityScore == null) {
-            throw Error("Word not found in rarity map");
+            console.error("Word not found in rarity map: " + guess);
+            return GuessStatus.INVALID;
         }
         player.lastGuessRarity = rarityScore;
         if (this.aliveCnt === 2) {
@@ -240,6 +241,10 @@ export default class Game {
                 if (player.lastGuessRarity > leastRare) {
                     this.leastRarePlayer = socketId;
                 }
+            }
+            const leastRarePlayer = this.players.get(this.leastRarePlayer);
+            if (leastRarePlayer != null && leastRarePlayer.lastGuessStatus === GuessStatus.VALID) {
+                leastRarePlayer.lastGuessStatus = GuessStatus.LESS_RARE;
             }
             if (this.leastRarePlayer == player.socketId) {
                 return GuessStatus.LESS_RARE;

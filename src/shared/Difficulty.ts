@@ -8,7 +8,7 @@ enum Difficulty {
 export function strToDifficulty(difficultyStr: string): Difficulty {
     const difficulty: Difficulty | undefined = Difficulty[difficultyStr.toUpperCase() as keyof typeof Difficulty];
     if(difficulty === undefined) {
-        throw Error("string can't be converted to Difficulty");
+        throw new Error("string can't be converted to Difficulty");
     }
     return difficulty
 }

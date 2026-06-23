@@ -39,7 +39,6 @@ export default class GameManager {
 
     static async create(socketServer: SocketServer) {
         const wordRarityMap = await GameManager.parseWordRarity();
-        console.log(wordRarityMap);
 
         const twoLetData = await promises.readFile("./dictionary/two_let_cnts.json", {
             encoding: "utf-8",

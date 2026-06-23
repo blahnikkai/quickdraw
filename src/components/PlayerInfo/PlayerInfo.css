@@ -68,6 +68,10 @@
     color: yellow;
 }
 
+.less_rare {
+    color: blue;
+}
+
 .player-game-status {
     font-size: 14px;
     height: 0;
