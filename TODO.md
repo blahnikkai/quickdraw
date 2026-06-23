@@ -21,7 +21,6 @@ High
     - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
     - Test that word set definitely doesn't carry over between games somehow. "gonad" was supposedly used even though I think I used it a while ago, seems a bit unlikely that it was the same game
-    - Player status text on waiting screen is tiny
 
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
@@ -32,7 +31,9 @@ High
     - Add a little message to non-hosts telling them that settings are view only *
     - In general, add simple settings and advanced settings. In advanced settings, players have more control
     - In advanced settings
-        - Fully custom difficulty (important for playtesting)
+        - Fully custom difficulty (important for playtesting) *
+        - Change number players left alive when raren words tiebreaker comes into play *
+        - Different round time for rare words tiebreaker
         - Pick whether rareness or longer word is used in 1v1 tiebreaker
 
 - Fix behavior on leave and rejoin

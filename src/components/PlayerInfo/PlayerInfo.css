@@ -36,7 +36,7 @@
     justify-content: center;
 
     width: 8rem;
-    min-height: 5rem;
+    height: 5rem;
     margin: 0.2rem 0;
     padding: .5rem 2.5rem;
 }
@@ -82,16 +82,14 @@
 
 .player-game-status {
     font-size: 14px;
-    height: 0;
-    background-color: red;
 }
 
 .ready {
-    color: green;
+    color: var(--clr-valid);
 }
 
 .waiting {
-    color: yellow;
+    color: var(--clr-yellow);
 }
 
 .guess-container {
