@@ -1,8 +1,9 @@
 High
 - UX
     - Add animations/transition to names on join
-    - Show a more obvious signal of losing a life
+    - Show a more obvious signal to YOUR screen of losing a life
         - And a visual signal of being dead. This is less important since input is disabled.
+        - And of being the least rare player who needs to answer
     - Add some transition time before game starts (and a little bit between rounds)
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
     - Audio
@@ -20,6 +21,7 @@ High
     - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
     - Test that word set definitely doesn't carry over between games somehow. "gonad" was supposedly used even though I think I used it a while ago, seems a bit unlikely that it was the same game
+    - Player status text on waiting screen is tiny
 
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber

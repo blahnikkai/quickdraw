@@ -144,10 +144,10 @@ export default class Game {
                 Date.now(),
                 Date.now() + this.roundTime * 1_000
             );
-        this.emitDebugInfo();
         this.timeoutId = setTimeout(() => {
             this.endRound();
         }, this.roundTime * 1_000);
+        this.emitDebugInfo();
     }
 
     emitDebugInfo() {
@@ -249,6 +249,20 @@ export default class Game {
             if (this.leastRarePlayer == player.socketId) {
                 return GuessStatus.LESS_RARE;
             }
+            if (this.timeoutId !== null) {
+                clearTimeout(this.timeoutId);
+            }
+            this.socketServer
+                .to(this.gid)
+                .emit(
+                    "start round",
+                    this.phrase,
+                    Date.now(),
+                    Date.now() + this.roundTime * 1_000
+                );
+            this.timeoutId = setTimeout(() => {
+                this.endRound();
+            }, this.roundTime * 1_000);
         }
         this.validCnt++;
         this.used.add(guess);
