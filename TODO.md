@@ -1,10 +1,8 @@
 High
 - UX
     - Add animations/transition to names on join
-    - Show a more obvious signal to YOUR screen of losing a life
-        - And a visual signal of being dead. This is less important since input is disabled.
-        - And of being the least rare player who needs to answer
-    - Add some transition time before game starts (and a little bit between rounds)
+    - Add some transition time before game starts 
+        - And a little bit between rounds. Technically this already exists, but make a visual signal that the phrase is being regenerated
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
     - Audio
         - Play a random audio from several of the same type (eg on hurt, pick one of hurt1, hurt2, hurt3, ...)
@@ -18,7 +16,6 @@ High
         - Add cowboy sound effects
 
 - Bugs
-    - If you join in the middle of the game, the current round doesn't show time properly
     - If you submit right as you die you don't lose a life? I maybe saw this during live playtesting with the Sebheads?
     - Test that word set definitely doesn't carry over between games somehow. "gonad" was supposedly used even though I think I used it a while ago, seems a bit unlikely that it was the same game
 
@@ -28,11 +25,11 @@ High
 
 - Settings
     - Allow settings to be changed before entering nickname
-    - Add a little message to non-hosts telling them that settings are view only *
+    - Add a little message to non-hosts telling them that settings are view only
     - In general, add simple settings and advanced settings. In advanced settings, players have more control
     - In advanced settings
         - Fully custom difficulty (important for playtesting) *
-        - Change number players left alive when raren words tiebreaker comes into play *
+        - Change number players left alive when rarity tiebreaker comes into play *
         - Different round time for rare words tiebreaker
         - Pick whether rareness or longer word is used in 1v1 tiebreaker
 
@@ -49,7 +46,8 @@ High
     - Only allow unique nicknames
 
 - Gameplay and gamemodes
-    - Use the length of the word or the rareness of the word (using wordfreq or similar library) to judge in 1v1s *
+    - Use wordfreq and a new dictionary that has proper nouns
+    - Alternatively allow the length of the word to judge in 1v1s
     - Separate "rare words" gamemode, where a player dies if their word is the least rare of everyone
     - Add regex clues
     - Give a bonus to the person with the rarest word

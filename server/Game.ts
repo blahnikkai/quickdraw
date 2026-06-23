@@ -35,6 +35,8 @@ export default class Game {
     curRound: number;
     difficulty: Difficulty;
     roundTime: number;
+    startTime: number;
+    endTime: number;
     startingLives: number;
     leastRarePlayer: string;
 
@@ -61,6 +63,8 @@ export default class Game {
         this.curRound = 0;
         this.difficulty = Difficulty.DYNAMIC;
         this.roundTime = ROUND_TIME;
+        this.startTime = 0;
+        this.endTime = 0;
         this.startingLives = DEFAULT_STARTING_LIVES;
         this.leastRarePlayer = "";
     }
@@ -136,18 +140,27 @@ export default class Game {
             }
         }
         this.phrase = this.generatePhrase();
+        this.startNewTimer();
         this.socketServer
             .to(this.gid)
             .emit(
                 "start round",
                 this.phrase,
-                Date.now(),
-                Date.now() + this.roundTime * 1_000
+                this.startTime,
+                this.endTime
             );
+        this.emitDebugInfo();
+    }
+
+    startNewTimer() {
+        if (this.timeoutId != null) {
+            clearTimeout(this.timeoutId);
+        }
+        this.startTime = Date.now();
+        this.endTime = Date.now() + this.roundTime * 1_000;
         this.timeoutId = setTimeout(() => {
             this.endRound();
         }, this.roundTime * 1_000);
-        this.emitDebugInfo();
     }
 
     emitDebugInfo() {
@@ -237,8 +250,11 @@ export default class Game {
         player.lastGuessRarity = rarityScore;
         if (this.aliveCnt === 2) {
             for (const [socketId, player] of this.players) {
-                const leastRare = this.players.get(this.leastRarePlayer)?.lastGuessRarity ?? 0;
-                if (player.lastGuessRarity > leastRare) {
+                if (!player.aliveAndPlaying) {
+                    continue;
+                }
+                const leastRareRarity = this.players.get(this.leastRarePlayer)?.lastGuessRarity ?? 0;
+                if (player.lastGuessRarity > leastRareRarity) {
                     this.leastRarePlayer = socketId;
                 }
             }
@@ -249,20 +265,8 @@ export default class Game {
             if (this.leastRarePlayer == player.socketId) {
                 return GuessStatus.LESS_RARE;
             }
-            if (this.timeoutId !== null) {
-                clearTimeout(this.timeoutId);
-            }
-            this.socketServer
-                .to(this.gid)
-                .emit(
-                    "start round",
-                    this.phrase,
-                    Date.now(),
-                    Date.now() + this.roundTime * 1_000
-                );
-            this.timeoutId = setTimeout(() => {
-                this.endRound();
-            }, this.roundTime * 1_000);
+            this.startNewTimer();
+            this.emitRoundTimer();
         }
         this.validCnt++;
         this.used.add(guess);
@@ -380,6 +384,13 @@ export default class Game {
         this.socketServer.to(socketId).emit("update phrase", this.phrase);
     }
 
+    emitRoundTimer(socketId: string | null = null) {
+        if (socketId == null) {
+            socketId = this.gid;
+        }
+        this.socketServer.to(socketId).emit("update round time", this.startTime, this.endTime);
+    }
+
     changeName(newName: string, socket: Socket) {
         this.players.get(socket.id)?.setName(newName);
         const newStatus =
@@ -387,6 +398,7 @@ export default class Game {
         this.changeGameStatus(newStatus, socket);
         if (newStatus === GameStatus.SPECTATING_PLAYING) {
             this.emitPhrase(socket.id);
+            this.emitRoundTimer(socket.id);
         }
     }
 

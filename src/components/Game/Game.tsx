@@ -131,6 +131,16 @@ export default function Game() {
             }
         );
 
+        socketRef.current.on(
+            "update round time",
+            (start: number, end: number) => {
+                startTimeRef.current = start;
+                endTimeRef.current = end;
+                intervalRef.current = setInterval(updateTimeProgress, 300);
+                updateTimeProgress();
+            }
+        );
+
         socketRef.current.on("end round", () => {
             setRoundActive(false);
             clearInterval(intervalRef.current);
