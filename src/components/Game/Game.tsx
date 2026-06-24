@@ -27,6 +27,7 @@ export default function Game() {
     const [roundActive, setRoundActive] = useState(false);
 
     const [selfPlayerInfo, setSelfPlayerInfo] = useState<Player | undefined>(undefined);
+    const selfPlayerInfoRef = useRef<Player | undefined>(undefined);
     const gameStatus = selfPlayerInfo?.gameStatus ?? GameStatus.NICKNAME;
 
     const [playerInfo, setPlayerInfo] = useState<Player[]>([]);
@@ -100,6 +101,10 @@ export default function Game() {
     };
 
     useEffect(() => {
+        selfPlayerInfoRef.current = selfPlayerInfo;
+    }, [selfPlayerInfo])
+
+    useEffect(() => {
         socketRef.current = io(import.meta.env.VITE_BACKEND_URL, getSocketIOOptions());
 
         socketRef.current.emit("join", gid);
@@ -160,8 +165,9 @@ export default function Game() {
                 if (newSelf === undefined) {
                     return;
                 }
+                const prevStatus = selfPlayerInfoRef.current?.lastGuessStatus;
                 setSelfPlayerInfo(newSelf);
-                if (newSelf.lastGuessStatus === GuessStatus.VALID && selfPlayerInfo?.lastGuessStatus !== GuessStatus.VALID) {
+                if (newSelf.lastGuessStatus === GuessStatus.VALID && prevStatus !== GuessStatus.VALID) {
                     goodAudio.play();
                 }
                 if (newSelf.dying && !selfPlayerInfo?.dying) {
