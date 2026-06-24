@@ -57,8 +57,8 @@ export default function Players({
                                 </div>
                             </div>
                             <div className="guess-container">
-                                {/* <div>{player.lastGuessRarity}</div> */}
-                                {/* <div>Is {player.socketId + ", " + leastRarePlayer}</div> */}
+                                <div>{player.lastGuessRarity}</div>
+                                <div>{player.socketId + ", " + leastRarePlayer}</div>
                                 <div className={"guess-text-container" + (lastGuessEmpty && partialGuessEmpty ? " invisible" : "")}>
                                     <Guess
                                         phrase={phrase}

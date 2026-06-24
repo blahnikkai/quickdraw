@@ -235,43 +235,57 @@ export default class Game {
         this.emitPlayerInfo();
     }
 
+    checkIfLeastRare(guess: string, guessingPlayer: Player): GuessStatus {
+        const rarityScore = this.wordRarityMap.get(guess);
+        if (rarityScore == null) {
+            console.error("Word not found in rarity map: " + guess);
+            return GuessStatus.INVALID;
+        }
+        guessingPlayer.lastGuessRarity = rarityScore;
+
+        if (this.aliveCnt !== 2) {
+            return GuessStatus.VALID;
+        }
+
+        for (const [_, player] of this.players) {
+            if (player !== guessingPlayer && player.aliveAndPlaying && player.lastGuessStatus !== GuessStatus.VALID) {
+                return GuessStatus.VALID;
+            }
+        }
+
+        for (const [socketId, player] of this.players) {
+            if (!player.aliveAndPlaying) {
+                continue;
+            }
+            const leastRareRarity = this.players.get(this.leastRarePlayer)?.lastGuessRarity ?? 0;
+            if (player.lastGuessRarity > leastRareRarity) {
+                this.leastRarePlayer = socketId;
+            }
+        }
+        const leastRarePlayer = this.players.get(this.leastRarePlayer);
+        if (leastRarePlayer != null && leastRarePlayer.lastGuessStatus === GuessStatus.VALID) {
+            leastRarePlayer.lastGuessStatus = GuessStatus.LESS_RARE;
+        }
+        if (this.leastRarePlayer === guessingPlayer.socketId) {
+            return GuessStatus.LESS_RARE;
+        }
+        this.startNewTimer();
+        this.emitRoundTimer();
+        return GuessStatus.VALID;
+    }
+
     calcGuessStatus(guess: string, player: Player): GuessStatus {
         if (!this.dictionary.has(guess) || !guess.includes(this.phrase)) {
             return GuessStatus.INVALID;
         } else if (this.used.has(guess)) {
             return GuessStatus.USED;
         }
-
-        const rarityScore = this.wordRarityMap.get(guess);
-        if (rarityScore == null) {
-            console.error("Word not found in rarity map: " + guess);
-            return GuessStatus.INVALID;
+        const leastRareStatus = this.checkIfLeastRare(guess, player);
+        if (leastRareStatus === GuessStatus.VALID) {
+            this.validCnt++;
+            this.used.add(guess);
         }
-        player.lastGuessRarity = rarityScore;
-        if (this.aliveCnt === 2) {
-            for (const [socketId, player] of this.players) {
-                if (!player.aliveAndPlaying) {
-                    continue;
-                }
-                const leastRareRarity = this.players.get(this.leastRarePlayer)?.lastGuessRarity ?? 0;
-                if (player.lastGuessRarity > leastRareRarity) {
-                    this.leastRarePlayer = socketId;
-                }
-            }
-            const leastRarePlayer = this.players.get(this.leastRarePlayer);
-            if (leastRarePlayer != null && leastRarePlayer.lastGuessStatus === GuessStatus.VALID) {
-                leastRarePlayer.lastGuessStatus = GuessStatus.LESS_RARE;
-            }
-            if (this.leastRarePlayer == player.socketId) {
-                return GuessStatus.LESS_RARE;
-            }
-            this.startNewTimer();
-            this.emitRoundTimer();
-        }
-        this.validCnt++;
-        this.used.add(guess);
-        return GuessStatus.VALID;
-
+        return leastRareStatus;
     }
 
     checkGuess(guess: string, socket: Socket) {
