@@ -6,6 +6,7 @@ import {
     POST_ROUND_TIME,
     ROUND_TIME,
     DEFAULT_STARTING_LIVES,
+    RARITY_TIEBREAK_THRESHOLD
 } from "./constants.js";
 import GameStatus from "../src/shared/GameStatus.js";
 import Difficulty from "../src/shared/Difficulty.js";
@@ -243,7 +244,7 @@ export default class Game {
         }
         guessingPlayer.lastGuessRarity = rarityScore;
 
-        if (this.aliveCnt !== 2) {
+        if (this.aliveCnt > RARITY_TIEBREAK_THRESHOLD) {
             return GuessStatus.VALID;
         }
 
@@ -300,7 +301,7 @@ export default class Game {
             this.emitLeastRarePlayer();
         }
         this.emitPlayerInfo();
-        if (player.lastGuessStatus === GuessStatus.VALID && this.aliveCnt !== 2) {
+        if (player.lastGuessStatus === GuessStatus.VALID && this.aliveCnt > RARITY_TIEBREAK_THRESHOLD) {
             this.checkRoundOver();
         }
     }
