@@ -1,13 +1,14 @@
 High
 - UX
-    - Add animations/transition to names on join
+    - Add animations/transition to names on join. Like a little spin, for example.
     - Add some transition time before game starts 
-        - And a little bit between rounds. Technically this already exists, but make a visual signal that the phrase is being regenerated
+        - And a little bit of time between rounds. Technically this already exists, but make a visual signal that the phrase is being regenerated, like the letters cycling as if they were on a wheel
     - Display guess status icons (not just colors) to player and to other players in player info. Only for short time, use timeout
     - Audio
         - Play a random audio from several of the same type (eg on hurt, pick one of hurt1, hurt2, hurt3, ...)
     - Change fonts of certain elements. Cowboy or pixelated?
     - Little shake animation when you lose a life
+    - Show rarity score for words
     - Cowboy theming
         - Cowboys shoot whoever loses
             - Gun noise
@@ -22,6 +23,7 @@ High
 - Word List
     - Words that don't work but probably should (mainly proper nouns and words from other languages that are basically english): Pluto, europe, uber
     - Rarity list is very web based, should change to the one used by word freq
+    - Use wordfreq and a new dictionary that has proper nouns
 
 - Settings
     - Allow settings to be changed before entering nickname
@@ -46,9 +48,8 @@ High
     - Only allow unique nicknames
 
 - Gameplay and gamemodes
-    - Use wordfreq and a new dictionary that has proper nouns
     - Alternatively allow the length of the word to judge in 1v1s
-    - Separate "rare words" gamemode, where a player dies if their word is the least rare of everyone
+    - Separate "rare words" gamemode, where a player dies if their word is the least rare of everyone (this is just changing the threshold to = number of players)
     - Add regex clues
     - Give a bonus to the person with the rarest word
 
@@ -57,4 +58,3 @@ High
         - Separate cluttered Game component into Nav, RoomExists, RoomDNE components
     - Backend
         - Map sockets to gid for easy leave on disconnect instead of looping through all games/rooms
-        - Change passing Socket to socketId in backend
